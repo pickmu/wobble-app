@@ -1,9 +1,6 @@
 import { StatusBar } from "expo-status-bar";
-import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-import UserNav from "./Screens/UserScreens/UserNav";
-
-const Stack = createStackNavigator();
+import UserNav from "./app/Screens/UserScreens/UserNav";
 
 export default function App() {
   return (
