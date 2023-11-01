@@ -4,6 +4,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Login from "./Login";
 import DrawerContent from "./DrawerContent";
 import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../../ReusableTools/css";
 
 const Drawer = createDrawerNavigator();
 
@@ -11,9 +12,9 @@ const UserNav = () => {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerTintColor: "#DCDFE4",
+        headerTintColor: colors.secondary,
         headerStyle: {
-          backgroundColor: "#212429",
+          backgroundColor: colors.primary,
         },
         drawerStyle: {
           borderBottomRightRadius: 20,
@@ -32,7 +33,7 @@ const UserNav = () => {
               <Ionicons
                 name="notifications-outline"
                 size={24}
-                color="#DCDFE4"
+                color={colors.secondary}
               />
             </View>
           ),
