@@ -94,9 +94,9 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
-    paddingTop: 4,
     paddingLeft: 1,
     overflow: "hidden",
     alignItems: "center",
+    justifyContent: "center",
   },
 });
