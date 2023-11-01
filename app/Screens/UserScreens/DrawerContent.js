@@ -6,6 +6,7 @@ import {
   MaterialIcons,
   Feather,
 } from "@expo/vector-icons";
+import { colors } from "../../ReusableTools/css";
 
 const DrawerContent = () => {
   const menuItems = [
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    backgroundColor: "#1F2325",
+    backgroundColor: colors.primary,
     width: 20,
     height: 20,
     borderRadius: 10,
