@@ -12,6 +12,7 @@ const Map = observer(() => {
     loading,
   } = LocationStore;
 
+  
   useEffect(() => {
     requestLocationPermissions();
   }, []);
