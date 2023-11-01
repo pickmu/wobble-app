@@ -21,7 +21,7 @@ const DrawerContent = () => {
       icon: (
         <Image
           source={require("../../Images/distance.png")}
-          style={{ width: 24, height: 24 }}
+          className="w-6 h-6"
         />
       ),
       text: "Trip History",
@@ -34,7 +34,7 @@ const DrawerContent = () => {
       icon: (
         <Image
           source={require("../../Images/insurance.png")}
-          style={{ width: 24, height: 24 }}
+          className="w-6 h-6"
         />
       ),
       text: "Privacy",
@@ -51,12 +51,9 @@ const DrawerContent = () => {
         <View className="flex-col items-center gap-2 border-b border-[#e4e4e4] pb-4">
           <View className="relative">
             <FontAwesome name="user-circle-o" size={50} color="gray" />
-            <MaterialIcons
-              name="edit"
-              size={12}
-              color="white"
-              style={styles.editIcon}
-            />
+            <View style={styles.editIcon}>
+              <MaterialIcons name="edit" size={12} color="white" />
+            </View>
           </View>
           <Text>James Jakob</Text>
           <Text>JamesJakob@gmail.com</Text>
@@ -94,7 +91,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     backgroundColor: "#1F2325",
-    borderRadius: 50,
-    padding: 4,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    paddingTop: 4,
+    paddingLeft: 1,
+    overflow: "hidden",
+    alignItems: "center",
   },
 });
