@@ -14,6 +14,7 @@ import { i18nStore } from "../../MobX/I18nStore";
 const DrawerContent = () => {
   const [activeScreen, setActiveScreen] = useState("Map");
   const { i18n } = i18nStore;
+  const isArabic = i18n.locale.includes("ar");
 
   const navigation = useNavigation();
 
@@ -106,9 +107,9 @@ const DrawerContent = () => {
           color={activeScreen === "Setting" ? "white" : "black"}
         />
       ),
-      text: `${i18n.t("drawerContent.setting")}`,
+      text: `${i18n.t("drawerContent.settings")}`,
       onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.setting")}`);
+        navigation.navigate(`${i18n.t("userNav.screens.settings")}`);
         setActiveScreen("Setting");
       },
     },
@@ -157,9 +158,11 @@ const DrawerContent = () => {
           name="power-outline"
           size={24}
           color="white"
-          style={{ transform: [{ rotate: "90deg" }] }}
+          style={{ transform: [{ rotate: isArabic ? "-90deg" : "90deg" }] }}
         />
-        <Text className="text-white text-base ml-4">Log Out</Text>
+        <Text className="text-white text-base ml-4">{`${i18n.t(
+          "drawerContent.logOut"
+        )}`}</Text>
       </View>
     </View>
   );

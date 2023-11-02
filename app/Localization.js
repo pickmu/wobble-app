@@ -5,7 +5,8 @@ export const translations = {
         payment: "Payment",
         help: "Help",
         privacy: "Privacy",
-        settings: "Setting",
+        settings: "Settings",
+        switchLang: "Switch language",
       },
       homeTitle: "Book a Taxi",
     },
@@ -15,7 +16,11 @@ export const translations = {
       tripHistory: "Trip History",
       help: "Help",
       privacy: "Privacy",
-      setting: "Setting",
+      settings: "Settings",
+      logOut: "Log Out",
+    },
+    setting: {
+      lang: "Language",
     },
   },
   ar: {
@@ -25,6 +30,7 @@ export const translations = {
         help: "المساعدة",
         privacy: "الخصوصية",
         settings: "الإعدادات",
+        switchLang: "تغيير اللغة",
       },
       homeTitle: "اطلب تاكسي",
     },
@@ -34,7 +40,11 @@ export const translations = {
       tripHistory: "رحلاتك السابقة",
       help: "المساعدة",
       privacy: "الخصوصية",
-      setting: "الإعدادات",
+      settings: "الإعدادات",
+      logOut: "تسجيل الخروج",
+    },
+    setting: {
+      lang: "اللغة",
     },
   },
 };
