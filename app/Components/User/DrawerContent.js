@@ -8,13 +8,15 @@ import {
   Feather,
 } from "@expo/vector-icons";
 import { colors } from "../../ReusableTools/css";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { i18nStore } from "../../MobX/I18nStore";
 
 const DrawerContent = () => {
   const [activeScreen, setActiveScreen] = useState("Map");
+  const { i18n } = i18nStore;
+  const isArabic = i18n.locale.includes("ar");
 
   const navigation = useNavigation();
-  const isFocused = useIsFocused();
 
   const menuItems = [
     {
@@ -26,7 +28,7 @@ const DrawerContent = () => {
           color={activeScreen === "Map" ? "white" : "black"}
         />
       ),
-      text: "Home",
+      text: `${i18n.t("drawerContent.home")}`,
       onPress: () => {
         navigation.navigate("Map");
         setActiveScreen("Map");
@@ -41,9 +43,9 @@ const DrawerContent = () => {
           color={activeScreen === "Payment" ? "white" : "black"}
         />
       ),
-      text: "Payment",
+      text: `${i18n.t("drawerContent.payment")}`,
       onPress: () => {
-        navigation.navigate("Payment");
+        navigation.navigate(`${i18n.t("userNav.screens.payment")}`);
         setActiveScreen("Payment");
       },
     },
@@ -58,7 +60,7 @@ const DrawerContent = () => {
           }}
         />
       ),
-      text: "Trip History",
+      text: `${i18n.t("drawerContent.tripHistory")}`,
       onPress: () => {
         navigation.navigate("Trip");
         setActiveScreen("Trip");
@@ -73,9 +75,9 @@ const DrawerContent = () => {
           color={activeScreen === "Help" ? "white" : "black"}
         />
       ),
-      text: "Help",
+      text: `${i18n.t("drawerContent.help")}`,
       onPress: () => {
-        navigation.navigate("Help");
+        navigation.navigate(`${i18n.t("userNav.screens.help")}`);
         setActiveScreen("Help");
       },
     },
@@ -90,9 +92,9 @@ const DrawerContent = () => {
           }}
         />
       ),
-      text: "Privacy",
+      text: `${i18n.t("drawerContent.privacy")}`,
       onPress: () => {
-        navigation.navigate("Privacy");
+        navigation.navigate(`${i18n.t("userNav.screens.privacy")}`);
         setActiveScreen("Privacy");
       },
     },
@@ -105,9 +107,9 @@ const DrawerContent = () => {
           color={activeScreen === "Setting" ? "white" : "black"}
         />
       ),
-      text: "Setting",
+      text: `${i18n.t("drawerContent.settings")}`,
       onPress: () => {
-        navigation.navigate("Setting");
+        navigation.navigate(`${i18n.t("userNav.screens.settings")}`);
         setActiveScreen("Setting");
       },
     },
@@ -156,9 +158,11 @@ const DrawerContent = () => {
           name="power-outline"
           size={24}
           color="white"
-          style={{ transform: [{ rotate: "90deg" }] }}
+          style={{ transform: [{ rotate: isArabic ? "-90deg" : "90deg" }] }}
         />
-        <Text className="text-white text-base ml-4">Log Out</Text>
+        <Text className="text-white text-base ml-4">{`${i18n.t(
+          "drawerContent.logOut"
+        )}`}</Text>
       </View>
     </View>
   );
