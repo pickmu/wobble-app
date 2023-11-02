@@ -13,8 +13,6 @@ import TripHistory from "./TripHistory";
 import Help from "./Help";
 import Privacy from "./Privacy";
 import Setting from "./Setting";
-import { useContext } from "react";
-import { I18nContext } from "../../Context/I18nContext";
 import SwitchLang from "./SwitchLang";
 
 const Drawer = createDrawerNavigator();
