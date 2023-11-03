@@ -1,20 +1,22 @@
 import { View, StyleSheet } from "react-native";
-import Map from "./Map";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import { colors, fonts } from "../../ReusableTools/css";
 import { Ionicons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 import { useFonts } from "expo-font";
 
-// import screens
 import DrawerContent from "../../Components/User/DrawerContent";
+import { colors, fonts } from "../../ReusableTools/css";
+
+// import screens
+import Map from "./Map";
 import Payment from "./Payment";
 import TripHistory from "./TripHistory";
 import Help from "./Help";
 import Privacy from "./Privacy";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
+import EditProfile from "./EditProfile";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -36,6 +38,7 @@ const UserNav = () => {
   const DrawersScreens = () => {
     return (
       <Drawer.Navigator
+        initialRouteName="Map"
         screenOptions={{
           headerTintColor: colors.secondary,
           headerStyle: {
@@ -75,7 +78,7 @@ const UserNav = () => {
         <Drawer.Screen
           name="Trip"
           options={{
-            headerTitle: "Trip history",
+            headerTitle: `${i18n.t("userNav.screens.tripHistory")}`,
           }}
           component={TripHistory}
         />
@@ -97,14 +100,15 @@ const UserNav = () => {
 
   return (
     <Stack.Navigator
+      initialRouteName="Drawer"
       screenOptions={{
+        headerTintColor: colors.secondary,
         headerStyle: {
           backgroundColor: colors.primary,
         },
         headerTitleStyle: {
           fontFamily: fonts.regular,
         },
-        headerTintColor: "white",
       }}
     >
       <Stack.Screen
@@ -118,6 +122,13 @@ const UserNav = () => {
           headerTitle: `${i18n.t("userNav.screens.switchLang")}`,
         }}
         component={SwitchLang}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        options={{
+          headerTitle: `${i18n.t("userNav.screens.editProfile")}`,
+        }}
+        component={EditProfile}
       />
     </Stack.Navigator>
   );
