@@ -1,11 +1,12 @@
-import { View, Text } from 'react-native'
+import { View, Text } from "react-native";
+import { fonts } from "../../ReusableTools/css";
 
 const Help = () => {
   return (
     <View>
-      <Text>Help</Text>
+      <Text>Helpy</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Help
+export default Help;

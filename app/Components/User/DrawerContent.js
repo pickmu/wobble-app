@@ -125,8 +125,8 @@ const DrawerContent = () => {
               <MaterialIcons name="edit" size={12} color="white" />
             </View>
           </View>
-          <Text>James Jakob</Text>
-          <Text>JamesJakob@gmail.com</Text>
+          <Text className="font-regular">James Jakob</Text>
+          <Text className="font-regular">JamesJakob@gmail.com</Text>
         </View>
         <View className="m-5">
           {menuItems.map((item, index) => (
@@ -140,7 +140,7 @@ const DrawerContent = () => {
                 <View className="flex-row items-center gap-5 p-2">
                   {item.icon}
                   <Text
-                    className="text-base"
+                    className="text-base font-regular"
                     style={
                       item.screenName === activeScreen && styles.activeMenuText
                     }
@@ -160,7 +160,7 @@ const DrawerContent = () => {
           color="white"
           style={{ transform: [{ rotate: isArabic ? "-90deg" : "90deg" }] }}
         />
-        <Text className="text-white text-base ml-4">{`${i18n.t(
+        <Text className="text-white text-base ml-4 font-regular">{`${i18n.t(
           "drawerContent.logOut"
         )}`}</Text>
       </View>

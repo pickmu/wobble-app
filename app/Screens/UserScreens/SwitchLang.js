@@ -25,7 +25,7 @@ const SwitchLang = () => {
                 ) : (
                   <View className="w-[26px] h-[26px]" /> // Empty view for spacing
                 )}
-                <Text className="text-lg">{language.label}</Text>
+                <Text className="text-lg font-regular">{language.label}</Text>
               </View>
             </View>
           </View>

@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 const Payment = () => {
   return (
     <View>
-      <Text>Payment</Text>
+      <Text className="font-boldText">Payment</Text>
     </View>
   );
 };

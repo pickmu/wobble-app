@@ -2,9 +2,10 @@ import { View, StyleSheet } from "react-native";
 import Map from "./Map";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
-import { colors } from "../../ReusableTools/css";
+import { colors, fonts } from "../../ReusableTools/css";
 import { Ionicons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
+import { useFonts } from "expo-font";
 
 // import screens
 import DrawerContent from "../../Components/User/DrawerContent";
@@ -19,7 +20,15 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const UserNav = () => {
-  // const { i18n } = useContext(I18nContext);
+  const [fontsLoaded] = useFonts({
+    "Agrandi-Regular": require("../../Fonts/Agrandir-Regular.otf"),
+    "Agrandi-TextBold": require("../../Fonts/Agrandir-TextBold.otf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   const { i18n } = i18nStore;
 
   if (i18n === null) return;
@@ -31,6 +40,9 @@ const UserNav = () => {
           headerTintColor: colors.secondary,
           headerStyle: {
             backgroundColor: colors.primary,
+          },
+          headerTitleStyle: {
+            fontFamily: fonts.regular,
           },
           drawerStyle: {
             borderBottomRightRadius: 20,
@@ -88,6 +100,9 @@ const UserNav = () => {
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.primary,
+        },
+        headerTitleStyle: {
+          fontFamily: fonts.regular,
         },
         headerTintColor: "white",
       }}

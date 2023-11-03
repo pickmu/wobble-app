@@ -3,4 +3,7 @@ export const colors = {
   secondary: "#DCDFE4",
 };
 
-export const fonts = {};
+export const fonts = {
+  regular: "Agrandi-Regular",
+  bold: "Agrandi-TextBold",
+};
