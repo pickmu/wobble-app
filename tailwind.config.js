@@ -9,6 +9,10 @@ module.exports = {
       colors: {
         Primary: "#212429",
       },
+      fontFamily: {
+        regular: "Agrandi-Regular",
+        boldText: "Agrandi-TextBold",
+      },
     },
   },
   plugins: [],

@@ -12,9 +12,11 @@ const Option = ({ onPress, title, subTitle }) => {
         <View className="absolute bottom-0 right-0 h-[1] w-full bg-gray-300 ml-5" />
         <View className="flex-row justify-between py-4 px-4 border-gray">
           <View className="items-center flex-row gap-4">
-            <Text className="text-base">{title}</Text>
+            <Text className="text-base font-regular">{title}</Text>
             {subTitle && (
-              <Text className="text-sm text-gray-500">{subTitle}</Text>
+              <Text className="text-sm text-gray-500 font-regular">
+                {subTitle}
+              </Text>
             )}
           </View>
           <MaterialIcons
