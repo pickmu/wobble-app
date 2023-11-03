@@ -3,10 +3,12 @@ export const translations = {
     userNav: {
       screens: {
         payment: "Payment",
+        tripHistory: "Trip History",
         help: "Help",
         privacy: "Privacy",
         settings: "Settings",
         switchLang: "Switch language",
+        editProfile: "Edit Profile",
       },
       homeTitle: "Book a Taxi",
     },
@@ -27,10 +29,12 @@ export const translations = {
     userNav: {
       screens: {
         payment: "طريقة الدفع",
+        tripHistory: "الرحلات السابقة",
         help: "المساعدة",
         privacy: "الخصوصية",
         settings: "الإعدادات",
         switchLang: "تغيير اللغة",
+        editProfile: "تعديل الملف الشخصي",
       },
       homeTitle: "اطلب تاكسي",
     },

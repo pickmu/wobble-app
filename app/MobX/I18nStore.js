@@ -22,7 +22,7 @@ class I18nStore {
   }
 
   async loadInitialLocale() {
-    const storedLang = await AsyncStorage.getItem("lang");
+    const storedLang = await AsyncStorage.getItem("pickmuLang");
     const i18nInstance = new I18n(translations);
 
     if (storedLang) {
@@ -43,7 +43,7 @@ class I18nStore {
     }
 
     if (locale.includes("ar")) {
-      await AsyncStorage.setItem("lang", "ar");
+      await AsyncStorage.setItem("pickmuLang", "ar");
       if (I18nManager.isRTL === false) {
         Updates.reloadAsync();
         I18nManager.allowRTL(true);
@@ -51,7 +51,7 @@ class I18nStore {
       }
     }
     if (locale.includes("en")) {
-      await AsyncStorage.setItem("lang", "en");
+      await AsyncStorage.setItem("pickmuLang", "en");
       if (I18nManager.isRTL === true) {
         Updates.reloadAsync();
         I18nManager.allowRTL(false);

@@ -122,7 +122,11 @@ const DrawerContent = () => {
           <View className="relative">
             <FontAwesome name="user-circle-o" size={50} color="gray" />
             <View style={styles.editIcon}>
-              <MaterialIcons name="edit" size={12} color="white" />
+              <TouchableOpacity
+                onPress={() => navigation.navigate("EditProfile")}
+              >
+                <MaterialIcons name="edit" size={12} color="white" />
+              </TouchableOpacity>
             </View>
           </View>
           <Text className="font-regular">James Jakob</Text>
