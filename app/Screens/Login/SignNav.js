@@ -19,6 +19,9 @@ const SignNav = () => {
         cardStyle: {
           backgroundColor: "white",
         },
+        headerBackTitleStyle: {
+          color: "black",
+        },
       }}
     >
       <Stack.Screen

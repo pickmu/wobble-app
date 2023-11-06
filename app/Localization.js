@@ -30,6 +30,32 @@ export const translations = {
       success: {},
     },
     signUpUser: {
+      input: {
+        first_name: {
+          label: "First Name",
+          placeholder: "Enter your first name",
+        },
+        last_name: {
+          label: "Last Name",
+          placeholder: "Enter your last name",
+        },
+        email: {
+          label: "Email",
+          placeholder: "Enter your email address",
+        },
+        phone: {
+          label: "Phone Number",
+          placeholder: "Enter your phone number",
+        },
+        password: {
+          label: "Password",
+          placeholder: "Enter your password",
+        },
+        confirm_password: {
+          label: "Confirm Password",
+          placeholder: "Confirm your password",
+        },
+      },
       error: {
         first_name: {
           empty: "Please enter your first name",
@@ -56,6 +82,13 @@ export const translations = {
           notMatch: "Passwords do not match",
         },
       },
+    },
+    signInUser: {
+      title: "Sign In",
+      text: "Log in to your existing account of Pickmup",
+      forgotPassword: "Forgot password?",
+      noAccount: "Don't have an account?",
+      signUp: "Sgin Up",
     },
   },
   ar: {
@@ -90,6 +123,32 @@ export const translations = {
       success: {},
     },
     signUpUser: {
+      input: {
+        first_name: {
+          label: "الإسم الأول",
+          placeholder: "ادخل إسمك الأول",
+        },
+        last_name: {
+          label: "الإسم الأخير",
+          placeholder: "ادخل إسمك الأخير",
+        },
+        email: {
+          label: "ألبريد الإلكتروني",
+          placeholder: "ادخل بريدك الإلكتروني",
+        },
+        phone: {
+          label: "رقم الهاتف",
+          placeholder: "ادخل رقم هاتفك",
+        },
+        password: {
+          label: "كلمة السر",
+          placeholder: "ادخل كلمة السر",
+        },
+        confirm_password: {
+          label: "تأكيد كلمة السر",
+          placeholder: "أكد كلمة السر",
+        },
+      },
       error: {
         first_name: {
           empty: "الرجاء إدخال إسمك الأول",
@@ -116,6 +175,13 @@ export const translations = {
           notMatch: "كلمة المرور غير مطابقة",
         },
       },
+    },
+    signInUser: {
+      title: "تسجيل الدخول",
+      text: "قم بتسجيل الدخول إلى حسابك الحالي في Pickmup",
+      forgotPassword: "نسيت كلمة السر؟",
+      noAccount: "ليس لديك حساب؟",
+      signUp: "اشترك",
     },
   },
 };

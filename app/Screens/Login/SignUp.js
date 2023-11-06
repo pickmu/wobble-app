@@ -5,6 +5,7 @@ import Toast from "react-native-toast-message";
 import { i18nStore } from "../../MobX/I18nStore";
 import axios from "axios";
 import { ScrollView } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const SignUp = () => {
   const { i18n } = i18nStore;
@@ -40,8 +41,8 @@ const SignUp = () => {
 
   const inputFields = [
     {
-      label: "First Name",
-      placeholder: "Enter first name",
+      label: `${i18n.t("signUpUser.input.first_name.label")}`,
+      placeholder: `${i18n.t("signUpUser.input.first_name.placeholder")}`,
       value: data.first_name,
       key: "first_name",
       error: error.first_name,
@@ -49,8 +50,8 @@ const SignUp = () => {
       onSubmitEditing: () => lastNameRef.current.focus(),
     },
     {
-      label: "Last Name",
-      placeholder: "Enter last name",
+      label: `${i18n.t("signUpUser.input.last_name.label")}`,
+      placeholder: `${i18n.t("signUpUser.input.last_name.placeholder")}`,
       value: data.last_name,
       key: "last_name",
       error: error.last_name,
@@ -58,8 +59,8 @@ const SignUp = () => {
       onSubmitEditing: () => userNameRef.current.focus(),
     },
     {
-      label: "Email",
-      placeholder: "Enter email address",
+      label: `${i18n.t("signUpUser.input.email.label")}`,
+      placeholder: `${i18n.t("signUpUser.input.email.placeholder")}`,
       value: data.email,
       key: "email",
       error: error.email,
@@ -67,8 +68,8 @@ const SignUp = () => {
       onSubmitEditing: () => phoneRef.current.focus(),
     },
     {
-      label: "Phone Number",
-      placeholder: "Enter phone number",
+      label: `${i18n.t("signUpUser.input.phone.label")}`,
+      placeholder: `${i18n.t("signUpUser.input.phone.placeholder")}`,
       value: data.phone,
       key: "phone",
       error: error.phone,
@@ -77,8 +78,8 @@ const SignUp = () => {
       onSubmitEditing: () => passwordRef.current.focus(),
     },
     {
-      label: "Password",
-      placeholder: "Enter password",
+      label: `${i18n.t("signUpUser.input.password.label")}`,
+      placeholder: `${i18n.t("signUpUser.input.password.placeholder")}`,
       secureTextEntry: true,
       value: data.password,
       key: "password",
@@ -87,8 +88,8 @@ const SignUp = () => {
       onSubmitEditing: () => confirmPasswordRef.current.focus(),
     },
     {
-      label: "Confirm Password",
-      placeholder: "Confirm your password",
+      label: `${i18n.t("signUpUser.input.confirm_password.label")}`,
+      placeholder: `${i18n.t("signUpUser.input.confirm_password.placeholder")}`,
       secureTextEntry: true,
       value: data.confirm_password,
       key: "confirm_password",
@@ -256,10 +257,11 @@ const SignUp = () => {
   };
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
       className="my-4"
-      contentContainerStyle={{ flexGrow: 1 }}
+      style={{ flex: 1 }}
       keyboardShouldPersistTaps="handled"
+      extraScrollHeight={20}
     >
       {inputFields.map((input, index) => {
         return (
@@ -279,7 +281,7 @@ const SignUp = () => {
         );
       })}
       <Button text={"Sign Up"} onPress={handleSubmit} />
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 };
 

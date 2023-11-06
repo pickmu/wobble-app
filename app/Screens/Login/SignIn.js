@@ -3,8 +3,11 @@ import { colors, fonts } from "../../ReusableTools/css";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { useFonts } from "expo-font";
 import { Button } from "../../ReusableTools/Button";
+import { i18nStore } from "../../MobX/I18nStore";
 
 const SignIn = ({ navigation }) => {
+  const { i18n } = i18nStore;
+
   const [fontsLoaded] = useFonts({
     "Agrandi-Regular": require("../../Fonts/Agrandir-Regular.otf"),
     "Agrandi-TextBold": require("../../Fonts/Agrandir-TextBold.otf"),
@@ -14,45 +17,50 @@ const SignIn = ({ navigation }) => {
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.backgroundView} />
-        <View style={styles.contentView}>
-          <View style={styles.roundedLogo}>
-            <Image
-              source={require("../../Images/logo.png")}
-              style={styles.image}
-              accessibilityLabel="Logo of your app"
-            />
-          </View>
-          <View className="my-6 items-center">
-            <Text className="font-boldText text-3xl">Sign In</Text>
-            <Text className="font-regular mt-2 text-gray-500">
-              Log in to your existing account of Pickmup
-            </Text>
-          </View>
-          <FieldsetInput
-            label={"Phone Number"}
-            placeholder={"Enter phone number"}
-            keyboardType="numeric"
+    <View style={styles.container}>
+      <View style={styles.backgroundView} />
+      <View style={styles.contentView}>
+        <View style={styles.roundedLogo}>
+          <Image
+            source={require("../../Images/logo.png")}
+            style={styles.image}
+            accessibilityLabel="Logo of your app"
           />
-          <FieldsetInput label={"Password"} placeholder={"Enter password"} />
-          <Text className="text-yellow-400 text-center my-2">
-            Forgot password?
+        </View>
+        <View className="my-6 items-center">
+          <Text className="font-boldText text-3xl">{`${i18n.t(
+            "signInUser.title"
+          )}`}</Text>
+          <Text className="font-regular mt-2 text-gray-500">
+            {`${i18n.t("signInUser.text")}`}
           </Text>
-          <Button
-            text={"Sign In"}
-            onPress={() => navigation.navigate("SignUp")}
-          />
-          <View className="absolute bottom-10 self-center flex-row gap-1">
-            <Text style="text-center">Don't have an account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-              <Text className="text-yellow-400">Sign UP</Text>
-            </TouchableOpacity>
-          </View>
+        </View>
+        <FieldsetInput
+          label={`${i18n.t("signUpUser.input.phone.label")}`}
+          placeholder={`${i18n.t("signUpUser.input.phone.placeholder")}`}
+          keyboardType="numeric"
+        />
+        <FieldsetInput
+          label={`${i18n.t("signUpUser.input.password.label")}`}
+          placeholder={`${i18n.t("signUpUser.input.password.placeholder")}`}
+        />
+        <Text className="text-yellow-400 text-center my-2">
+          Forgot password?
+        </Text>
+        <Button
+          text={"Sign In"}
+          onPress={() => navigation.navigate("SignUp")}
+        />
+        <View className="self-center pt-4 flex-row gap-1">
+          <Text style="text-center">{`${i18n.t("signInUser.noAccount")}`}</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+            <Text className="text-yellow-400">{`${i18n.t(
+              "signInUser.signUp"
+            )}`}</Text>
+          </TouchableOpacity>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
