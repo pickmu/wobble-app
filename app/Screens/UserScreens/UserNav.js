@@ -12,8 +12,6 @@ import { colors, fonts } from "../../ReusableTools/css";
 import Map from "./Map";
 import Payment from "./Payment";
 import TripHistory from "./TripHistory";
-import Help from "./Help";
-import Privacy from "./Privacy";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
 import EditProfile from "./EditProfile";
@@ -83,14 +81,6 @@ const UserNav = () => {
           component={TripHistory}
         />
         <Drawer.Screen
-          name={`${i18n.t("userNav.screens.help")}`}
-          component={Help}
-        />
-        <Drawer.Screen
-          name={`${i18n.t("userNav.screens.privacy")}`}
-          component={Privacy}
-        />
-        <Drawer.Screen
           name={`${i18n.t("userNav.screens.settings")}`}
           component={Setting}
         />
@@ -100,7 +90,7 @@ const UserNav = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName="Drawer"
+      initialRouteName={`${i18n.t("userNav.screens.back")}`}
       screenOptions={{
         headerTintColor: colors.secondary,
         headerStyle: {
@@ -112,7 +102,7 @@ const UserNav = () => {
       }}
     >
       <Stack.Screen
-        name="Drawer"
+        name={`${i18n.t("userNav.screens.back")}`}
         options={{ headerShown: false }}
         component={DrawersScreens}
       />

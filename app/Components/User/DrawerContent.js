@@ -67,38 +67,6 @@ const DrawerContent = () => {
       },
     },
     {
-      screenName: "Help",
-      icon: (
-        <Feather
-          name="help-circle"
-          size={24}
-          color={activeScreen === "Help" ? "white" : "black"}
-        />
-      ),
-      text: `${i18n.t("drawerContent.help")}`,
-      onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.help")}`);
-        setActiveScreen("Help");
-      },
-    },
-    {
-      screenName: "Privacy",
-      icon: (
-        <Image
-          source={require("../../Images/insurance.png")}
-          className="w-6 h-6"
-          style={{
-            tintColor: activeScreen === "Privacy" ? "white" : "black",
-          }}
-        />
-      ),
-      text: `${i18n.t("drawerContent.privacy")}`,
-      onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.privacy")}`);
-        setActiveScreen("Privacy");
-      },
-    },
-    {
       screenName: "Setting",
       icon: (
         <Feather
@@ -121,13 +89,13 @@ const DrawerContent = () => {
         <View className="flex-col items-center gap-2 border-b border-[#e4e4e4] pb-4">
           <View className="relative">
             <FontAwesome name="user-circle-o" size={50} color="gray" />
-            <View style={styles.editIcon}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("EditProfile")}
-              >
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              <View style={styles.editIcon}>
                 <MaterialIcons name="edit" size={12} color="white" />
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </View>
           <Text className="font-regular">James Jakob</Text>
           <Text className="font-regular">JamesJakob@gmail.com</Text>
