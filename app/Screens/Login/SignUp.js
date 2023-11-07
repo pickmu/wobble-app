@@ -16,7 +16,7 @@ const SignUp = ({ navigation }) => {
   const { i18n } = i18nStore;
   // const { i18n} = useContext(I18nContext);
 
-  const [imageData, setImageData] = useState([]);
+  const [imageData, setImageData] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [data, setData] = useState({
     first_name: "",
@@ -125,18 +125,9 @@ const SignUp = ({ navigation }) => {
       return;
     }
 
-    // Check if 4 images are already selected
-    if (imageData && imageData.length === 4) {
-      Toast.show({
-        type: "info",
-        text1: `${i18n.t("signUpOwner.handleSelectImage")}`,
-      });
-      return;
-    }
-
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      title: "Select image",
+      title: "Select an image",
       allowsMultipleSelection: true,
       quality: 1,
       selectionLimit: 1,
@@ -270,13 +261,20 @@ const SignUp = ({ navigation }) => {
         return;
       }
 
-      const requestData = {
-        first_name: data.first_name,
-        last_name: data.last_name,
-        email: data.email,
-        password: data.password,
-        phone_number: data.phone,
-      };
+      const requestData = new FormData();
+
+      requestData.append("first_name", data.first_name.trim());
+      requestData.append("last_name", data.last_name.trim());
+      requestData.append("email", data.email.trim());
+      requestData.append("phone_number", data.phone.trim());
+      requestData.append("password", data.password.trim());
+
+      if (imageData) {
+        requestData.append(`image`, {
+          uri: imageData[0].uri,
+          type: "image/jpeg",
+        });
+      }
 
       const resp = await axios.post(
         `${process.env.EXPO_PUBLIC_API_URL}user/registerUser`,
@@ -339,23 +337,22 @@ const SignUp = ({ navigation }) => {
             </View>
           </TouchableOpacity>
 
-          {imageData &&
-            imageData.map((image, index) => (
-              <View style={styles.imageContainer} key={index}>
-                <Image
-                  key={image.uri}
-                  source={{ uri: image.uri }}
-                  style={styles.image}
-                />
-                <TouchableOpacity
-                  onPress={() => setImageData(null)}
-                  style={styles.removeIconContainer}
-                  diasbled={submitting}
-                >
-                  <MaterialIcons name="clear" size={20} color="black" />
-                </TouchableOpacity>
-              </View>
-            ))}
+          {imageData && (
+            <View style={styles.imageContainer}>
+              <Image
+                key={imageData.uri}
+                source={{ uri: imageData[0].uri }}
+                style={styles.image}
+              />
+              <TouchableOpacity
+                onPress={() => setImageData(null)}
+                style={styles.removeIconContainer}
+                diasbled={submitting}
+              >
+                <MaterialIcons name="clear" size={20} color="black" />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
 
         <Button

@@ -14,7 +14,7 @@ import { authStore } from "../MobX/AuthStore";
 
 const DrawerContent = () => {
   const { i18n } = i18nStore;
-  const { logout } = authStore;
+  const { userInfo, logout } = authStore;
 
   const [activeScreen, setActiveScreen] = useState("Map");
   const isArabic = i18n.locale.includes("ar");
@@ -91,7 +91,21 @@ const DrawerContent = () => {
       <View className="w-full mt-20">
         <View className="flex-col items-center gap-2 border-b border-[#e4e4e4] pb-4">
           <View className="relative">
-            <FontAwesome name="user-circle-o" size={50} color="gray" />
+            {userInfo.image ? (
+              <View>
+                <Image
+                  source={{
+                    uri:
+                      `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}` ||
+                      imageData?.uri,
+                  }}
+                  style={styles.image}
+                />
+              </View>
+            ) : (
+              <FontAwesome name="user-circle-o" size={50} color="gray" />
+            )}
+
             <TouchableOpacity
               onPress={() => navigation.navigate("EditProfile")}
             >
@@ -100,9 +114,10 @@ const DrawerContent = () => {
               </View>
             </TouchableOpacity>
           </View>
-          <Text className="font-regular">James Jakob</Text>
-          <Text className="font-regular">JamesJakob@gmail.com</Text>
+          <Text className="font-regular">{`${userInfo?.first_name} ${userInfo?.last_name}`}</Text>
+          <Text className="font-regular">{userInfo?.email}</Text>
         </View>
+
         <View className="m-5">
           {menuItems.map((item, index) => (
             <TouchableOpacity onPress={item.onPress} key={index}>
@@ -128,6 +143,7 @@ const DrawerContent = () => {
           ))}
         </View>
       </View>
+
       <TouchableOpacity onPress={logout}>
         <View style={styles.logOut} className="flex-row  bg-Primary px-7 py-4">
           <Ionicons
@@ -170,5 +186,10 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
 });

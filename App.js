@@ -8,14 +8,24 @@ import { authStore } from "./app/MobX/AuthStore.js";
 import { observer } from "mobx-react";
 import { View, ActivityIndicator } from "react-native";
 import { colors } from "./app/ReusableTools/css.js";
+import { useFonts } from "expo-font";
 
 export default App = observer(() => {
   const { token, loading } = authStore;
+  
+  const [fontsLoaded] = useFonts({
+    "Agrandi-Regular": require("./app/Fonts/Agrandir-Regular.otf"),
+    "Agrandi-TextBold": require("./app/Fonts/Agrandir-TextBold.otf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={"large"} />
+        <ActivityIndicator size={"large"} color={colors.primaryYellow} />
       </View>
     );
   }

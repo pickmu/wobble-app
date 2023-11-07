@@ -1,11 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { colors, fonts } from "../../ReusableTools/css";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
-import { useFonts } from "expo-font";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
 import Toast from "react-native-toast-message";
-import axios from "axios";
 import { useRef, useState } from "react";
 import { authStore } from "../../MobX/AuthStore";
 
@@ -20,11 +18,6 @@ const SignIn = ({ navigation }) => {
     password: "",
   });
 
-  const [error, setError] = useState({
-    phone_number: "",
-    password: "",
-  });
-
   const passwordRef = useRef();
 
   const handleInputChange = (label, value) => {
@@ -32,20 +25,7 @@ const SignIn = ({ navigation }) => {
       ...prevData,
       [label]: value,
     }));
-
-    setError((prevErrors) => ({
-      ...prevErrors,
-      [label]: "", // Clear the error when the user starts typing again
-    }));
   };
-
-  const [fontsLoaded] = useFonts({
-    "Agrandi-Regular": require("../../Fonts/Agrandir-Regular.otf"),
-    "Agrandi-TextBold": require("../../Fonts/Agrandir-TextBold.otf"),
-  });
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const handleLogin = async () => {
     try {
@@ -112,6 +92,8 @@ const SignIn = ({ navigation }) => {
           onChangeText={(value) => handleInputChange("password", value)}
           secureTextEntry={true}
           ref={passwordRef}
+          onSubmitEditing={handleLogin}
+          returnKeyType={"done"}
         />
 
         <Text className="text-yellow-400 text-center my-2">

@@ -3,7 +3,6 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
-import { useFonts } from "expo-font";
 
 import DrawerContent from "../../Components/DrawerContent";
 import { colors, fonts } from "../../ReusableTools/css";
@@ -20,14 +19,7 @@ const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const UserNav = () => {
-  const [fontsLoaded] = useFonts({
-    "Agrandi-Regular": require("../../Fonts/Agrandir-Regular.otf"),
-    "Agrandi-TextBold": require("../../Fonts/Agrandir-TextBold.otf"),
-  });
 
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const { i18n } = i18nStore;
 
@@ -98,6 +90,9 @@ const UserNav = () => {
         },
         headerTitleStyle: {
           fontFamily: fonts.regular,
+        },
+        cardStyle: {
+          backgroundColor: "white",
         },
       }}
     >

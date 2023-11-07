@@ -28,6 +28,9 @@ export const translations = {
         submissionFailedSubTitle: "Please check the errors and try again.",
       },
       success: {},
+      info: {
+        noChanges: "No changes were made",
+      },
     },
     signNav: {
       signIn: "Sign In",
@@ -97,12 +100,19 @@ export const translations = {
     },
     signInUser: {
       title: "Sign In",
-      text: "Log in to your existing account of Pickmup",
+      text: "Log in to your existing account of Pickme up",
       forgotPassword: "Forgot password?",
       noAccount: "Don't have an account?",
       signUp: "Sgin Up",
       signIn: "Sign In",
       forgotPass: "Forgot password?",
+    },
+    editProfile: {
+      addPhoto: "Add Photo",
+      editPhoto: "Edit Photo",
+      save: "Save",
+      saving: "Saving...",
+      dataSaved: "Data saved successfully",
     },
   },
   ar: {
@@ -135,6 +145,9 @@ export const translations = {
           "الرجاء التأكد من الأخطاء وإعادة الإرسال مجدداً",
       },
       success: {},
+      info: {
+        noChanges: "لم يتم إجراء أية تغييرات",
+      },
     },
     signNav: {
       signIn: "تسجيل دخول",
@@ -204,12 +217,19 @@ export const translations = {
     },
     signInUser: {
       title: "تسجيل الدخول",
-      text: "قم بتسجيل الدخول إلى حسابك الحالي في Pickmup",
+      text: "قم بتسجيل الدخول إلى حسابك الحالي في Pickme up",
       forgotPassword: "نسيت كلمة السر؟",
       noAccount: "ليس لديك حساب؟",
       signUp: "اشترك",
       signIn: "تسجيل دخول",
       forgotPass: "نسيت كلمة السر؟",
+    },
+    editProfile: {
+      addPhoto: "أضف صورة",
+      editPhoto: "تعديل الصورة",
+      save: "تحفيظ",
+      saving: "جاري التحفيظ",
+      dataSaved: "تم تعديل المعلومات بنجاح",
     },
   },
 };

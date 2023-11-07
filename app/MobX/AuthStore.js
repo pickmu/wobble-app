@@ -49,9 +49,12 @@ class AuthStore {
 
       this.setUserToken(resp.data.token);
 
-      AsyncStorage.setItem("pickmUserInfo", JSON.stringify(resp.data.findUser));
+      await AsyncStorage.setItem(
+        "pickmUserInfo",
+        JSON.stringify(resp.data.findUser)
+      );
 
-      AsyncStorage.setItem("pickmuToken", resp.data.token);
+      await AsyncStorage.setItem("pickmuToken", resp.data.token);
 
       this.setLoading(false);
     } catch (error) {
@@ -71,7 +74,7 @@ class AuthStore {
     const token = await AsyncStorage.getItem("pickmuToken");
 
     runInAction(() => {
-      this.setUserInfo(userInfo);
+      this.setUserInfo(JSON.parse(userInfo));
       this.setUserToken(token);
     });
 
