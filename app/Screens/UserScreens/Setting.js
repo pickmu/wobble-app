@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import Option from "../../Components/User/Options.js";
+import Option from "../../Components/Options.js";
 import { i18nStore } from "../../MobX/I18nStore.js";
 import { useNavigation } from "@react-navigation/native";
 

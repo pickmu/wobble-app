@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 import { useFonts } from "expo-font";
 
-import DrawerContent from "../../Components/User/DrawerContent";
+import DrawerContent from "../../Components/DrawerContent";
 import { colors, fonts } from "../../ReusableTools/css";
 
 // import screens

@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "react-native";
 // import { I18nContext } from "../../Context/I18n";
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   const { i18n } = i18nStore;
   // const { i18n} = useContext(I18nContext);
 
@@ -283,7 +283,8 @@ const SignUp = () => {
         requestData
       );
 
-      console.log(resp);
+      navigation.navigate(`${i18n.t("signNav.signIn")}`);
+
       Toast.show({
         type: "success",
         text1: `${i18n.t("toast.error.submissionFailedTitle")}`,

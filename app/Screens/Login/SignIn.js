@@ -4,12 +4,40 @@ import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { useFonts } from "expo-font";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
-import { useContext } from "react";
-// import { I18nContext } from "../../Context/I18n";
+import Toast from "react-native-toast-message";
+import axios from "axios";
+import { useRef, useState } from "react";
+import { authStore } from "../../MobX/AuthStore";
 
 const SignIn = ({ navigation }) => {
+  const { login } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
   // const { i18n, changeLocale, locale } = useContext(I18nContext);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [data, setData] = useState({
+    phone_number: "",
+    password: "",
+  });
+
+  const [error, setError] = useState({
+    phone_number: "",
+    password: "",
+  });
+
+  const passwordRef = useRef();
+
+  const handleInputChange = (label, value) => {
+    setData((prevData) => ({
+      ...prevData,
+      [label]: value,
+    }));
+
+    setError((prevErrors) => ({
+      ...prevErrors,
+      [label]: "", // Clear the error when the user starts typing again
+    }));
+  };
 
   const [fontsLoaded] = useFonts({
     "Agrandi-Regular": require("../../Fonts/Agrandir-Regular.otf"),
@@ -18,6 +46,33 @@ const SignIn = ({ navigation }) => {
   if (!fontsLoaded) {
     return null;
   }
+
+  const handleLogin = async () => {
+    try {
+      if (!data.phone_number && !data.password) {
+        Toast.show({
+          type: "error",
+          text1: `${i18n.t("toast.error.emptyFields")}`,
+        });
+        return;
+      }
+
+      setSubmitting(true);
+
+      await login({
+        phone_number: data.phone_number,
+        password: data.password,
+      });
+
+      setSubmitting(false);
+    } catch (error) {
+      console.log("handel submit sign up error", error);
+      Toast.show({
+        type: "error",
+        text1: error.message,
+      });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -42,13 +97,21 @@ const SignIn = ({ navigation }) => {
         </View>
 
         <FieldsetInput
+          value={data.phone_number}
           label={`${i18n.t("signUpUser.input.phone.label")}`}
           placeholder={`${i18n.t("signUpUser.input.phone.placeholder")}`}
           keyboardType="numeric"
+          onChangeText={(value) => handleInputChange("phone_number", value)}
+          onSubmitEditing={() => passwordRef.current.focus()}
         />
+
         <FieldsetInput
+          value={data.password}
           label={`${i18n.t("signUpUser.input.password.label")}`}
           placeholder={`${i18n.t("signUpUser.input.password.placeholder")}`}
+          onChangeText={(value) => handleInputChange("password", value)}
+          secureTextEntry={true}
+          ref={passwordRef}
         />
 
         <Text className="text-yellow-400 text-center my-2">
@@ -56,8 +119,13 @@ const SignIn = ({ navigation }) => {
         </Text>
 
         <Button
-          text={`${i18n.t("signInUser.signIn")}`}
-          onPress={() => navigation.navigate(`${i18n.t("signNav.signUp")}`)}
+          text={
+            submitting
+              ? `${i18n.t("signUpUser.button.submitting")}`
+              : `${i18n.t("signInUser.signIn")}`
+          }
+          onPress={handleLogin}
+          disabled={submitting}
         />
 
         <View className="self-center pt-4 flex-row gap-1">
