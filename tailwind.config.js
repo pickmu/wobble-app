@@ -8,6 +8,9 @@ module.exports = {
     extend: {
       colors: {
         Primary: "#212429",
+        secondary: "#DCDFE4",
+        primaryYellow: "#ffb200",
+        secondaryYellow: "#ffd403",
       },
       fontFamily: {
         regular: "Agrandi-Regular",

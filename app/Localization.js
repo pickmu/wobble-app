@@ -29,6 +29,10 @@ export const translations = {
       },
       success: {},
     },
+    signNav: {
+      signIn: "Sign In",
+      signUp: "Sing Up",
+    },
     signUpUser: {
       input: {
         first_name: {
@@ -82,6 +86,14 @@ export const translations = {
           notMatch: "Passwords do not match",
         },
       },
+      addImage: {
+        text: "Add your profile image(optional):",
+        textButton: "Select Image",
+      },
+      button: {
+        signup: "Sign Up",
+        submitting: "Submitting...",
+      },
     },
     signInUser: {
       title: "Sign In",
@@ -89,6 +101,8 @@ export const translations = {
       forgotPassword: "Forgot password?",
       noAccount: "Don't have an account?",
       signUp: "Sgin Up",
+      signIn: "Sign In",
+      forgotPass: "Forgot password?",
     },
   },
   ar: {
@@ -121,6 +135,10 @@ export const translations = {
           "الرجاء التأكد من الأخطاء وإعادة الإرسال مجدداً",
       },
       success: {},
+    },
+    signNav: {
+      signIn: "تسجيل دخول",
+      signUp: "تسجيل حاب",
     },
     signUpUser: {
       input: {
@@ -175,6 +193,14 @@ export const translations = {
           notMatch: "كلمة المرور غير مطابقة",
         },
       },
+      addImage: {
+        text: ":أضف صورتك الشخصية(إختياري)",
+        textButton: "إختر صورة",
+      },
+      button: {
+        signup: "تسجيل حساب",
+        submitting: "جاري التسجيل...",
+      },
     },
     signInUser: {
       title: "تسجيل الدخول",
@@ -182,6 +208,8 @@ export const translations = {
       forgotPassword: "نسيت كلمة السر؟",
       noAccount: "ليس لديك حساب؟",
       signUp: "اشترك",
+      signIn: "تسجيل دخول",
+      forgotPass: "نسيت كلمة السر؟",
     },
   },
 };

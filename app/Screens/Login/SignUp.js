@@ -1,15 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import Toast from "react-native-toast-message";
 import { i18nStore } from "../../MobX/I18nStore";
 import axios from "axios";
-import { ScrollView } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { colors } from "../../ReusableTools/css";
+import * as ImagePicker from "expo-image-picker";
+import { MaterialIcons } from "@expo/vector-icons";
+import { Image } from "react-native";
+// import { I18nContext } from "../../Context/I18n";
 
 const SignUp = () => {
   const { i18n } = i18nStore;
+  // const { i18n} = useContext(I18nContext);
 
+  const [imageData, setImageData] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [data, setData] = useState({
     first_name: "",
@@ -33,7 +40,6 @@ const SignUp = () => {
 
   const firstNameRef = useRef();
   const lastNameRef = useRef();
-  const userNameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
@@ -56,7 +62,7 @@ const SignUp = () => {
       key: "last_name",
       error: error.last_name,
       ref: lastNameRef,
-      onSubmitEditing: () => userNameRef.current.focus(),
+      onSubmitEditing: () => emailRef.current.focus(),
     },
     {
       label: `${i18n.t("signUpUser.input.email.label")}`,
@@ -112,7 +118,36 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSelectImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission denied");
+      return;
+    }
+
+    // Check if 4 images are already selected
+    if (imageData && imageData.length === 4) {
+      Toast.show({
+        type: "info",
+        text1: `${i18n.t("signUpOwner.handleSelectImage")}`,
+      });
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      title: "Select image",
+      allowsMultipleSelection: true,
+      quality: 1,
+      selectionLimit: 1,
+    });
+
+    if (!result.canceled) {
+      setImageData(result.assets);
+    }
+  };
+
+  const handleSubmit = async () => {
     try {
       setSubmitting(true);
 
@@ -239,11 +274,20 @@ const SignUp = () => {
         first_name: data.first_name,
         last_name: data.last_name,
         email: data.email,
-        phone: data.phone,
         password: data.password,
+        phone_number: data.phone,
       };
 
-      const resp = axios.post("", requestData);
+      const resp = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}user/registerUser`,
+        requestData
+      );
+
+      console.log(resp);
+      Toast.show({
+        type: "success",
+        text1: `${i18n.t("toast.error.submissionFailedTitle")}`,
+      });
 
       setSubmitting(false);
     } catch (error) {
@@ -257,32 +301,98 @@ const SignUp = () => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      className="my-4"
-      style={{ flex: 1 }}
-      keyboardShouldPersistTaps="handled"
-      extraScrollHeight={20}
-    >
-      {inputFields.map((input, index) => {
-        return (
-          <FieldsetInput
-            key={index}
-            label={input.label}
-            placeholder={input.placeholder}
-            ref={input.ref}
-            value={input.value}
-            onChangeText={(value) => handleInputChange(input.key, value)}
-            secureTextEntry={input.secureTextEntry}
-            keyboardType={input.keyboardType}
-            error={input.error}
-            onSubmitEditing={input.onSubmitEditing}
-            returnKeyType={input.returnKeyType}
-          />
-        );
-      })}
-      <Button text={"Sign Up"} onPress={handleSubmit} />
-    </KeyboardAwareScrollView>
+    <>
+      <KeyboardAwareScrollView
+        className="my-4"
+        keyboardShouldPersistTaps="handled"
+        extraScrollHeight={20}
+      >
+        {inputFields.map((input, index) => {
+          return (
+            <FieldsetInput
+              key={index}
+              label={input.label}
+              placeholder={input.placeholder}
+              ref={input.ref}
+              value={input.value}
+              onChangeText={(value) => handleInputChange(input.key, value)}
+              secureTextEntry={input.secureTextEntry}
+              keyboardType={input.keyboardType}
+              error={input.error}
+              onSubmitEditing={input.onSubmitEditing}
+              returnKeyType={input.returnKeyType}
+            />
+          );
+        })}
+
+        <View className="grid grid-flow-row auto-rows-max items-center my-3 gap-3">
+          <Text className="text-base">{`${i18n.t(
+            "signUpUser.addImage.text"
+          )}`}</Text>
+
+          <TouchableOpacity onPress={handleSelectImage} diasbled={submitting}>
+            <View className="p-2" style={styles.selectButton}>
+              <Text className="text-base font-regular">{`${i18n.t(
+                "signUpUser.addImage.textButton"
+              )}`}</Text>
+            </View>
+          </TouchableOpacity>
+
+          {imageData &&
+            imageData.map((image, index) => (
+              <View style={styles.imageContainer} key={index}>
+                <Image
+                  key={image.uri}
+                  source={{ uri: image.uri }}
+                  style={styles.image}
+                />
+                <TouchableOpacity
+                  onPress={() => setImageData(null)}
+                  style={styles.removeIconContainer}
+                  diasbled={submitting}
+                >
+                  <MaterialIcons name="clear" size={20} color="black" />
+                </TouchableOpacity>
+              </View>
+            ))}
+        </View>
+
+        <Button
+          text={
+            submitting
+              ? `${i18n.t("signUpUser.button.submitting")}`
+              : `${i18n.t("signUpUser.button.signup")}`
+          }
+          onPress={handleSubmit}
+          disabled={submitting}
+        />
+      </KeyboardAwareScrollView>
+    </>
   );
 };
 
 export default SignUp;
+
+const styles = StyleSheet.create({
+  selectButton: {
+    borderRadius: 8,
+    backgroundColor: colors.secondaryYellow,
+  },
+  imageContainer: {
+    position: "relative",
+    zIndex: 1,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  removeIconContainer: {
+    position: "absolute",
+    top: 5,
+    left: 5,
+    backgroundColor: "red",
+    borderRadius: 50,
+    padding: 5,
+  },
+});

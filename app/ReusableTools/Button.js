@@ -1,15 +1,18 @@
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
-import { fonts } from "./css";
+import { colors, fonts } from "./css";
 
-export const Button = ({ text, onPress }) => {
+export const Button = ({ text, onPress, disabled }) => {
   return (
     <View style={styles.container}>
       <Pressable
         style={({ pressed }) => [pressed && styles.buttonPressed]}
         android_ripple={{ color: "#ccc" }}
         onPress={onPress}
+        disabled={disabled}
       >
-        <View style={styles.buttonContainer}>
+        <View
+          style={[styles.buttonContainer, disabled && { backgroundColor: colors.primaryYellow }]}
+        >
           <Text style={styles.text} className="uppercase">
             {text}
           </Text>
