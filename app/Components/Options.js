@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { i18nStore } from "../../MobX/I18nStore";
+import { i18nStore } from "../MobX/I18nStore";
 
 const Option = ({ onPress, title, subTitle }) => {
   const { i18n } = i18nStore;

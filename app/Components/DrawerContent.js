@@ -7,13 +7,16 @@ import {
   MaterialIcons,
   Feather,
 } from "@expo/vector-icons";
-import { colors } from "../../ReusableTools/css";
+import { colors } from "../ReusableTools/css";
 import { useNavigation } from "@react-navigation/native";
-import { i18nStore } from "../../MobX/I18nStore";
+import { i18nStore } from "../MobX/I18nStore";
+import { authStore } from "../MobX/AuthStore";
 
 const DrawerContent = () => {
-  const [activeScreen, setActiveScreen] = useState("Map");
   const { i18n } = i18nStore;
+  const { logout } = authStore;
+
+  const [activeScreen, setActiveScreen] = useState("Map");
   const isArabic = i18n.locale.includes("ar");
 
   const navigation = useNavigation();
@@ -53,7 +56,7 @@ const DrawerContent = () => {
       screenName: "Trip",
       icon: (
         <Image
-          source={require("../../Images/distance.png")}
+          source={require("../Images/distance.png")}
           className="w-6 h-6"
           style={{
             tintColor: activeScreen === "Trip" ? "white" : "black",
@@ -64,38 +67,6 @@ const DrawerContent = () => {
       onPress: () => {
         navigation.navigate("Trip");
         setActiveScreen("Trip");
-      },
-    },
-    {
-      screenName: "Help",
-      icon: (
-        <Feather
-          name="help-circle"
-          size={24}
-          color={activeScreen === "Help" ? "white" : "black"}
-        />
-      ),
-      text: `${i18n.t("drawerContent.help")}`,
-      onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.help")}`);
-        setActiveScreen("Help");
-      },
-    },
-    {
-      screenName: "Privacy",
-      icon: (
-        <Image
-          source={require("../../Images/insurance.png")}
-          className="w-6 h-6"
-          style={{
-            tintColor: activeScreen === "Privacy" ? "white" : "black",
-          }}
-        />
-      ),
-      text: `${i18n.t("drawerContent.privacy")}`,
-      onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.privacy")}`);
-        setActiveScreen("Privacy");
       },
     },
     {
@@ -121,13 +92,13 @@ const DrawerContent = () => {
         <View className="flex-col items-center gap-2 border-b border-[#e4e4e4] pb-4">
           <View className="relative">
             <FontAwesome name="user-circle-o" size={50} color="gray" />
-            <View style={styles.editIcon}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("EditProfile")}
-              >
+            <TouchableOpacity
+              onPress={() => navigation.navigate("EditProfile")}
+            >
+              <View style={styles.editIcon}>
                 <MaterialIcons name="edit" size={12} color="white" />
-              </TouchableOpacity>
-            </View>
+              </View>
+            </TouchableOpacity>
           </View>
           <Text className="font-regular">James Jakob</Text>
           <Text className="font-regular">JamesJakob@gmail.com</Text>
@@ -157,17 +128,19 @@ const DrawerContent = () => {
           ))}
         </View>
       </View>
-      <View style={styles.logOut} className="flex-row  bg-Primary px-7 py-4">
-        <Ionicons
-          name="power-outline"
-          size={24}
-          color="white"
-          style={{ transform: [{ rotate: isArabic ? "-90deg" : "90deg" }] }}
-        />
-        <Text className="text-white text-base ml-4 font-regular">{`${i18n.t(
-          "drawerContent.logOut"
-        )}`}</Text>
-      </View>
+      <TouchableOpacity onPress={logout}>
+        <View style={styles.logOut} className="flex-row  bg-Primary px-7 py-4">
+          <Ionicons
+            name="power-outline"
+            size={24}
+            color="white"
+            style={{ transform: [{ rotate: isArabic ? "-90deg" : "90deg" }] }}
+          />
+          <Text className="text-white text-base ml-4 font-regular">{`${i18n.t(
+            "drawerContent.logOut"
+          )}`}</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
