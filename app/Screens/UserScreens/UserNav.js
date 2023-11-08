@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
@@ -14,18 +14,18 @@ import TripHistory from "./TripHistory";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
 import EditProfile from "./EditProfile";
+import Notifications from "./Notifications";
+import Chat from "./Chat";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 const UserNav = () => {
-
-
   const { i18n } = i18nStore;
 
   if (i18n === null) return;
 
-  const DrawersScreens = () => {
+  const DrawersScreens = ({ navigation }) => {
     return (
       <Drawer.Navigator
         initialRouteName="Map"
@@ -51,13 +51,21 @@ const UserNav = () => {
           options={{
             headerTitle: `${i18n.t("userNav.homeTitle")}`,
             headerRight: () => (
-              <View style={styles.headerRight}>
-                <Ionicons
-                  name="notifications-outline"
-                  size={24}
-                  color={colors.secondary}
-                />
-              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(
+                    `${i18n.t("userNav.screens.notifications")}`
+                  )
+                }
+              >
+                <View style={styles.headerRight}>
+                  <Ionicons
+                    name="notifications-outline"
+                    size={24}
+                    color={colors.secondary}
+                  />
+                </View>
+              </TouchableOpacity>
             ),
           }}
         />
@@ -75,6 +83,10 @@ const UserNav = () => {
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.settings")}`}
           component={Setting}
+        />
+        <Drawer.Screen
+          name={`${i18n.t("userNav.screens.chat")}`}
+          component={Chat}
         />
       </Drawer.Navigator>
     );
@@ -114,6 +126,10 @@ const UserNav = () => {
           headerTitle: `${i18n.t("userNav.screens.editProfile")}`,
         }}
         component={EditProfile}
+      />
+      <Stack.Screen
+        name={`${i18n.t("userNav.screens.notifications")}`}
+        component={Notifications}
       />
     </Stack.Navigator>
   );
