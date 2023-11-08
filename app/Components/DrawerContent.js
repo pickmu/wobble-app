@@ -6,6 +6,7 @@ import {
   AntDesign,
   MaterialIcons,
   Feather,
+  Entypo,
 } from "@expo/vector-icons";
 import { colors } from "../ReusableTools/css";
 import { useNavigation } from "@react-navigation/native";
@@ -35,6 +36,23 @@ const DrawerContent = () => {
       onPress: () => {
         navigation.navigate("Map");
         setActiveScreen("Map");
+      },
+    },
+    {
+      screenName: "Chat",
+      icon: (
+        <Image
+          source={require("../Images/chat.png")}
+          className="w-6 h-6"
+          style={{
+            tintColor: activeScreen === "Chat" ? "white" : "black",
+          }}
+        />
+      ),
+      text: `${i18n.t("drawerContent.chat")}`,
+      onPress: () => {
+        navigation.navigate(`${i18n.t("userNav.screens.chat")}`);
+        setActiveScreen("Chat");
       },
     },
     {
