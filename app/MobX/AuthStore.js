@@ -15,11 +15,10 @@ class AuthStore {
       loading: observable,
       login: action.bound,
       isLoggedIn: action.bound,
-      setLoading: action,
-      setUserInfo: action,
-      setUserToken: action,
+      setLoading: action.bound,
+      setUserInfo: action.bound,
+      setUserToken: action.bound,
       logout: action.bound,
-      removeUserInfoImage: action.bound,
     });
 
     this.isLoggedIn();
@@ -64,6 +63,7 @@ class AuthStore {
         type: "error",
         text1: error.message,
       });
+      this.setLoading(false);
     }
   }
 
@@ -80,17 +80,6 @@ class AuthStore {
     });
 
     this.setLoading(false);
-  }
-
-  removeUserInfoImage() {
-    if (this.userInfo) {
-      console.log("removeUserInfoImage");
-      // If userInfo exists, set userInfo.image to null
-      runInAction(() => {
-        this.userInfo.image = null;
-      });
-      console.log(this.userInfo);
-    }
   }
 
   async logout() {

@@ -12,9 +12,9 @@ import axios from "axios";
 
 const EditProfile = () => {
   const { i18n } = i18nStore;
-  const { userInfo, removeUserInfoImage } = authStore;
+  const { userInfo } = authStore;
 
-  const [changesSaved, setChangesSaved] = useState(false);
+  const [imageFromBack, setImageFromBack] = useState(null);
   const [saving, setSaving] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [data, setData] = useState({
@@ -33,6 +33,12 @@ const EditProfile = () => {
     password: "",
     image: "",
   });
+
+  useEffect(() => {
+    if (userInfo?.image) {
+      setImageFromBack(userInfo.image);
+    }
+  }, []);
 
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -115,7 +121,8 @@ const EditProfile = () => {
       data.first_name === userInfo.first_name ||
       data.last_name === userInfo.last_name ||
       data.email === userInfo.email ||
-      data.phone === userInfo.phone;
+      data.phone === userInfo.phone ||
+      imageData === null;
 
     if (hasChanges) {
       return Toast.show({
@@ -214,6 +221,8 @@ const EditProfile = () => {
           uri: imageData[0].uri,
           type: "image/jpeg",
         });
+      } else if (!imageFromBack && !imageData) {
+        requestData.append(`image`, null);
       }
 
       const resp = await axios.put(
@@ -221,7 +230,6 @@ const EditProfile = () => {
         requestData
       );
 
-      setChangesSaved(true);
       setSaving(false);
       Toast.show({
         type: "success",
@@ -250,9 +258,8 @@ const EditProfile = () => {
   };
 
   const handleRemoveImage = () => {
-    removeUserInfoImage();
+    setImageFromBack(null);
     setImageData(null);
-    setChangesSaved(false);
   };
 
   return (
@@ -262,8 +269,7 @@ const EditProfile = () => {
     >
       <View className="m-4">
         <View className="flex-row items-center gap-5 mb-3">
-          {(userInfo?.image && userInfo?.image !== null) ||
-          imageData !== null ? (
+          {imageFromBack !== null || imageData !== null ? (
             <View>
               <Image
                 source={{
@@ -287,7 +293,7 @@ const EditProfile = () => {
 
           <TouchableOpacity onPress={handleSelectImage}>
             <Text className="text-lg">
-              {userInfo.image
+              {userInfo.image && imageFromBack !== null
                 ? `${i18n.t("editProfile.editPhoto")}`
                 : `${i18n.t("editProfile.addPhoto")}`}
             </Text>

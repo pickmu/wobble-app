@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import { fonts } from "./css";
 
 export const FieldsetInput = forwardRef(
   (
@@ -10,7 +11,6 @@ export const FieldsetInput = forwardRef(
       onChangeText,
       error,
       onSubmitEditing,
-      optional = false, // Default value is false
       maxLength = null, // Default value is null
       keyboardType = "default", // Default value is "default"
       secureTextEntry = false, // Default value is false
@@ -19,8 +19,6 @@ export const FieldsetInput = forwardRef(
       onKeyPress = () => {}, // Default onKeyPress handler
       editable = true, // Default value is true
       multiline = false, // Default value is false
-      onFocus = () => {}, // Default onFocus handler
-      onBlur = () => {}, // Default onBlur handler
     },
     ref
   ) => {
@@ -44,8 +42,6 @@ export const FieldsetInput = forwardRef(
             onKeyPress={onKeyPress}
             editable={editable}
             multiline={multiline}
-            onFocus={onFocus}
-            onBlur={onBlur}
             placeholderTextColor={"#ccc"}
           />
         </View>
@@ -72,13 +68,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -12,
     left: 25,
-    fontWeight: "bold",
     backgroundColor: "#FFFFFF",
     maxWidth: 150,
     textAlign: "center",
     color: "#B1B1B1",
     fontSize: 15,
     paddingHorizontal: 5,
+    fontFamily: fonts.regular,
   },
   input: {
     width: "100%",

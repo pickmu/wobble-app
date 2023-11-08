@@ -12,7 +12,7 @@ import { useFonts } from "expo-font";
 
 export default App = observer(() => {
   const { token, loading } = authStore;
-  
+
   const [fontsLoaded] = useFonts({
     "Agrandi-Regular": require("./app/Fonts/Agrandir-Regular.otf"),
     "Agrandi-TextBold": require("./app/Fonts/Agrandir-TextBold.otf"),
