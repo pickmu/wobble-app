@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 import * as ImagePicker from "expo-image-picker";
 import { authStore } from "../../MobX/AuthStore";
@@ -12,8 +12,9 @@ import axios from "axios";
 
 const EditProfile = () => {
   const { i18n } = i18nStore;
-  const { userInfo } = authStore;
+  const { userInfo, removeUserInfoImage } = authStore;
 
+  const [changesSaved, setChangesSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [data, setData] = useState({
@@ -210,7 +211,7 @@ const EditProfile = () => {
 
       if (imageData) {
         requestData.append(`image`, {
-          uri: imageData.uri,
+          uri: imageData[0].uri,
           type: "image/jpeg",
         });
       }
@@ -220,8 +221,8 @@ const EditProfile = () => {
         requestData
       );
 
+      setChangesSaved(true);
       setSaving(false);
-
       Toast.show({
         type: "success",
         text1: `${i18n.t("editProfile.dataSaved")}`,
@@ -247,8 +248,13 @@ const EditProfile = () => {
       [label]: "", // Clear the error when the user starts typing again
     }));
   };
-  console.log(`${process.env.EXPO_PUBLIC_API_URL}${userInfo?.image}`);
-  console.log(``);
+
+  const handleRemoveImage = () => {
+    removeUserInfoImage();
+    setImageData(null);
+    setChangesSaved(false);
+  };
+
   return (
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="handled"
@@ -256,16 +262,24 @@ const EditProfile = () => {
     >
       <View className="m-4">
         <View className="flex-row items-center gap-5 mb-3">
-          {userInfo?.image || imageData ? (
+          {(userInfo?.image && userInfo?.image !== null) ||
+          imageData !== null ? (
             <View>
               <Image
                 source={{
-                  uri:
-                    `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}` ||
-                    imageData?.uri,
+                  uri: !imageData
+                    ? `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}`
+                    : imageData[0]?.uri,
                 }}
                 style={styles.image}
               />
+              <TouchableOpacity
+                onPress={handleRemoveImage}
+                style={styles.removeIconContainer}
+                disabled={saving}
+              >
+                <MaterialIcons name="clear" size={20} color="black" />
+              </TouchableOpacity>
             </View>
           ) : (
             <FontAwesome name="user-circle-o" size={100} color="gray" />
@@ -320,5 +334,13 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+  },
+  removeIconContainer: {
+    position: "absolute",
+    top: 5,
+    left: 5,
+    backgroundColor: "red",
+    borderRadius: 50,
+    padding: 5,
   },
 });

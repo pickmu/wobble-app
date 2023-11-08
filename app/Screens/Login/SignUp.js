@@ -347,7 +347,7 @@ const SignUp = ({ navigation }) => {
               <TouchableOpacity
                 onPress={() => setImageData(null)}
                 style={styles.removeIconContainer}
-                diasbled={submitting}
+                disabled={submitting}
               >
                 <MaterialIcons name="clear" size={20} color="black" />
               </TouchableOpacity>

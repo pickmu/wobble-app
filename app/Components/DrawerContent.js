@@ -91,7 +91,7 @@ const DrawerContent = () => {
       <View className="w-full mt-20">
         <View className="flex-col items-center gap-2 border-b border-[#e4e4e4] pb-4">
           <View className="relative">
-            {userInfo.image ? (
+            {userInfo?.image && userInfo?.image !== null ? (
               <View>
                 <Image
                   source={{

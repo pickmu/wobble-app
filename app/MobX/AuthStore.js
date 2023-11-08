@@ -19,6 +19,7 @@ class AuthStore {
       setUserInfo: action,
       setUserToken: action,
       logout: action.bound,
+      removeUserInfoImage: action.bound,
     });
 
     this.isLoggedIn();
@@ -79,6 +80,17 @@ class AuthStore {
     });
 
     this.setLoading(false);
+  }
+
+  removeUserInfoImage() {
+    if (this.userInfo) {
+      console.log("removeUserInfoImage");
+      // If userInfo exists, set userInfo.image to null
+      runInAction(() => {
+        this.userInfo.image = null;
+      });
+      console.log(this.userInfo);
+    }
   }
 
   async logout() {
