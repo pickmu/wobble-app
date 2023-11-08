@@ -19,6 +19,7 @@ class AuthStore {
       setUserInfo: action,
       setUserToken: action,
       logout: action.bound,
+      removeUserInfoImage: action.bound,
     });
 
     this.isLoggedIn();
@@ -49,9 +50,12 @@ class AuthStore {
 
       this.setUserToken(resp.data.token);
 
-      AsyncStorage.setItem("pickmUserInfo", JSON.stringify(resp.data.findUser));
+      await AsyncStorage.setItem(
+        "pickmUserInfo",
+        JSON.stringify(resp.data.findUser)
+      );
 
-      AsyncStorage.setItem("pickmuToken", resp.data.token);
+      await AsyncStorage.setItem("pickmuToken", resp.data.token);
 
       this.setLoading(false);
     } catch (error) {
@@ -71,11 +75,22 @@ class AuthStore {
     const token = await AsyncStorage.getItem("pickmuToken");
 
     runInAction(() => {
-      this.setUserInfo(userInfo);
+      this.setUserInfo(JSON.parse(userInfo));
       this.setUserToken(token);
     });
 
     this.setLoading(false);
+  }
+
+  removeUserInfoImage() {
+    if (this.userInfo) {
+      console.log("removeUserInfoImage");
+      // If userInfo exists, set userInfo.image to null
+      runInAction(() => {
+        this.userInfo.image = null;
+      });
+      console.log(this.userInfo);
+    }
   }
 
   async logout() {

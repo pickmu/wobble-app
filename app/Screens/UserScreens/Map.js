@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import MapView from "react-native-maps";
 import LocationStore from "../../MobX/LocationStore";
 import { observer } from "mobx-react";
+import { colors } from "../../ReusableTools/css";
 
 const Map = observer(() => {
   const {
@@ -21,7 +22,8 @@ const Map = observer(() => {
     // Loading state while waiting for location data
     return (
       <View style={styles.indicator}>
-        <ActivityIndicator size={"large"} />
+        <ActivityIndicator size={"large"} color={colors.primaryYellow} />
+        <Text>Loading map...</Text>
       </View>
     );
   }
