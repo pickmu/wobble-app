@@ -72,6 +72,7 @@ const SignUp = ({ navigation }) => {
       error: error.email,
       ref: emailRef,
       onSubmitEditing: () => phoneRef.current.focus(),
+      autoCapitalize: "none",
     },
     {
       label: `${i18n.t("signUpUser.input.phone.label")}`,
@@ -273,6 +274,7 @@ const SignUp = ({ navigation }) => {
         requestData.append(`image`, {
           uri: imageData[0].uri,
           type: "image/jpeg",
+          name: `image.jpeg`,
         });
       }
 
@@ -281,11 +283,31 @@ const SignUp = ({ navigation }) => {
         requestData
       );
 
-      navigation.navigate(`${i18n.t("signNav.signIn")}`);
+      // return an error if the user entered an existing phone number
+      if (resp.status === 400) {
+        setSubmitting(false);
+
+        setError((prevErrors) => ({
+          ...prevErrors,
+          phone: `${i18n.t("signUpUser.error.phone.inUse")}`,
+        }));
+
+        Toast.show({
+          type: "error",
+          text1: `${i18n.t("toast.error.submissionFailedTitle")}`,
+          text2: `${i18n.t("toast.error.submissionFailedSubTitle")}`,
+        });
+        return;
+      }
+
+      navigation.navigate(`${i18n.t("signNav.signIn")}`, {
+        phone: data.phone,
+        password: data.password,
+      });
 
       Toast.show({
         type: "success",
-        text1: `${i18n.t("toast.error.submissionFailedTitle")}`,
+        text1: `${i18n.t("toast.success.registered")}`,
       });
 
       setSubmitting(false);
@@ -320,6 +342,7 @@ const SignUp = ({ navigation }) => {
               error={input.error}
               onSubmitEditing={input.onSubmitEditing}
               returnKeyType={input.returnKeyType}
+              autoCapitalize={input.autoCapitalize}
             />
           );
         })}

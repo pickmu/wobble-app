@@ -13,14 +13,24 @@ import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
 import Toast from "react-native-toast-message";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { authStore } from "../../MobX/AuthStore";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-const SignIn = ({ navigation }) => {
+const SignIn = ({ navigation, route }) => {
   const { login } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
   // const { i18n, changeLocale, locale } = useContext(I18nContext);
+
+  useEffect(() => {
+    // Check if there are route.params for phone and password and set them as initial values.
+    if (route.params) {
+      const { phone, password } = route.params;
+      setData({
+        phone_number: phone || "",
+        password: password || "",
+      });
+    }
+  }, [route.params]);
 
   const [submitting, setSubmitting] = useState(false);
   const [data, setData] = useState({

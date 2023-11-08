@@ -1,5 +1,6 @@
 export const translations = {
   en: {
+    cancel: "cancel",
     userNav: {
       screens: {
         back: "Back",
@@ -20,6 +21,12 @@ export const translations = {
     },
     setting: {
       lang: "Language",
+      deleteAccount: {
+        text: "Delete Account",
+        titleAlert: "Delete Account",
+        subTitleAlert: "Are you sure you want to delete the account?",
+        AlertButtons: "Delete",
+      },
     },
     toast: {
       error: {
@@ -27,7 +34,9 @@ export const translations = {
         submissionFailedTitle: "Form submission failed",
         submissionFailedSubTitle: "Please check the errors and try again.",
       },
-      success: {},
+      success: {
+        registered: "Registered successfully",
+      },
       info: {
         noChanges: "No changes were made",
       },
@@ -79,6 +88,8 @@ export const translations = {
         phone: {
           empty: "Please enter your phone number",
           invalid: "Invalid phone number",
+          inUse:
+            "This phone number is already in use. Please choose a different one.",
         },
         password: {
           emtpy: "Please enter your password",
@@ -116,6 +127,7 @@ export const translations = {
     },
   },
   ar: {
+    cancel: "إلغاء",
     userNav: {
       screens: {
         back: "الرجوع",
@@ -136,6 +148,12 @@ export const translations = {
     },
     setting: {
       lang: "اللغة",
+      deleteAccount: {
+        text: "حذف الحساب",
+        titleAlert: "حذف الحساب",
+        subTitleAlert: "هل أنت متأكد أنك تريد حذف الحساب؟",
+        AlertButtons: "حذف",
+      },
     },
     toast: {
       error: {
@@ -144,7 +162,9 @@ export const translations = {
         submissionFailedSubTitle:
           "الرجاء التأكد من الأخطاء وإعادة الإرسال مجدداً",
       },
-      success: {},
+      success: {
+        registered: "تم إنشاء الحساب",
+      },
       info: {
         noChanges: "لم يتم إجراء أية تغييرات",
       },
@@ -170,6 +190,7 @@ export const translations = {
         phone: {
           label: "رقم الهاتف",
           placeholder: "ادخل رقم هاتفك",
+          inUse: "رقم الهاتف هذا قيد الاستخدام بالفعل. الرجاء اختيار رقم آخر.",
         },
         password: {
           label: "كلمة السر",
