@@ -6,7 +6,6 @@ import {
   AntDesign,
   MaterialIcons,
   Feather,
-  Entypo,
 } from "@expo/vector-icons";
 import { colors } from "../ReusableTools/css";
 import { useNavigation } from "@react-navigation/native";
@@ -121,14 +120,14 @@ const DrawerContent = () => {
                 />
               </View>
             ) : (
-              <FontAwesome name="user-circle-o" size={50} color="gray" />
+              <FontAwesome name="user-circle-o" size={75} color="gray" />
             )}
 
             <TouchableOpacity
               onPress={() => navigation.navigate("EditProfile")}
             >
               <View style={styles.editIcon}>
-                <MaterialIcons name="edit" size={12} color="white" />
+                <MaterialIcons name="edit" size={16} color="white" />
               </View>
             </TouchableOpacity>
           </View>
@@ -197,17 +196,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     backgroundColor: colors.primary,
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    paddingLeft: 1,
+    width: 25,
+    height: 25,
+    borderRadius: 12.5,
+    paddingLeft: 2,
     overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
   },
   image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 75,
+    height: 75,
+    borderRadius: 37.5,
   },
 });
