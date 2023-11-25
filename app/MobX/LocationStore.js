@@ -11,8 +11,9 @@ class LocationStore {
     makeObservable(this, {
       locationNotGranted: observable,
       currentLocation: observable,
-      setLocationNotGranted: action,
-      setLocation: action,
+      setLocationNotGranted: action.bound,
+      setLoading: action.bound,
+      setLocation: action.bound,
       requestLocationPermissions: action.bound, // .bound to automatically bind this
     });
   }
