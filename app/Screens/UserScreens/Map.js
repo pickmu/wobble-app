@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import MapView from "react-native-maps";
 import LocationStore from "../../MobX/LocationStore";
 import { observer } from "mobx-react";
@@ -13,8 +13,7 @@ const Map = observer(() => {
     loading,
   } = LocationStore;
 
-  
-  useEffect(() => {
+  useLayoutEffect(() => {
     requestLocationPermissions();
   }, []);
 

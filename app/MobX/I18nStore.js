@@ -14,8 +14,8 @@ class I18nStore {
     makeObservable(this, {
       i18n: observable,
       locale: observable,
-      loadInitialLocale: action,
-      changeLocale: action,
+      loadInitialLocale: action.bound,
+      changeLocale: action.bound,
     });
 
     this.loadInitialLocale();

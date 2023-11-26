@@ -46,7 +46,7 @@ export const translations = {
     },
     signNav: {
       signIn: "Sign In",
-      signUp: "Sing Up",
+      signUp: "Sign Up",
     },
     signUpUser: {
       input: {
@@ -177,7 +177,7 @@ export const translations = {
     },
     signNav: {
       signIn: "تسجيل دخول",
-      signUp: "تسجيل حاب",
+      signUp: "تسجيل حساب",
     },
     signUpUser: {
       input: {
