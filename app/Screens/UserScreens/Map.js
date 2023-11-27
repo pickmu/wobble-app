@@ -1,9 +1,17 @@
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
-import { useEffect, useLayoutEffect } from "react";
-import MapView from "react-native-maps";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Dimensions,
+} from "react-native";
+import React, { useEffect, useState } from "react";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import LocationStore from "../../MobX/LocationStore";
 import { observer } from "mobx-react";
 import { colors } from "../../ReusableTools/css";
+import InputAutoComplete from "../../Components/InputAutoComplete";
+import { Entypo } from "@expo/vector-icons";
 
 const Map = observer(() => {
   const {
@@ -13,7 +21,12 @@ const Map = observer(() => {
     loading,
   } = LocationStore;
 
-  useLayoutEffect(() => {
+  const [pickup, setPickup] = useState("");
+  const [destination, setDestination] = useState("");
+
+  const { width, height } = Dimensions.get("window");
+
+  useEffect(() => {
     requestLocationPermissions();
   }, []);
 
@@ -45,27 +58,92 @@ const Map = observer(() => {
     );
   }
 
+  const inputAutoComplete = [
+    {
+      icon: <Entypo name="location-pin" size={15} color="white" />,
+      label: "Pickup",
+      placeholder: "Pick up location",
+      onPlaceSelected: () => {},
+    },
+    {
+      icon: <Entypo name="location" size={15} color="white" />,
+      label: "Destination",
+      placeholder: "Destination location",
+      onPlaceSelected: () => {},
+    },
+  ];
+
+  const ASPECT_RATIO = width / height;
+  const LATITUDE_DELTA = 0.02;
+  const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+  const INITIAL_POSITION = {
+    latitude: currentLocation.latitude,
+    longitude: currentLocation.longitude,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
+  };
+
+  const onSearchError = (error) => {
+    console.log(error);
+  };
+
+  const onPlaceSelected = (place) => {
+    console.log(place);
+  };
+
   return (
-    <MapView
-      initialRegion={{
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-        latitudeDelta: 0.002,
-        longitudeDelta: 0.002,
-      }}
-      showsUserLocation={true}
-      followsUserLocation={true}
-      className="flex-1"
-    ></MapView>
+    <View style={styles.container}>
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        initialRegion={INITIAL_POSITION}
+        showsUserLocation={true}
+        followsUserLocation={true}
+        style={styles.map}
+      ></MapView>
+      <View style={styles.searchContainer}>
+        {inputAutoComplete.map((input, index) => {
+          return (
+            <InputAutoComplete
+              key={index}
+              icon={input.icon}
+              label={input.label}
+              placeholder={input.placeholder}
+              onPlaceSelected={input.onPlaceSelected}
+            />
+          );
+        })}
+      </View>
+    </View>
   );
 });
 
 export default Map;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   indicator: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
+  searchContainer: {
+    position: "absolute",
+    width: "100%",
+    backgroundColor: colors.primary,
+    top: 0,
+    padding: 8,
+  },
+  input: {
+    borderColor: "#888",
+    borderWidth: 1,
   },
 });
