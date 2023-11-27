@@ -4,6 +4,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
@@ -92,28 +94,36 @@ const Map = observer(() => {
   };
 
   return (
-    <View style={styles.container}>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        initialRegion={INITIAL_POSITION}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        style={styles.map}
-      ></MapView>
-      <View style={styles.searchContainer}>
-        {inputAutoComplete.map((input, index) => {
-          return (
-            <InputAutoComplete
-              key={index}
-              icon={input.icon}
-              label={input.label}
-              placeholder={input.placeholder}
-              onPlaceSelected={input.onPlaceSelected}
-            />
-          );
-        })}
-      </View>
-    </View>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      enabled={false}
+    >
+      <ScrollView contentContainerStyle={{ flex: 1 }}>
+        <View style={styles.container}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            initialRegion={INITIAL_POSITION}
+            showsUserLocation={true}
+            followsUserLocation={true}
+            style={styles.map}
+          ></MapView>
+          <View style={styles.searchContainer}>
+            {inputAutoComplete.map((input, index) => {
+              return (
+                <InputAutoComplete
+                  key={index}
+                  icon={input.icon}
+                  label={input.label}
+                  placeholder={input.placeholder}
+                  onPlaceSelected={input.onPlaceSelected}
+                />
+              );
+            })}
+          </View>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 });
 
@@ -141,6 +151,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     top: 0,
     padding: 8,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
   },
   input: {
     borderColor: "#888",
