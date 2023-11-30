@@ -8,6 +8,7 @@ const InputAutoComplete = ({
   placeholder,
   onPlaceSelected,
   onSearchError,
+  value = "",
 }) => {
   return (
     <>
@@ -20,13 +21,13 @@ const InputAutoComplete = ({
         styles={{ textInput: styles.input }}
         placeholder={placeholder || ""}
         requestConfig={{ countries: ["LB"] }}
-        onPlaceSelected={onPlaceSelected}
+        onPress={(data, details) => onPlaceSelected(details)}
         onSearchError={onSearchError}
         query={{
           key: process.env.EXPO_PUBLIC_MAP_API_KEY,
           language: "en",
         }}
-        fetchDetails
+        fetchDetails={true}
       />
     </>
   );

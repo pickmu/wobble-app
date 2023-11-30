@@ -5,15 +5,16 @@ import {
   ActivityIndicator,
   Dimensions,
   KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import React, { useEffect, useState, useRef } from "react";
+import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import LocationStore from "../../MobX/LocationStore";
 import { observer } from "mobx-react";
 import { colors } from "../../ReusableTools/css";
 import InputAutoComplete from "../../Components/InputAutoComplete";
 import { Entypo } from "@expo/vector-icons";
+import MapViewDirections from "react-native-maps-directions";
+import Geocoder from "react-native-geocoding";
 
 const Map = observer(() => {
   const {
@@ -24,13 +25,56 @@ const Map = observer(() => {
   } = LocationStore;
 
   const [pickup, setPickup] = useState("");
+
+  const [pickupAddress, setPickupAddress] = useState(""); // State to store pickup address
+
   const [destination, setDestination] = useState("");
+
+  const [showDirections, setShowDirections] = useState(false);
+
+  const [distance, setDistance] = useState(0);
+
+  const [duration, setDuration] = useState(0);
+
+  const mapRef = useRef(MapView);
 
   const { width, height } = Dimensions.get("window");
 
   useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        // Check if currentLocation exists
+        if (!currentLocation) return;
+
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.latitude},${currentLocation.longitude}&key=${process.env.EXPO_PUBLIC_MAP_API_KEY}`
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch address. HTTP status ${response.status}`
+          );
+        }
+
+        const responseJson = await response.json();
+        console.log(
+          "ADDRESS GEOCODE is BACK!! => ",
+          JSON.stringify(
+            responseJson.results[0].address_components[1].long_name
+          )
+        );
+        const city = JSON.stringify(
+          responseJson.results[0].address_components[1].long_name
+        );
+      } catch (error) {
+        console.error("Error fetching address:", error);
+      }
+    };
+
     requestLocationPermissions();
-  }, []);
+
+    fetchAddress();
+  }, [currentLocation]);
 
   if (loading) {
     // Loading state while waiting for location data
@@ -65,13 +109,18 @@ const Map = observer(() => {
       icon: <Entypo name="location-pin" size={15} color="white" />,
       label: "Pickup",
       placeholder: "Pick up location",
-      onPlaceSelected: () => {},
+      onPlaceSelected: (details) => {
+        onPlaceSelected(details, "pickup");
+      },
     },
     {
       icon: <Entypo name="location" size={15} color="white" />,
       label: "Destination",
       placeholder: "Destination location",
-      onPlaceSelected: () => {},
+      onPlaceSelected: async (details) => {
+        onPlaceSelected(details, "destination");
+        traceRoute();
+      },
     },
   ];
 
@@ -85,12 +134,58 @@ const Map = observer(() => {
     longitudeDelta: LONGITUDE_DELTA,
   };
 
-  const onSearchError = (error) => {
-    console.log(error);
+  const edgePaddingValue = 70;
+
+  const edgePadding = {
+    top: edgePaddingValue,
+    right: edgePaddingValue,
+    bottom: edgePaddingValue,
+    left: edgePaddingValue,
   };
 
-  const onPlaceSelected = (place) => {
-    console.log(place);
+  // Function to fetch the pickup address from latitude and longitude
+  const fetchPickupAddress = async (latitude, longitude) => {
+    try {
+      const response = await Geocoder.from({ latitude, longitude });
+      const address = response.results[0].formatted_address;
+      setPickupAddress(address);
+    } catch (error) {
+      console.error("Error fetching pickup address:", error.message);
+    }
+  };
+
+  const moveTo = async (position) => {
+    const camera = await mapRef.current?.getCamera();
+    if (camera) {
+      camera.center = position;
+      mapRef.current?.animateCamera(camera, { duration: 1000 });
+    }
+  };
+
+  const traceRouteOnReady = (args) => {
+    if (args) {
+      setDistance(args.distance);
+      setDuration(args.duration);
+    }
+  };
+
+  const traceRoute = () => {
+    if (pickup && destination) {
+      setShowDirections(true);
+      mapRef.current?.fitToCoordinates([pickup, destination], { edgePadding });
+    }
+  };
+
+  const onPlaceSelected = (details, flag) => {
+    const set = flag === "pickup" ? setPickup : setDestination;
+
+    const position = {
+      latitude: details?.geometry.location.lat || 0,
+      longitude: details?.geometry.location.lng || 0,
+    };
+
+    set(position);
+    moveTo(position);
   };
 
   return (
@@ -99,30 +194,42 @@ const Map = observer(() => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       enabled={false}
     >
-      <ScrollView contentContainerStyle={{ flex: 1 }}>
-        <View style={styles.container}>
-          <MapView
-            provider={PROVIDER_GOOGLE}
-            initialRegion={INITIAL_POSITION}
-            showsUserLocation={true}
-            followsUserLocation={true}
-            style={styles.map}
-          ></MapView>
-          <View style={styles.searchContainer}>
-            {inputAutoComplete.map((input, index) => {
-              return (
-                <InputAutoComplete
-                  key={index}
-                  icon={input.icon}
-                  label={input.label}
-                  placeholder={input.placeholder}
-                  onPlaceSelected={input.onPlaceSelected}
-                />
-              );
-            })}
-          </View>
+      <View style={styles.container}>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          initialRegion={INITIAL_POSITION}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          style={styles.map}
+          ref={mapRef}
+        >
+          {pickup && <Marker coordinate={pickup} />}
+          {destination && <Marker coordinate={destination} />}
+          {showDirections && pickup && destination && (
+            <MapViewDirections
+              origin={pickup}
+              destination={destination}
+              apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
+              strokeColor={colors.primary}
+              strokeWidth={4}
+              onReady={traceRouteOnReady}
+            />
+          )}
+        </MapView>
+        <View style={styles.searchContainer}>
+          {inputAutoComplete.map((input, index) => {
+            return (
+              <InputAutoComplete
+                key={index}
+                icon={input.icon}
+                label={input.label}
+                placeholder={input.placeholder}
+                onPlaceSelected={input.onPlaceSelected}
+              />
+            );
+          })}
         </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 });
@@ -157,5 +264,6 @@ const styles = StyleSheet.create({
   input: {
     borderColor: "#888",
     borderWidth: 1,
+    position: "absolute",
   },
 });
