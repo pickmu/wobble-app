@@ -14,7 +14,6 @@ import { colors } from "../../ReusableTools/css";
 import InputAutoComplete from "../../Components/InputAutoComplete";
 import { Entypo } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
-import Geocoder from "react-native-geocoding";
 
 const Map = observer(() => {
   const {
@@ -57,12 +56,7 @@ const Map = observer(() => {
         }
 
         const responseJson = await response.json();
-        console.log(
-          "ADDRESS GEOCODE is BACK!! => ",
-          JSON.stringify(
-            responseJson.results[0].address_components[1].long_name
-          )
-        );
+
         const city = JSON.stringify(
           responseJson.results[0].address_components[1].long_name
         );
