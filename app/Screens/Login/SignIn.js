@@ -8,7 +8,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { colors, fonts } from "../../ReusableTools/css";
+import { colors } from "../../ReusableTools/css";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
