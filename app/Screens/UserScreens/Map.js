@@ -68,7 +68,7 @@ const Map = observer(() => {
     requestLocationPermissions();
 
     fetchAddress();
-  }, [currentLocation]);
+  }, []);
 
   if (loading) {
     // Loading state while waiting for location data
