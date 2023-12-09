@@ -9,7 +9,6 @@ import { colors, fonts } from "../../ReusableTools/css";
 
 // import screens
 import Map from "./Map";
-import Payment from "./Payment";
 import TripHistory from "./TripHistory";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
@@ -68,10 +67,6 @@ const UserNav = () => {
               </TouchableOpacity>
             ),
           }}
-        />
-        <Drawer.Screen
-          name={`${i18n.t("userNav.screens.payment")}`}
-          component={Payment}
         />
         <Drawer.Screen
           name="Trip"

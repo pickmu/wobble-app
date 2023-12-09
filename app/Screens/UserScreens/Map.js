@@ -67,7 +67,7 @@ const Map = observer(() => {
     // Handle the case where location data is not available
     return (
       <View style={styles.indicator}>
-        <ActivityIndicator size={"large"} color={"black"} />
+        <ActivityIndicator size={"large"} color={colors.primary} />
       </View>
     );
   }

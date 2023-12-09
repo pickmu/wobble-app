@@ -128,9 +128,17 @@ export const translations = {
       saving: "Saving...",
       dataSaved: "Data saved successfully",
     },
-    tripHistory:{
-      title:"My Rides"
-    }
+    tripHistory: {
+      title: "My Rides",
+      noTrips: "No trips yet",
+    },
+    tripCard: {
+      to: "to",
+      ride: {
+        completed: "Ride completed",
+        canceled: "Ride canceled",
+      },
+    },
   },
   ar: {
     cancel: "إلغاء",
@@ -261,8 +269,16 @@ export const translations = {
       saving: "جاري التحفيظ",
       dataSaved: "تم تعديل المعلومات بنجاح",
     },
-    tripHistory:{
-      title:"رحلاتي"
-    }
+    tripHistory: {
+      title: "رحلاتي",
+      noTrips: "لا رحلات بعد",
+    },
+    tripCard: {
+      to: "إلى",
+      ride: {
+        completed: "رحلة مكتملة",
+        canceled: "رحلة ملتغية",
+      },
+    },
   },
 };

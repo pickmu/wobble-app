@@ -38,38 +38,6 @@ const DrawerContent = () => {
       },
     },
     {
-      screenName: "Chat",
-      icon: (
-        <Image
-          source={require("../Images/chat.png")}
-          className="w-6 h-6"
-          style={{
-            tintColor: activeScreen === "Chat" ? "white" : "black",
-          }}
-        />
-      ),
-      text: `${i18n.t("drawerContent.chat")}`,
-      onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.chat")}`);
-        setActiveScreen("Chat");
-      },
-    },
-    {
-      screenName: "Payment",
-      icon: (
-        <MaterialIcons
-          name="payment"
-          size={24}
-          color={activeScreen === "Payment" ? "white" : "black"}
-        />
-      ),
-      text: `${i18n.t("drawerContent.payment")}`,
-      onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.payment")}`);
-        setActiveScreen("Payment");
-      },
-    },
-    {
       screenName: "Trip",
       icon: (
         <Image
