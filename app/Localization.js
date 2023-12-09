@@ -128,6 +128,9 @@ export const translations = {
       saving: "Saving...",
       dataSaved: "Data saved successfully",
     },
+    tripHistory:{
+      title:"My Rides"
+    }
   },
   ar: {
     cancel: "إلغاء",
@@ -258,5 +261,8 @@ export const translations = {
       saving: "جاري التحفيظ",
       dataSaved: "تم تعديل المعلومات بنجاح",
     },
+    tripHistory:{
+      title:"رحلاتي"
+    }
   },
 };
