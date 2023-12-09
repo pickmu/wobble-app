@@ -14,6 +14,7 @@ import { colors } from "../../ReusableTools/css";
 import InputAutoComplete from "../../Components/InputAutoComplete";
 import { Entypo } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
+import AnimatedComponent from "../../Components/AnimatedComponent";
 
 const Map = observer(() => {
   const {
@@ -23,10 +24,6 @@ const Map = observer(() => {
     loading,
   } = LocationStore;
 
-  const [pickup, setPickup] = useState("");
-
-  const [pickupAddress, setPickupAddress] = useState(""); // State to store pickup address
-
   const [destination, setDestination] = useState("");
 
   const [showDirections, setShowDirections] = useState(false);
@@ -35,40 +32,17 @@ const Map = observer(() => {
 
   const [duration, setDuration] = useState(0);
 
+  const [animateOut, setAnimateOut] = useState(false);
+
+  const [showComponent, setShowCustomComponent] = useState(false);
+
   const mapRef = useRef(MapView);
 
   const { width, height } = Dimensions.get("window");
 
   useEffect(() => {
-    const fetchAddress = async () => {
-      try {
-        // Check if currentLocation exists
-        if (!currentLocation) return;
-
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.latitude},${currentLocation.longitude}&key=${process.env.EXPO_PUBLIC_MAP_API_KEY}`
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to fetch address. HTTP status ${response.status}`
-          );
-        }
-
-        const responseJson = await response.json();
-
-        const city = JSON.stringify(
-          responseJson.results[0].address_components[1].long_name
-        );
-      } catch (error) {
-        console.error("Error fetching address:", error);
-      }
-    };
-
     requestLocationPermissions();
-
-    fetchAddress();
-  }, [currentLocation]);
+  }, []);
 
   if (loading) {
     // Loading state while waiting for location data
@@ -98,26 +72,6 @@ const Map = observer(() => {
     );
   }
 
-  const inputAutoComplete = [
-    {
-      icon: <Entypo name="location-pin" size={15} color="white" />,
-      label: "Pickup",
-      placeholder: "Pick up location",
-      onPlaceSelected: (details) => {
-        onPlaceSelected(details, "pickup");
-      },
-    },
-    {
-      icon: <Entypo name="location" size={15} color="white" />,
-      label: "Destination",
-      placeholder: "Destination location",
-      onPlaceSelected: async (details) => {
-        onPlaceSelected(details, "destination");
-        traceRoute();
-      },
-    },
-  ];
-
   const ASPECT_RATIO = width / height;
   const LATITUDE_DELTA = 0.02;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -137,17 +91,6 @@ const Map = observer(() => {
     left: edgePaddingValue,
   };
 
-  // Function to fetch the pickup address from latitude and longitude
-  const fetchPickupAddress = async (latitude, longitude) => {
-    try {
-      const response = await Geocoder.from({ latitude, longitude });
-      const address = response.results[0].formatted_address;
-      setPickupAddress(address);
-    } catch (error) {
-      console.error("Error fetching pickup address:", error.message);
-    }
-  };
-
   const moveTo = async (position) => {
     const camera = await mapRef.current?.getCamera();
     if (camera) {
@@ -164,14 +107,20 @@ const Map = observer(() => {
   };
 
   const traceRoute = () => {
-    if (pickup && destination) {
+    if (currentLocation && destination) {
       setShowDirections(true);
-      mapRef.current?.fitToCoordinates([pickup, destination], { edgePadding });
+      const userPickup = {
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+      };
+      mapRef.current?.fitToCoordinates([userPickup, destination], {
+        edgePadding,
+      });
     }
   };
 
-  const onPlaceSelected = (details, flag) => {
-    const set = flag === "pickup" ? setPickup : setDestination;
+  const onPlaceSelected = async (details, flag) => {
+    const set = flag === "destination" && setDestination;
 
     const position = {
       latitude: details?.geometry.location.lat || 0,
@@ -179,7 +128,13 @@ const Map = observer(() => {
     };
 
     set(position);
-    moveTo(position);
+    await moveTo(position);
+    handleOpenCarTypes();
+  };
+
+  const handleOpenCarTypes = () => {
+    setShowCustomComponent(true);
+    setAnimateOut(false);
   };
 
   return (
@@ -197,11 +152,11 @@ const Map = observer(() => {
           style={styles.map}
           ref={mapRef}
         >
-          {pickup && <Marker coordinate={pickup} />}
+          {destination && <Marker coordinate={INITIAL_POSITION} />}
           {destination && <Marker coordinate={destination} />}
-          {showDirections && pickup && destination && (
+          {showDirections && currentLocation && destination && (
             <MapViewDirections
-              origin={pickup}
+              origin={INITIAL_POSITION}
               destination={destination}
               apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
               strokeColor={colors.primary}
@@ -211,18 +166,20 @@ const Map = observer(() => {
           )}
         </MapView>
         <View style={styles.searchContainer}>
-          {inputAutoComplete.map((input, index) => {
-            return (
-              <InputAutoComplete
-                key={index}
-                icon={input.icon}
-                label={input.label}
-                placeholder={input.placeholder}
-                onPlaceSelected={input.onPlaceSelected}
-              />
-            );
-          })}
+          <InputAutoComplete
+            icon={<Entypo name="location" size={15} color="white" />}
+            label="Destination"
+            placeholder="Destination location"
+            onPlaceSelected={(details) => {
+              onPlaceSelected(details, "destination");
+              traceRoute();
+            }}
+          />
         </View>
+        <AnimatedComponent
+          animateOut={animateOut}
+          showComponent={showComponent}
+        />
       </View>
     </KeyboardAvoidingView>
   );
