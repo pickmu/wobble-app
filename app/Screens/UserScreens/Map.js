@@ -15,6 +15,7 @@ import InputAutoComplete from "../../Components/InputAutoComplete";
 import { Entypo } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
 import AnimatedComponent from "../../Components/AnimatedComponent";
+import useFetch from "../../ReusableTools/UseFetch";
 
 const Map = observer(() => {
   const {
@@ -35,6 +36,80 @@ const Map = observer(() => {
   const [animateOut, setAnimateOut] = useState(false);
 
   const [showComponent, setShowCustomComponent] = useState(false);
+
+  const [typeCar, setTypeCar] = useState("Bicycle");
+
+  const [nearbyDriver, setNearbyDriver] = useState([]);
+
+  const { data, isLoading } = useFetch(`driver/getDriverByTypeCar/${typeCar}`);
+
+  useEffect(() => {
+    if (currentLocation) {
+      // Filter nearby stadiums based on maximum distance (in kilometers)
+      const maxDistance = 15;
+      const nearbyDrivers = data.filter((driver) => {
+        const lat = driver?.lat;
+        const lon = driver?.long;
+        const driverLatitude = parseFloat(lat);
+        const driverLongitude = parseFloat(lon);
+        const distance = calculateDistance(
+          currentLocation?.latitude,
+          currentLocation?.longitude,
+          driverLatitude,
+          driverLongitude
+        );
+        return distance <= maxDistance;
+      });
+
+      // Sort the nearby stadiums based on distance
+      nearbyDrivers.sort((a, b) => {
+        const latitudeA = a?.lat;
+        const longitudeA = a?.long;
+
+        const latitudeB = b?.lat;
+        const longitudeB = b?.long;
+
+        const distanceA = calculateDistance(
+          currentLocation?.latitude,
+          currentLocation?.longitude,
+          latitudeA,
+          longitudeA
+        );
+        const distanceB = calculateDistance(
+          currentLocation?.latitude,
+          currentLocation?.longitude,
+          latitudeB,
+          longitudeB
+        );
+
+        return distanceA - distanceB;
+      });
+
+      setNearbyDriver(nearbyDrivers);
+    }
+  }, [currentLocation, data]);
+
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in kilometers
+
+    // Convert latitude and longitude values from degrees to radians
+    const dLat = degToRad(lat2 - lat1);
+    const dLon = degToRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(degToRad(lat1)) *
+        Math.cos(degToRad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+
+    return distance;
+  };
+
+  const degToRad = (degrees) => {
+    return degrees * (Math.PI / 180);
+  };
 
   const mapRef = useRef(MapView);
 
