@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { fonts } from "../ReusableTools/css";
+import LocationStore from "../MobX/LocationStore";
 
 const InputAutoComplete = ({
   icon,
@@ -10,6 +11,8 @@ const InputAutoComplete = ({
   onSearchError,
   value = "",
 }) => {
+  const { currentLocation } = LocationStore;
+
   return (
     <>
       <View className="flex-row gap-1 items-center my-2">
@@ -26,6 +29,8 @@ const InputAutoComplete = ({
           key: process.env.EXPO_PUBLIC_MAP_API_KEY,
           language: "en",
           components: "country:LB",
+          location: `${currentLocation.latitude},${currentLocation.longitude}`,
+          radius: 10000,
         }}
         fetchDetails={true}
       />
