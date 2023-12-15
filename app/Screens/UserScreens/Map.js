@@ -15,6 +15,7 @@ import InputAutoComplete from "../../Components/InputAutoComplete";
 import { Entypo } from "@expo/vector-icons";
 import MapViewDirections from "react-native-maps-directions";
 import AnimatedComponent from "../../Components/AnimatedComponent";
+import useFetch from "../../ReusableTools/UseFetch";
 
 const Map = observer(() => {
   const {
@@ -28,6 +29,8 @@ const Map = observer(() => {
 
   const [showDirections, setShowDirections] = useState(false);
 
+  const [isOrdered, setIsOrdered] = useState(false);
+
   const [distance, setDistance] = useState(0);
 
   const [duration, setDuration] = useState(0);
@@ -35,6 +38,82 @@ const Map = observer(() => {
   const [animateOut, setAnimateOut] = useState(false);
 
   const [showComponent, setShowCustomComponent] = useState(false);
+
+  const [typeCar, setTypeCar] = useState("Bicycle");
+
+  const [nearbyDriver, setNearbyDriver] = useState([]);
+
+  const { data, isLoading } = useFetch(
+    `location/getLocationDriverByTypeCar/${typeCar}`
+  );
+
+  useEffect(() => {
+    if (currentLocation) {
+      // Filter nearby stadiums based on maximum distance (in kilometers)
+      const maxDistance = 15;
+      const nearbyDrivers = data.filter((driver) => {
+        const lat = driver?.lat;
+        const lon = driver?.long;
+        const driverLatitude = parseFloat(lat);
+        const driverLongitude = parseFloat(lon);
+        const distance = calculateDistance(
+          currentLocation?.latitude,
+          currentLocation?.longitude,
+          driverLatitude,
+          driverLongitude
+        );
+        return distance <= maxDistance;
+      });
+
+      // Sort the nearby stadiums based on distance
+      nearbyDrivers.sort((a, b) => {
+        const latitudeA = a?.lat;
+        const longitudeA = a?.long;
+
+        const latitudeB = b?.lat;
+        const longitudeB = b?.long;
+
+        const distanceA = calculateDistance(
+          currentLocation?.latitude,
+          currentLocation?.longitude,
+          latitudeA,
+          longitudeA
+        );
+        const distanceB = calculateDistance(
+          currentLocation?.latitude,
+          currentLocation?.longitude,
+          latitudeB,
+          longitudeB
+        );
+
+        return distanceA - distanceB;
+      });
+
+      setNearbyDriver(nearbyDrivers);
+    }
+  }, [currentLocation, data]);
+
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in kilometers
+
+    // Convert latitude and longitude values from degrees to radians
+    const dLat = degToRad(lat2 - lat1);
+    const dLon = degToRad(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(degToRad(lat1)) *
+        Math.cos(degToRad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+
+    return distance;
+  };
+
+  const degToRad = (degrees) => {
+    return degrees * (Math.PI / 180);
+  };
 
   const mapRef = useRef(MapView);
 
@@ -127,7 +206,7 @@ const Map = observer(() => {
       longitude: details?.geometry.location.lng || 0,
     };
 
-    set(position);
+    await set(position);
     await moveTo(position);
     handleOpenCarTypes();
   };
@@ -164,18 +243,35 @@ const Map = observer(() => {
               onReady={traceRouteOnReady}
             />
           )}
+          {nearbyDriver.length > 0 && (
+            <Marker
+              coordinate={{
+                latitude: parseFloat(nearbyDriver[0]?.lat),
+                longitude: parseFloat(nearbyDriver[0]?.long),
+              }}
+              title="First Nearby Driver"
+              description={`Distance: ${calculateDistance(
+                currentLocation?.latitude,
+                currentLocation?.longitude,
+                parseFloat(nearbyDriver[0]?.lat),
+                parseFloat(nearbyDriver[0]?.long)
+              ).toFixed(2)} km`}
+            />
+          )}
         </MapView>
-        <View style={styles.searchContainer}>
-          <InputAutoComplete
-            icon={<Entypo name="location" size={15} color="white" />}
-            label="Destination"
-            placeholder="Destination location"
-            onPlaceSelected={(details) => {
-              onPlaceSelected(details, "destination");
-              traceRoute();
-            }}
-          />
-        </View>
+        {!isOrdered && (
+          <View style={styles.searchContainer}>
+            <InputAutoComplete
+              icon={<Entypo name="location" size={15} color="white" />}
+              label="Destination"
+              placeholder="Destination location"
+              onPlaceSelected={async (details) => {
+                await onPlaceSelected(details, "destination");
+                traceRoute();
+              }}
+            />
+          </View>
+        )}
         <AnimatedComponent
           animateOut={animateOut}
           showComponent={showComponent}
@@ -202,6 +298,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+    marginTop: 0,
   },
   searchContainer: {
     position: "absolute",
