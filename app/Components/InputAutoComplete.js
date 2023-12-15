@@ -20,12 +20,12 @@ const InputAutoComplete = ({
         apiKey={process.env.EXPO_PUBLIC_MAP_API_KEY}
         styles={{ textInput: styles.input }}
         placeholder={placeholder || ""}
-        requestConfig={{ countries: ["LB"] }}
         onPress={(data, details) => onPlaceSelected(details)}
         onSearchError={onSearchError}
         query={{
           key: process.env.EXPO_PUBLIC_MAP_API_KEY,
           language: "en",
+          components: "country:LB",
         }}
         fetchDetails={true}
       />

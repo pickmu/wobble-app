@@ -29,6 +29,8 @@ const Map = observer(() => {
 
   const [showDirections, setShowDirections] = useState(false);
 
+  const [isOrdered, setIsOrdered] = useState(false);
+
   const [distance, setDistance] = useState(0);
 
   const [duration, setDuration] = useState(0);
@@ -41,7 +43,9 @@ const Map = observer(() => {
 
   const [nearbyDriver, setNearbyDriver] = useState([]);
 
-  const { data, isLoading } = useFetch(`driver/getDriverByTypeCar/${typeCar}`);
+  const { data, isLoading } = useFetch(
+    `location/getLocationDriverByTypeCar/${typeCar}`
+  );
 
   useEffect(() => {
     if (currentLocation) {
@@ -202,7 +206,7 @@ const Map = observer(() => {
       longitude: details?.geometry.location.lng || 0,
     };
 
-    set(position);
+    await set(position);
     await moveTo(position);
     handleOpenCarTypes();
   };
@@ -239,18 +243,35 @@ const Map = observer(() => {
               onReady={traceRouteOnReady}
             />
           )}
+          {nearbyDriver.length > 0 && (
+            <Marker
+              coordinate={{
+                latitude: parseFloat(nearbyDriver[0]?.lat),
+                longitude: parseFloat(nearbyDriver[0]?.long),
+              }}
+              title="First Nearby Driver"
+              description={`Distance: ${calculateDistance(
+                currentLocation?.latitude,
+                currentLocation?.longitude,
+                parseFloat(nearbyDriver[0]?.lat),
+                parseFloat(nearbyDriver[0]?.long)
+              ).toFixed(2)} km`}
+            />
+          )}
         </MapView>
-        <View style={styles.searchContainer}>
-          <InputAutoComplete
-            icon={<Entypo name="location" size={15} color="white" />}
-            label="Destination"
-            placeholder="Destination location"
-            onPlaceSelected={(details) => {
-              onPlaceSelected(details, "destination");
-              traceRoute();
-            }}
-          />
-        </View>
+        {!isOrdered && (
+          <View style={styles.searchContainer}>
+            <InputAutoComplete
+              icon={<Entypo name="location" size={15} color="white" />}
+              label="Destination"
+              placeholder="Destination location"
+              onPlaceSelected={async (details) => {
+                await onPlaceSelected(details, "destination");
+                traceRoute();
+              }}
+            />
+          </View>
+        )}
         <AnimatedComponent
           animateOut={animateOut}
           showComponent={showComponent}
@@ -277,6 +298,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+    marginTop: 0,
   },
   searchContainer: {
     position: "absolute",
