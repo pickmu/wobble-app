@@ -1,7 +1,7 @@
 import Option from "../../Components/Options.js";
+import DeleteAccount from "../../Components/DeleteAccount.js";
 import { i18nStore } from "../../MobX/I18nStore.js";
 import { useNavigation } from "@react-navigation/native";
-import DeleteAccount from "../../Components/DeleteAccount.js";
 
 const Setting = () => {
   const { i18n } = i18nStore;

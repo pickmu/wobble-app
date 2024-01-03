@@ -1,4 +1,4 @@
-import React, { useState, useRef, useContext, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";

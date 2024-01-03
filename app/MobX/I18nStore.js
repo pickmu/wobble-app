@@ -1,10 +1,10 @@
 import { makeObservable, observable, action } from "mobx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Localization from "expo-localization";
 import { I18nManager } from "react-native";
 import { I18n } from "i18n-js";
-import * as Updates from "expo-updates";
 import { translations } from "../Localization.js";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Localization from "expo-localization";
+import * as Updates from "expo-updates";
 
 class I18nStore {
   i18n = null;

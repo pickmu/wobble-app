@@ -1,6 +1,6 @@
 import { action, makeObservable, observable, runInAction } from "mobx";
-import * as Location from "expo-location";
 import { Platform } from "react-native";
+import * as Location from "expo-location";
 
 class LocationStore {
   locationNotGranted = false;

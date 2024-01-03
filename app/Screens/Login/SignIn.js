@@ -8,18 +8,17 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
+import { useEffect, useRef, useState } from "react";
 import { colors } from "../../ReusableTools/css";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
-import Toast from "react-native-toast-message";
-import { useEffect, useRef, useState } from "react";
 import { authStore } from "../../MobX/AuthStore";
+import Toast from "react-native-toast-message";
 
 const SignIn = ({ navigation, route }) => {
   const { login } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
-  // const { i18n, changeLocale, locale } = useContext(I18nContext);
 
   useEffect(() => {
     // Check if there are route.params for phone and password and set them as initial values.

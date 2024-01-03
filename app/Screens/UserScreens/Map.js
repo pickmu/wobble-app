@@ -6,16 +6,18 @@ import {
   Dimensions,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import LocationStore from "../../MobX/LocationStore";
+import { authStore } from "../../MobX/AuthStore";
 import { observer } from "mobx-react";
 import { colors } from "../../ReusableTools/css";
-import InputAutoComplete from "../../Components/InputAutoComplete";
 import { Entypo } from "@expo/vector-icons";
+import LocationStore from "../../MobX/LocationStore";
+import InputAutoComplete from "../../Components/InputAutoComplete";
 import MapViewDirections from "react-native-maps-directions";
-import AnimatedComponent from "../../Components/AnimatedComponent";
 import useFetch from "../../ReusableTools/UseFetch";
+import axios from "axios";
+import AnimatedComponent from "../../Components/AnimatedComponent";
 
 const Map = observer(() => {
   const {
@@ -24,6 +26,8 @@ const Map = observer(() => {
     requestLocationPermissions,
     loading,
   } = LocationStore;
+
+  const { userInfo } = authStore;
 
   const [destination, setDestination] = useState("");
 
@@ -42,6 +46,8 @@ const Map = observer(() => {
   const [typeCar, setTypeCar] = useState("Bicycle");
 
   const [nearbyDriver, setNearbyDriver] = useState([]);
+
+  const [isOrderSending, setIsOrderSending] = useState(false);
 
   const { data, isLoading } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
@@ -178,6 +184,35 @@ const Map = observer(() => {
     }
   };
 
+  const handleSendOrder = async () => {
+    const requestData = {
+      user_id: userInfo?._id,
+      driver_id: nearbyDriver[0]?._id,
+      from: "Tripoli",
+      to: destination?.geoLoacation,
+      typeOfOrder: typeCar,
+      fromCoordinates: {
+        long: currentLocation?.longitude,
+        lat: currentLocation?.latitude,
+      },
+      toCoordinates: {
+        long: destination?.longitude,
+        lat: destination?.latitude,
+      },
+    };
+    try {
+      const resp = await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
+        requestData
+      );
+
+      setIsOrderSending(true);
+      console.log(resp.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const traceRouteOnReady = (args) => {
     if (args) {
       setDistance(args.distance);
@@ -186,34 +221,35 @@ const Map = observer(() => {
   };
 
   const traceRoute = () => {
-    if (currentLocation && destination) {
-      setShowDirections(true);
-      const userPickup = {
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-      };
-      mapRef.current?.fitToCoordinates([userPickup, destination], {
-        edgePadding,
-      });
-    }
-  };
-
-  const onPlaceSelected = async (details, flag) => {
-    const set = flag === "destination" && setDestination;
-
-    const position = {
-      latitude: details?.geometry.location.lat || 0,
-      longitude: details?.geometry.location.lng || 0,
+    setShowDirections(true);
+    const userPickup = {
+      latitude: currentLocation.latitude,
+      longitude: currentLocation.longitude,
     };
-
-    await set(position);
-    await moveTo(position);
-    handleOpenCarTypes();
+    console.log("userPickup", userPickup);
+    console.log("destination", destination);
+    mapRef.current?.fitToCoordinates([userPickup, destination], {
+      edgePadding,
+    });
   };
 
   const handleOpenCarTypes = () => {
     setShowCustomComponent(true);
     setAnimateOut(false);
+  };
+
+  const onPlaceSelected = async (details, flag) => {
+    const set = flag === "destination" && setDestination;
+    console.log(details);
+    const position = {
+      latitude: details?.geometry.location.lat || 0,
+      longitude: details?.geometry.location.lng || 0,
+      // geoLoacation: details?.geometry.location,
+    };
+
+    await set(position);
+    await moveTo(position);
+    handleOpenCarTypes();
   };
 
   return (
@@ -272,10 +308,10 @@ const Map = observer(() => {
             />
           </View>
         )}
-        <AnimatedComponent
+        {/* <AnimatedComponent
           animateOut={animateOut}
           showComponent={showComponent}
-        />
+        /> */}
       </View>
     </KeyboardAvoidingView>
   );

@@ -1,8 +1,8 @@
+import { I18nManager } from "react-native";
 import { createContext, useEffect, useState } from "react";
 import { translations } from "../Localization";
-import * as Localization from "expo-localization";
 import { I18n } from "i18n-js";
-import { I18nManager } from "react-native";
+import * as Localization from "expo-localization";
 import * as Updates from "expo-updates";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

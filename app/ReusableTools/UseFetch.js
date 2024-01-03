@@ -9,11 +9,15 @@ const useFetch = (url) => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+
       try {
         const res = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}${url}`);
+
         setData(res.data);
+
         setIsLoading(false);
       } catch (err) {
+        setIsLoading(false);
         setError(err);
         console.log("useFetch error: " + err.message);
       }
@@ -25,9 +29,11 @@ const useFetch = (url) => {
     setIsLoading(true);
     try {
       const res = await axios.get(`${process.env.EXPO_PUBLIC_API_URL}${url}`);
+
       setData(res.data);
     } catch (err) {
       setError(err);
+      setIsLoading(false);
     }
     setIsLoading(false);
   };

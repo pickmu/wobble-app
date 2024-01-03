@@ -2,21 +2,25 @@ import { useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
-import * as ImagePicker from "expo-image-picker";
 import { authStore } from "../../MobX/AuthStore";
 import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import * as ImagePicker from "expo-image-picker";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 
 const EditProfile = () => {
   const { i18n } = i18nStore;
+
   const { userInfo } = authStore;
 
   const [imageFromBack, setImageFromBack] = useState(null);
+
   const [saving, setSaving] = useState(false);
+  
   const [imageData, setImageData] = useState(null);
+  
   const [data, setData] = useState({
     first_name: userInfo?.first_name,
     last_name: userInfo?.last_name,
@@ -117,19 +121,19 @@ const EditProfile = () => {
   };
 
   const handleEdit = async () => {
-    const hasChanges =
-      data.first_name === userInfo.first_name ||
-      data.last_name === userInfo.last_name ||
-      data.email === userInfo.email ||
-      data.phone === userInfo.phone ||
-      imageData === null;
+    // const hasChanges =
+    //   data.first_name === userInfo.first_name ||
+    //   data.last_name === userInfo.last_name ||
+    //   data.email === userInfo.email ||
+    //   data.phone === userInfo.phone ||
+    //   imageData === null;
 
-    if (hasChanges) {
-      return Toast.show({
-        type: "info",
-        text1: `${i18n.t("toast.info.noChanges")}`,
-      });
-    }
+    // if (hasChanges) {
+    //   return Toast.show({
+    //     type: "info",
+    //     text1: `${i18n.t("toast.info.noChanges")}`,
+    //   });
+    // }
 
     const emptyFields = [];
 
@@ -211,12 +215,16 @@ const EditProfile = () => {
       const requestData = new FormData();
 
       requestData.append("first_name", data.first_name.trim());
+      
       requestData.append("last_name", data.last_name.trim());
+      
       requestData.append("email", data.email.trim());
+      
       requestData.append("phone", data.phone.trim());
+      
       requestData.append("password", data.password.trim());
 
-      if (imageData) {
+      if (imageData) {  
         requestData.append(`image`, {
           uri: imageData[0].uri,
           type: "image/jpeg",
@@ -225,7 +233,7 @@ const EditProfile = () => {
         requestData.append(`image`, null);
       }
 
-      const resp = await axios.put(
+      const resp = await axios.post(
         `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${userInfo?._id}`,
         requestData
       );
@@ -236,7 +244,7 @@ const EditProfile = () => {
         text1: `${i18n.t("editProfile.dataSaved")}`,
       });
     } catch (error) {
-      console.log("handel submit sign up error", error);
+      console.log("handel edit error", error);
       Toast.show({
         type: "error",
         text1: error.message,

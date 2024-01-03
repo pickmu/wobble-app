@@ -1,8 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
 import { colors, fonts } from "../../ReusableTools/css";
 import { i18nStore } from "../../MobX/I18nStore";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 const Stack = createStackNavigator();
 

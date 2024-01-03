@@ -4,8 +4,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 
-import DrawerContent from "../../Components/DrawerContent";
 import { colors, fonts } from "../../ReusableTools/css";
+
+import DrawerContent from "../../Components/DrawerContent";
 
 // import screens
 import Map from "./Map";
@@ -68,6 +69,7 @@ const UserNav = () => {
             ),
           }}
         />
+
         <Drawer.Screen
           name="Trip"
           options={{
@@ -75,10 +77,12 @@ const UserNav = () => {
           }}
           component={TripHistory}
         />
+
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.settings")}`}
           component={Setting}
         />
+
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.chat")}`}
           component={Chat}

@@ -1,10 +1,9 @@
-import { View, Text } from "react-native";
-import { Image } from "react-native";
+import { View, Text, Image } from "react-native";
+import { i18nStore } from "../MobX/I18nStore";
 import Car from "../Images/car.png";
 import Bus from "../Images/bus.png";
 import Moto from "../Images/moto.png";
 import Bicycle from "../Images/bicycle.png";
-import { i18nStore } from "../MobX/I18nStore";
 
 const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
   const { i18n } = i18nStore;
@@ -25,6 +24,7 @@ const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
   };
 
   const originalDateString = createdAt;
+
   const originalDate = new Date(originalDateString);
 
   const formattedDate = originalDate.toLocaleDateString("en-US", {
@@ -48,6 +48,7 @@ const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
           <Image source={checkType()} className="w-10 h-10" />
         </View>
       </View>
+
       <View className="w-3/6 p-2">
         <Text
           className="text-[15px] mb-1 w-full"
@@ -56,6 +57,7 @@ const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
         >
           {from} {`${i18n.t("tripCard.to")}`} {to}
         </Text>
+
         <Text className="text-[12px] text-gray-500">{result}</Text>
       </View>
       <View className="flex flex-col items-center justify-end w-2/6">
@@ -64,8 +66,9 @@ const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
             "tripCard.ride.canceled"
           )}`}</Text>
         )}
+
         {!status && (
-          <Text className="text-[12px] text-green-500">{`${i18n.t(
+          <Text className="text-[14px] text-green-500">{`${i18n.t(
             "tripCard.ride.completed"
           )}`}</Text>
         )}
