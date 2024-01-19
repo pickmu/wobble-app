@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import Toast from "react-native-toast-message";
 import { i18nStore } from "../../MobX/I18nStore";
@@ -10,6 +9,7 @@ import { colors } from "../../ReusableTools/css";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "react-native";
+import { ReusableInput } from "../../ReusableTools/ReusableInput";
 // import { I18nContext } from "../../Context/I18n";
 
 const SignUp = ({ navigation }) => {
@@ -324,13 +324,20 @@ const SignUp = ({ navigation }) => {
   return (
     <>
       <KeyboardAwareScrollView
-        className="my-4"
         keyboardShouldPersistTaps="handled"
         extraScrollHeight={20}
       >
+        <View className="bg-white p-2 w-[120px] h-[120px] mb-5 self-center rounded-full mt-4">
+          <Image
+            source={require("../../Images/Icons/129881051-open-bank-account-concept-icon-savings-idea-thin-line-illustration-striking-deal-signing-agreement.png")}
+            style={styles.imageLogo}
+            accessibilityLabel="image access"
+          />
+        </View>
+
         {inputFields.map((input, index) => {
           return (
-            <FieldsetInput
+            <ReusableInput
               key={index}
               label={input.label}
               placeholder={input.placeholder}
@@ -348,13 +355,13 @@ const SignUp = ({ navigation }) => {
         })}
 
         <View className="grid grid-flow-row auto-rows-max items-center my-3 gap-3">
-          <Text className="text-base">{`${i18n.t(
+          <Text className="text-[18px] text-white font-regular">{`${i18n.t(
             "signUpUser.addImage.text"
           )}`}</Text>
 
           <TouchableOpacity onPress={handleSelectImage} diasbled={submitting}>
             <View className="p-2" style={styles.selectButton}>
-              <Text className="text-base font-regular">{`${i18n.t(
+              <Text className="text-base font-regular text-white">{`${i18n.t(
                 "signUpUser.addImage.textButton"
               )}`}</Text>
             </View>
@@ -387,6 +394,8 @@ const SignUp = ({ navigation }) => {
           onPress={handleSubmit}
           disabled={submitting}
         />
+
+        <View className="mb-2" />
       </KeyboardAwareScrollView>
     </>
   );
@@ -396,8 +405,8 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   selectButton: {
-    borderRadius: 8,
-    backgroundColor: colors.secondaryYellow,
+    borderRadius: 10,
+    backgroundColor: colors.accent,
   },
   imageContainer: {
     position: "relative",
@@ -415,5 +424,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#Fa8072",
     borderRadius: 50,
     padding: 5,
+  },
+  imageLogo: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain",
   },
 });

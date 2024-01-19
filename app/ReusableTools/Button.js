@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
 import { colors, fonts } from "./css";
 
-export const Button = ({ text, onPress, disabled }) => {
+export const Button = ({ text, onPress, disabled, isTransparent }) => {
   return (
     <View style={styles.container}>
       <Pressable
@@ -11,11 +11,13 @@ export const Button = ({ text, onPress, disabled }) => {
         disabled={disabled}
       >
         <View
-          style={[styles.buttonContainer, disabled && { backgroundColor: colors.primaryYellow }]}
+          style={[
+            styles.buttonContainer,
+            disabled && { backgroundColor: colors.accent },
+            isTransparent && styles.transparent,
+          ]}
         >
-          <Text style={styles.text} className="uppercase">
-            {text}
-          </Text>
+          <Text style={styles.text}>{text}</Text>
         </View>
       </Pressable>
     </View>
@@ -26,27 +28,27 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 40,
     marginVertical: 10,
-    elevation: 3,
-    shadowColor: "black",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 5,
-    overflow: Platform.OS === "android" ? "hidden" : "visible",
-    borderRadius: Platform.OS === "android" ? 100 : 0,
+    borderRadius: 15,
   },
   buttonContainer: {
-    backgroundColor: "#ffd403",
+    backgroundColor: colors.accent,
     paddingHorizontal: 40,
-    paddingVertical: 15,
+    paddingVertical: 20,
     alignItems: "center",
-    borderRadius: Platform.OS === "ios" ? 100 : 0,
+    borderRadius: 15,
   },
   text: {
-    color: "black",
+    color: "white",
     fontFamily: fonts.regular,
-    fontSize: 16,
+    fontSize: 20,
   },
   buttonPressed: {
     opacity: 0.7,
+  },
+  transparent: {
+    backgroundColor: "transparent",
+    borderColor: "white",
+    borderWidth: 1,
+    borderColor: "white",
   },
 });

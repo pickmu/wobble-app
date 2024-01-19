@@ -14,15 +14,15 @@ const SignNav = () => {
       initialRouteName={`${i18n.t("signNav.signIn")}`}
       screenOptions={{
         headerStyle: {
-          backgroundColor: colors.secondaryYellow,
+          backgroundColor: colors.primary,
         },
         headerTitleStyle: {
           fontFamily: fonts.regular,
         },
         cardStyle: {
-          backgroundColor: "white",
+          backgroundColor: colors.primary,
         },
-        headerTintColor: "black",
+        headerTintColor: "white",
       }}
     >
       <Stack.Screen
@@ -30,6 +30,7 @@ const SignNav = () => {
         component={SignIn}
         options={{ headerShown: false }}
       />
+
       <Stack.Screen
         name={`${i18n.t("signNav.signUp")}`}
         component={SignUp}

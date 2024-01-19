@@ -38,20 +38,20 @@ const DrawerContent = () => {
       },
     },
     {
-      screenName: "Trip",
+      screenName: `Rides`,
       icon: (
         <Image
           source={require("../Images/distance.png")}
           className="w-6 h-6"
           style={{
-            tintColor: activeScreen === "Trip" ? "white" : "black",
+            tintColor: activeScreen === `Rides` ? "white" : "black",
           }}
         />
       ),
-      text: `${i18n.t("drawerContent.tripHistory")}`,
+      text: `${i18n.t("drawerContent.rides")}`,
       onPress: () => {
-        navigation.navigate("Trip");
-        setActiveScreen("Trip");
+        navigation.navigate(`${i18n.t("userNav.rides")}`);
+        setActiveScreen("Rides");
       },
     },
     {
@@ -88,7 +88,7 @@ const DrawerContent = () => {
                 />
               </View>
             ) : (
-              <FontAwesome name="user-circle-o" size={75} color="gray" />
+              <FontAwesome name="Nav.rides-circle-o" size={75} color="gray" />
             )}
 
             <TouchableOpacity
@@ -100,6 +100,7 @@ const DrawerContent = () => {
             </TouchableOpacity>
           </View>
           <Text className="font-regular">{`${userInfo?.first_name} ${userInfo?.last_name}`}</Text>
+
           <Text className="font-regular">{userInfo?.email}</Text>
         </View>
 
@@ -114,6 +115,7 @@ const DrawerContent = () => {
               >
                 <View className="flex-row items-center gap-5 p-2">
                   {item.icon}
+
                   <Text
                     className="text-base font-regular"
                     style={

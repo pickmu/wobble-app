@@ -10,7 +10,7 @@ import DrawerContent from "../../Components/DrawerContent";
 
 // import screens
 import Map from "./Map";
-import TripHistory from "./TripHistory";
+import Rides from "./Rides";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
 import EditProfile from "./EditProfile";
@@ -70,13 +70,7 @@ const UserNav = () => {
           }}
         />
 
-        <Drawer.Screen
-          name="Trip"
-          options={{
-            headerTitle: `${i18n.t("userNav.screens.tripHistory")}`,
-          }}
-          component={TripHistory}
-        />
+        <Drawer.Screen name={i18n.t("userNav.rides")} component={Rides} />
 
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.settings")}`}

@@ -3,12 +3,12 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 import { authStore } from "../../MobX/AuthStore";
-import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
 import { Button } from "../../ReusableTools/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import * as ImagePicker from "expo-image-picker";
 import Toast from "react-native-toast-message";
 import axios from "axios";
+import { ReusableInput } from "../../ReusableTools/ReusableInput";
 
 const EditProfile = () => {
   const { i18n } = i18nStore;
@@ -18,9 +18,9 @@ const EditProfile = () => {
   const [imageFromBack, setImageFromBack] = useState(null);
 
   const [saving, setSaving] = useState(false);
-  
+
   const [imageData, setImageData] = useState(null);
-  
+
   const [data, setData] = useState({
     first_name: userInfo?.first_name,
     last_name: userInfo?.last_name,
@@ -215,16 +215,16 @@ const EditProfile = () => {
       const requestData = new FormData();
 
       requestData.append("first_name", data.first_name.trim());
-      
+
       requestData.append("last_name", data.last_name.trim());
-      
+
       requestData.append("email", data.email.trim());
-      
+
       requestData.append("phone", data.phone.trim());
-      
+
       requestData.append("password", data.password.trim());
 
-      if (imageData) {  
+      if (imageData) {
         requestData.append(`image`, {
           uri: imageData[0].uri,
           type: "image/jpeg",
@@ -311,7 +311,7 @@ const EditProfile = () => {
         <View className="">
           {inputFields.map((input, index) => {
             return (
-              <FieldsetInput
+              <ReusableInput
                 key={index}
                 label={input.label}
                 placeholder={input.placeholder}

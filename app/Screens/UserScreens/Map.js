@@ -189,7 +189,7 @@ const Map = observer(() => {
       user_id: userInfo?._id,
       driver_id: nearbyDriver[0]?._id,
       from: "Tripoli",
-      to: destination?.geoLoacation,
+      to: destination?.name,
       typeOfOrder: typeCar,
       fromCoordinates: {
         long: currentLocation?.longitude,
@@ -200,14 +200,16 @@ const Map = observer(() => {
         lat: destination?.latitude,
       },
     };
+
     try {
-      const resp = await axios.post(
+      await axios.post(
         `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
         requestData
       );
 
       setIsOrderSending(true);
-      console.log(resp.data);
+
+      setIsOrdered(true);
     } catch (error) {
       console.log(error.message);
     }
@@ -240,15 +242,17 @@ const Map = observer(() => {
 
   const onPlaceSelected = async (details, flag) => {
     const set = flag === "destination" && setDestination;
-    console.log(details);
+
     const position = {
       latitude: details?.geometry.location.lat || 0,
       longitude: details?.geometry.location.lng || 0,
-      // geoLoacation: details?.geometry.location,
+      name: details?.name,
     };
 
     await set(position);
+
     await moveTo(position);
+    handleSendOrder();
     handleOpenCarTypes();
   };
 
@@ -268,7 +272,9 @@ const Map = observer(() => {
           ref={mapRef}
         >
           {destination && <Marker coordinate={INITIAL_POSITION} />}
+
           {destination && <Marker coordinate={destination} />}
+
           {showDirections && currentLocation && destination && (
             <MapViewDirections
               origin={INITIAL_POSITION}
@@ -279,6 +285,7 @@ const Map = observer(() => {
               onReady={traceRouteOnReady}
             />
           )}
+
           {nearbyDriver.length > 0 && (
             <Marker
               coordinate={{
