@@ -10,6 +10,7 @@ module.exports = {
         Primary: "#3886EF",
         secondary: "#E0EDEF",
         accent: "#262262",
+        lightBlue: "#E0EDFE",
       },
       fontFamily: {
         regular: "Agrandi-Regular",

@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Dimensions,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
@@ -18,6 +19,9 @@ import MapViewDirections from "react-native-maps-directions";
 import useFetch from "../../ReusableTools/UseFetch";
 import axios from "axios";
 import AnimatedComponent from "../../Components/AnimatedComponent";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const Map = observer(() => {
   const {
@@ -28,6 +32,8 @@ const Map = observer(() => {
   } = LocationStore;
 
   const { userInfo } = authStore;
+
+  const navigation = useNavigation();
 
   const [destination, setDestination] = useState("");
 
@@ -257,52 +263,64 @@ const Map = observer(() => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      enabled={false}
-    >
-      <View style={styles.container}>
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          initialRegion={INITIAL_POSITION}
-          showsUserLocation={true}
-          followsUserLocation={true}
-          style={styles.map}
-          ref={mapRef}
-        >
-          {destination && <Marker coordinate={INITIAL_POSITION} />}
+    <>
+      <SafeAreaView className="bg-white" />
+      <StatusBar style="dark" />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled={false}
+      >
+        <View style={styles.container}>
+          <TouchableOpacity
+            className="absolute top-[2%] left-[2%] z-10 bg-lightBlue p-3 rounded-full"
+            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          >
+            <View>
+              <Entypo name="menu" size={24} color="black" />
+            </View>
+          </TouchableOpacity>
 
-          {destination && <Marker coordinate={destination} />}
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            initialRegion={INITIAL_POSITION}
+            showsUserLocation={true}
+            followsUserLocation={true}
+            style={styles.map}
+            ref={mapRef}
+          >
+            {destination && <Marker coordinate={INITIAL_POSITION} />}
 
-          {showDirections && currentLocation && destination && (
-            <MapViewDirections
-              origin={INITIAL_POSITION}
-              destination={destination}
-              apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
-              strokeColor={colors.primary}
-              strokeWidth={4}
-              onReady={traceRouteOnReady}
-            />
-          )}
+            {destination && <Marker coordinate={destination} />}
 
-          {nearbyDriver.length > 0 && (
-            <Marker
-              coordinate={{
-                latitude: parseFloat(nearbyDriver[0]?.lat),
-                longitude: parseFloat(nearbyDriver[0]?.long),
-              }}
-              title="First Nearby Driver"
-              description={`Distance: ${calculateDistance(
-                currentLocation?.latitude,
-                currentLocation?.longitude,
-                parseFloat(nearbyDriver[0]?.lat),
-                parseFloat(nearbyDriver[0]?.long)
-              ).toFixed(2)} km`}
-            />
-          )}
-        </MapView>
-        {!isOrdered && (
+            {showDirections && currentLocation && destination && (
+              <MapViewDirections
+                origin={INITIAL_POSITION}
+                destination={destination}
+                apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
+                strokeColor={colors.primary}
+                strokeWidth={4}
+                onReady={traceRouteOnReady}
+              />
+            )}
+
+            {nearbyDriver.length > 0 && (
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(nearbyDriver[0]?.lat),
+                  longitude: parseFloat(nearbyDriver[0]?.long),
+                }}
+                title="First Nearby Driver"
+                description={`Distance: ${calculateDistance(
+                  currentLocation?.latitude,
+                  currentLocation?.longitude,
+                  parseFloat(nearbyDriver[0]?.lat),
+                  parseFloat(nearbyDriver[0]?.long)
+                ).toFixed(2)} km`}
+              />
+            )}
+          </MapView>
+          {/* {!isOrdered && (
           <View style={styles.searchContainer}>
             <InputAutoComplete
               icon={<Entypo name="location" size={15} color="white" />}
@@ -314,13 +332,14 @@ const Map = observer(() => {
               }}
             />
           </View>
-        )}
-        {/* <AnimatedComponent
+        )} */}
+          {/* <AnimatedComponent
           animateOut={animateOut}
           showComponent={showComponent}
         /> */}
-      </View>
-    </KeyboardAvoidingView>
+        </View>
+      </KeyboardAvoidingView>
+    </>
   );
 });
 
@@ -329,7 +348,6 @@ export default Map;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -340,7 +358,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
+    height: "100%",
     marginTop: 0,
   },
   searchContainer: {

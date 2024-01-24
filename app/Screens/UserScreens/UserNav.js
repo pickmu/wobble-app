@@ -69,6 +69,7 @@ const UserNav = () => {
                 </View>
               </TouchableOpacity>
             ),
+            header: () => null,
           }}
         />
 
