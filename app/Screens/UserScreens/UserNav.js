@@ -16,6 +16,7 @@ import SwitchLang from "./SwitchLang";
 import EditProfile from "./EditProfile";
 import Notifications from "./Notifications";
 import Chat from "./Chat";
+import HeaderTitle from "../../ReusableTools/HeaderTitle";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -29,7 +30,7 @@ const UserNav = () => {
     return (
       <Drawer.Navigator
         initialRouteName="Map"
-        screenOptions={{
+        screenOptions={({ route }) => ({
           headerTintColor: colors.secondary,
           headerStyle: {
             backgroundColor: colors.primary,
@@ -43,8 +44,8 @@ const UserNav = () => {
             backgroundColor: "#E3E5EB",
           },
           drawerActiveBackgroundColor: colors.primary,
-          // header: () => null,
-        }}
+          header: () => <HeaderTitle title={route.name} isDrawer={true} />,
+        })}
         drawerContent={() => <DrawerContent />}
       >
         <Drawer.Screen
@@ -69,6 +70,7 @@ const UserNav = () => {
                 </View>
               </TouchableOpacity>
             ),
+            header: () => null,
           }}
         />
 
@@ -93,7 +95,7 @@ const UserNav = () => {
   return (
     <Stack.Navigator
       initialRouteName={`${i18n.t("userNav.screens.back")}`}
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerTintColor: colors.secondary,
         headerStyle: {
           backgroundColor: colors.primary,
@@ -104,7 +106,10 @@ const UserNav = () => {
         cardStyle: {
           backgroundColor: "white",
         },
-      }}
+        header: () => (
+          <HeaderTitle title={route.params?.headerTitle || route.name} />
+        ),
+      })}
     >
       <Stack.Screen
         name={`${i18n.t("userNav.screens.back")}`}
@@ -113,18 +118,12 @@ const UserNav = () => {
       />
 
       <Stack.Screen
-        name="switchLang"
-        options={{
-          headerTitle: `${i18n.t("userNav.screens.switchLang")}`,
-        }}
+        name={i18n.t("userNav.screens.switchLang")}
         component={SwitchLang}
       />
 
       <Stack.Screen
-        name="EditProfile"
-        options={{
-          headerTitle: `${i18n.t("userNav.screens.editProfile")}`,
-        }}
+        name={`${i18n.t("userNav.screens.editProfile")}`}
         component={EditProfile}
       />
 

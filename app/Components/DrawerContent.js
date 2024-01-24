@@ -70,7 +70,7 @@ const DrawerContent = () => {
       <View className="w-full mt-20">
         <View
           className="flex-col items-start gap-2 border-b border-[#e4e4e4] pb-4"
-          style={styles.borderBottom} 
+          style={styles.borderBottom}
         >
           <View className="flex-row items-center rounded-full">
             {userInfo?.image && userInfo?.image !== null ? (
@@ -100,7 +100,11 @@ const DrawerContent = () => {
               <Text className="font-regular">{`${userInfo?.first_name} ${userInfo?.last_name}`}</Text>
 
               <TouchableOpacity
-                onPress={() => navigation.navigate(`EditProfile`)}
+                onPress={() =>
+                  navigation.navigate(
+                    `${i18n.t("userNav.screens.editProfile")}`
+                  )
+                }
               >
                 <Text className="text-Primary">View Profile</Text>
               </TouchableOpacity>
