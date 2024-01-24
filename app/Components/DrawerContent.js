@@ -1,23 +1,17 @@
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {
-  Ionicons,
-  FontAwesome,
-  AntDesign,
-  MaterialIcons,
-  Feather,
-} from "@expo/vector-icons";
+import { Ionicons, AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../ReusableTools/css";
 import { useNavigation } from "@react-navigation/native";
 import { i18nStore } from "../MobX/I18nStore";
 import { authStore } from "../MobX/AuthStore";
+import profile from "../Images/Icons/profilee.png";
 
 const DrawerContent = () => {
   const { i18n } = i18nStore;
   const { userInfo, logout } = authStore;
 
   const [activeScreen, setActiveScreen] = useState("Map");
-  const isArabic = i18n.locale.includes("ar");
 
   const navigation = useNavigation();
 
@@ -28,7 +22,7 @@ const DrawerContent = () => {
         <AntDesign
           name="home"
           size={24}
-          color={activeScreen === "Map" ? "white" : "black"}
+          color={activeScreen === "Map" ? "white" : "#A2A3A8"}
         />
       ),
       text: `${i18n.t("drawerContent.home")}`,
@@ -44,13 +38,13 @@ const DrawerContent = () => {
           source={require("../Images/distance.png")}
           className="w-6 h-6"
           style={{
-            tintColor: activeScreen === `Rides` ? "white" : "black",
+            tintColor: activeScreen === `Rides` ? "white" : "#A2A3A8",
           }}
         />
       ),
       text: `${i18n.t("drawerContent.rides")}`,
       onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.rides")}`);
+        navigation.navigate(`${i18n.t("userNav.screens.rides")}`);
         setActiveScreen("Rides");
       },
     },
@@ -60,7 +54,7 @@ const DrawerContent = () => {
         <Feather
           name="settings"
           size={24}
-          color={activeScreen === "Setting" ? "white" : "black"}
+          color={activeScreen === "Setting" ? "white" : "#A2A3A8"}
         />
       ),
       text: `${i18n.t("drawerContent.settings")}`,
@@ -74,34 +68,52 @@ const DrawerContent = () => {
   return (
     <View className="flex-1 items-center justify-between mb-10">
       <View className="w-full mt-20">
-        <View className="flex-col items-center gap-2 border-b border-[#e4e4e4] pb-4">
-          <View className="relative">
+        <View
+          className="flex-col items-start gap-2 border-b border-[#e4e4e4] pb-4"
+          style={styles.borderBottom}
+        >
+          <View className="flex-row items-center rounded-full">
             {userInfo?.image && userInfo?.image !== null ? (
-              <View>
+              <View className="mr-2 p-3">
                 <Image
                   source={{
                     uri:
                       `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}` ||
                       imageData?.uri,
                   }}
-                  style={styles.image}
+                  className="w-11 h-11 rounded-full "
                 />
               </View>
             ) : (
-              <FontAwesome name="Nav.rides-circle-o" size={75} color="gray" />
+              <View className="bg-[#F2F2F2] rounded-full p-3 mr-2">
+                <Image
+                  source={profile}
+                  className="w-11 h-11"
+                  style={{
+                    resizeMode: "contain",
+                  }}
+                />
+              </View>
             )}
 
-            <TouchableOpacity
-              onPress={() => navigation.navigate("EditProfile")}
-            >
-              <View style={styles.editIcon}>
-                <MaterialIcons name="edit" size={16} color="white" />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <Text className="font-regular">{`${userInfo?.first_name} ${userInfo?.last_name}`}</Text>
+            <View>
+              <Text className="font-regular">{`${userInfo?.first_name} ${userInfo?.last_name}`}</Text>
 
-          <Text className="font-regular">{userInfo?.email}</Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(`EditProfile`)}
+              >
+                <Text className="text-Primary">View Profile</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View className="flex-row items-center">
+            <Text className="text-[17px] mr-1">⭐</Text>
+
+            <Text className="font-bold mr-1">5.00</Text>
+
+            <Text className="text-gray-600">Rating</Text>
+          </View>
         </View>
 
         <View className="m-5">
@@ -131,15 +143,11 @@ const DrawerContent = () => {
         </View>
       </View>
 
-      <TouchableOpacity onPress={logout}>
-        <View style={styles.logOut} className="flex-row  bg-Primary px-7 py-4">
-          <Ionicons
-            name="power-outline"
-            size={24}
-            color="white"
-            style={{ transform: [{ rotate: isArabic ? "-90deg" : "90deg" }] }}
-          />
-          <Text className="text-white text-base ml-4 font-regular">{`${i18n.t(
+      <TouchableOpacity onPress={logout} className="self-start">
+        <View className="flex-row px-7 py-4 items-center">
+          <Ionicons name="log-out-outline" size={34} color="#A2A3A8" />
+
+          <Text className="text-base ml-4 font-regular">{`${i18n.t(
             "drawerContent.logOut"
           )}`}</Text>
         </View>
@@ -158,9 +166,6 @@ const styles = StyleSheet.create({
   activeMenuText: {
     color: "white",
   },
-  logOut: {
-    borderRadius: 15,
-  },
   editIcon: {
     position: "absolute",
     bottom: 0,
@@ -175,8 +180,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    width: 75,
-    height: 75,
-    borderRadius: 37.5,
+    width: 60,
+    height: 60,
+  },
+  borderBottom: {
+    borderBottomWidth: 0.9,
+    borderBottomColor: "black",
+    marginLeft: 20,
+    marginRight: 20,
   },
 });

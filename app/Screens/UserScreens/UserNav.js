@@ -40,8 +40,10 @@ const UserNav = () => {
           drawerStyle: {
             borderBottomRightRadius: 20,
             borderTopRightRadius: 20,
+            backgroundColor: "#E3E5EB",
           },
           drawerActiveBackgroundColor: colors.primary,
+          // header: () => null,
         }}
         drawerContent={() => <DrawerContent />}
       >
@@ -70,7 +72,10 @@ const UserNav = () => {
           }}
         />
 
-        <Drawer.Screen name={i18n.t("userNav.rides")} component={Rides} />
+        <Drawer.Screen
+          name={i18n.t("userNav.screens.rides")}
+          component={Rides}
+        />
 
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.settings")}`}
@@ -106,6 +111,7 @@ const UserNav = () => {
         options={{ headerShown: false }}
         component={DrawersScreens}
       />
+
       <Stack.Screen
         name="switchLang"
         options={{
@@ -113,6 +119,7 @@ const UserNav = () => {
         }}
         component={SwitchLang}
       />
+
       <Stack.Screen
         name="EditProfile"
         options={{
@@ -120,6 +127,7 @@ const UserNav = () => {
         }}
         component={EditProfile}
       />
+
       <Stack.Screen
         name={`${i18n.t("userNav.screens.notifications")}`}
         component={Notifications}
