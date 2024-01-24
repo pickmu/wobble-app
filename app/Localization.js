@@ -5,7 +5,7 @@ export const translations = {
       screens: {
         back: "Back",
         payment: "Payment",
-        tripHistory: "Trip History",
+        rides: "Rides",
         settings: "Settings",
         switchLang: "Switch language",
         editProfile: "Edit Profile",
@@ -18,7 +18,7 @@ export const translations = {
       home: "Home",
       payment: "Payment",
       chat: "Chat",
-      tripHistory: "Trip History",
+      rides: "Rides",
       settings: "Settings",
       logOut: "Log Out",
     },
@@ -108,17 +108,15 @@ export const translations = {
         textButton: "Select Image",
       },
       button: {
-        signup: "Sign Up",
+        signup: "Create account",
         submitting: "Submitting...",
       },
     },
     signInUser: {
-      title: "Sign In",
-      text: "Log in to your existing account of Pickme up",
       forgotPassword: "Forgot password?",
       noAccount: "Don't have an account?",
-      signUp: "Sgin Up",
-      signIn: "Sign In",
+      signUp: "Create account",
+      signIn: "Log In",
       forgotPass: "Forgot password?",
     },
     editProfile: {
@@ -128,9 +126,9 @@ export const translations = {
       saving: "Saving...",
       dataSaved: "Data saved successfully",
     },
-    tripHistory: {
+    rides: {
       title: "My Rides",
-      noTrips: "No trips yet",
+      norRides: "No rides yet",
     },
     tripCard: {
       to: "to",
@@ -146,7 +144,7 @@ export const translations = {
       screens: {
         back: "الرجوع",
         payment: "طريقة الدفع",
-        tripHistory: "الرحلات السابقة",
+        rides: "الرحلات السابقة",
         settings: "الإعدادات",
         switchLang: "تغيير اللغة",
         editProfile: "تعديل الملف الشخصي",
@@ -159,7 +157,7 @@ export const translations = {
       home: "الرئيسية",
       chat: "الدردشة",
       payment: "طريقة الدفع",
-      tripHistory: "رحلاتك السابقة",
+      rides: "رحلاتك السابقة",
       settings: "الإعدادات",
       logOut: "تسجيل الخروج",
     },
@@ -269,9 +267,9 @@ export const translations = {
       saving: "جاري التحفيظ",
       dataSaved: "تم تعديل المعلومات بنجاح",
     },
-    tripHistory: {
+    rides: {
       title: "رحلاتي",
-      noTrips: "لا رحلات بعد",
+      norRides: "لا رحلات بعد",
     },
     tripCard: {
       to: "إلى",

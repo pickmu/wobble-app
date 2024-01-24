@@ -4,12 +4,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 
-import DrawerContent from "../../Components/DrawerContent";
 import { colors, fonts } from "../../ReusableTools/css";
+
+import DrawerContent from "../../Components/DrawerContent";
 
 // import screens
 import Map from "./Map";
-import TripHistory from "./TripHistory";
+import Rides from "./Rides";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
 import EditProfile from "./EditProfile";
@@ -39,8 +40,10 @@ const UserNav = () => {
           drawerStyle: {
             borderBottomRightRadius: 20,
             borderTopRightRadius: 20,
+            backgroundColor: "#E3E5EB",
           },
           drawerActiveBackgroundColor: colors.primary,
+          // header: () => null,
         }}
         drawerContent={() => <DrawerContent />}
       >
@@ -68,17 +71,17 @@ const UserNav = () => {
             ),
           }}
         />
+
         <Drawer.Screen
-          name="Trip"
-          options={{
-            headerTitle: `${i18n.t("userNav.screens.tripHistory")}`,
-          }}
-          component={TripHistory}
+          name={i18n.t("userNav.screens.rides")}
+          component={Rides}
         />
+
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.settings")}`}
           component={Setting}
         />
+
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.chat")}`}
           component={Chat}
@@ -108,6 +111,7 @@ const UserNav = () => {
         options={{ headerShown: false }}
         component={DrawersScreens}
       />
+
       <Stack.Screen
         name="switchLang"
         options={{
@@ -115,6 +119,7 @@ const UserNav = () => {
         }}
         component={SwitchLang}
       />
+
       <Stack.Screen
         name="EditProfile"
         options={{
@@ -122,6 +127,7 @@ const UserNav = () => {
         }}
         component={EditProfile}
       />
+
       <Stack.Screen
         name={`${i18n.t("userNav.screens.notifications")}`}
         component={Notifications}

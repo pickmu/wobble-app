@@ -8,18 +8,17 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
+import { useEffect, useRef, useState } from "react";
 import { colors } from "../../ReusableTools/css";
-import { FieldsetInput } from "../../ReusableTools/FieldsetInput";
+import { ReusableInput } from "../../ReusableTools/ReusableInput";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
-import Toast from "react-native-toast-message";
-import { useEffect, useRef, useState } from "react";
 import { authStore } from "../../MobX/AuthStore";
+import Toast from "react-native-toast-message";
 
 const SignIn = ({ navigation, route }) => {
   const { login } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
-  // const { i18n, changeLocale, locale } = useContext(I18nContext);
 
   useEffect(() => {
     // Check if there are route.params for phone and password and set them as initial values.
@@ -81,27 +80,16 @@ const SignIn = ({ navigation, route }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         enabled={false}
       >
-        <ScrollView contentContainerStyle={{ flex: 1 }}>
-          <View style={styles.backgroundView} />
-          <View style={styles.contentView}>
-            <View style={styles.roundedLogo}>
-              <Image
-                source={require("../../Images/logo.png")}
-                style={styles.image}
-                accessibilityLabel="Logo of the app"
-              />
-            </View>
-
-            <View className="my-6 items-center">
-              <Text className="font-boldText text-3xl">{`${i18n.t(
-                "signInUser.title"
-              )}`}</Text>
-              <Text className="font-regular mt-2 text-gray-500">
-                {`${i18n.t("signInUser.text")}`}
-              </Text>
-            </View>
-
-            <FieldsetInput
+        <View style={styles.contentView}>
+          <View style={styles.roundedLogo}>
+            <Image
+              source={require("../../Images/Icons/Untitled-5.png")}
+              style={styles.image}
+              accessibilityLabel="Logo of the app"
+            />
+          </View>
+          <View>
+            <ReusableInput
               value={data.phone_number}
               label={`${i18n.t("signUpUser.input.phone.label")}`}
               placeholder={`${i18n.t("signUpUser.input.phone.placeholder")}`}
@@ -110,7 +98,7 @@ const SignIn = ({ navigation, route }) => {
               onSubmitEditing={() => passwordRef.current.focus()}
             />
 
-            <FieldsetInput
+            <ReusableInput
               value={data.password}
               label={`${i18n.t("signUpUser.input.password.label")}`}
               placeholder={`${i18n.t("signUpUser.input.password.placeholder")}`}
@@ -120,10 +108,14 @@ const SignIn = ({ navigation, route }) => {
               onSubmitEditing={handleLogin}
               returnKeyType={"done"}
             />
+          </View>
 
-            <Text className="text-yellow-400 text-center my-2">
-              {`${i18n.t("signInUser.forgotPass")}`}
-            </Text>
+          <View>
+            <View className="flex-1 items-center mb-1 justify-center flex-row">
+              <View className="h-[1px] bg-white w-[100px]" />
+              <View className="bg-white w-[5px] h-[5px] rounded-full mx-2" />
+              <View className="h-[1px] bg-white w-[100px]" />
+            </View>
 
             <Button
               text={
@@ -135,22 +127,22 @@ const SignIn = ({ navigation, route }) => {
               disabled={submitting}
             />
 
-            <View className="self-center pt-4 flex-row gap-1">
-              <Text style="text-center">{`${i18n.t(
-                "signInUser.noAccount"
-              )}`}</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(`${i18n.t("signNav.signUp")}`)
-                }
-              >
-                <Text className="text-yellow-400">{`${i18n.t(
-                  "signInUser.signUp"
-                )}`}</Text>
-              </TouchableOpacity>
-            </View>
+            <Button
+              text={
+                submitting
+                  ? `${i18n.t("signUpUser.button.submitting")}`
+                  : `${i18n.t("signInUser.signUp")}`
+              }
+              onPress={() => navigation.navigate(`${i18n.t("signNav.signUp")}`)}
+              disabled={submitting}
+              isTransparent={true}
+            />
 
-            <View className="flex-row gap-1 items-center justify-center mt-10">
+            <Text className="text-white text-center my-2 text-base">
+              {`${i18n.t("signInUser.forgotPass")}`}
+            </Text>
+
+            <View className="flex-row gap-1 items-center justify-center mt-1">
               <TouchableOpacity onPress={() => changeLocale("en")}>
                 <Text
                   style={[locale.includes("en") && styles.activeLanguageButton]}
@@ -158,7 +150,9 @@ const SignIn = ({ navigation, route }) => {
                   English
                 </Text>
               </TouchableOpacity>
+
               <Text>|</Text>
+
               <TouchableOpacity onPress={() => changeLocale("ar")}>
                 <Text
                   style={[locale.includes("ar") && styles.activeLanguageButton]}
@@ -168,7 +162,7 @@ const SignIn = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
     </View>
   );
@@ -184,27 +178,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentView: {
-    position: "relative",
     flex: 5,
-    justifyContent: "center",
-    backgroundColor: "#ffffff",
+    justifyContent: "space-evenly",
+    backgroundColor: colors.primary,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
   roundedLogo: {
-    position: "absolute",
-    top: -50,
-    width: 100,
+    width: 200,
     height: 100,
     alignSelf: "center",
   },
   image: {
     width: "100%",
-    borderRadius: 100,
     height: "100%",
+    resizeMode: "contain",
   },
   activeLanguageButton: {
-    color: colors.primaryYellow,
+    color: colors.secondary,
   },
 });
 

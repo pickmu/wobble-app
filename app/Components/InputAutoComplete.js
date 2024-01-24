@@ -9,7 +9,6 @@ const InputAutoComplete = ({
   placeholder,
   onPlaceSelected,
   onSearchError,
-  value = "",
 }) => {
   const { currentLocation } = LocationStore;
 
