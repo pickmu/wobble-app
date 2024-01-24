@@ -20,7 +20,6 @@ import useFetch from "../../ReusableTools/UseFetch";
 import axios from "axios";
 import AnimatedComponent from "../../Components/AnimatedComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 
 const Map = observer(() => {
@@ -267,7 +266,6 @@ const Map = observer(() => {
   return (
     <>
       <SafeAreaView className="bg-white" />
-      <StatusBar style="dark" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}

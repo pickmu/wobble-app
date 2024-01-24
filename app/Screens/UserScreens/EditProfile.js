@@ -9,6 +9,8 @@ import * as ImagePicker from "expo-image-picker";
 import Toast from "react-native-toast-message";
 import axios from "axios";
 import { ReusableInput } from "../../ReusableTools/ReusableInput";
+import profile from "../../Images/Icons/profilee.png";
+import { colors } from "../../ReusableTools/css";
 
 const EditProfile = () => {
   const { i18n } = i18nStore;
@@ -276,9 +278,9 @@ const EditProfile = () => {
       extraScrollHeight={20}
     >
       <View className="m-4">
-        <View className="flex-row items-center gap-5 mb-3">
+        <View className="flex-row items-center justify-center gap-5 mb-3">
           {imageFromBack !== null || imageData !== null ? (
-            <View>
+            <View style={styles.imageBorder}>
               <Image
                 source={{
                   uri: !imageData
@@ -287,25 +289,20 @@ const EditProfile = () => {
                 }}
                 style={styles.image}
               />
+
               <TouchableOpacity
                 onPress={handleRemoveImage}
                 style={styles.removeIconContainer}
                 disabled={saving}
               >
-                <MaterialIcons name="clear" size={20} color="black" />
+                <MaterialIcons name="clear" size={20} color="white" />
               </TouchableOpacity>
             </View>
           ) : (
-            <FontAwesome name="user-circle-o" size={100} color="gray" />
+            <View style={styles.imageBorder} className="bg-F2F2F2">
+              <Image source={profile} className="w-[50px] h-[50px]" style={{resizeMode: "contain"}} />
+            </View>
           )}
-
-          <TouchableOpacity onPress={handleSelectImage}>
-            <Text className="text-lg">
-              {userInfo.image && imageFromBack !== null
-                ? `${i18n.t("editProfile.editPhoto")}`
-                : `${i18n.t("editProfile.addPhoto")}`}
-            </Text>
-          </TouchableOpacity>
         </View>
 
         <View className="">
@@ -345,16 +342,25 @@ export default EditProfile;
 
 const styles = StyleSheet.create({
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: "100%",
+    height: "100%",
+    resizeMode: "contain"
   },
   removeIconContainer: {
     position: "absolute",
     top: 5,
     left: 5,
-    backgroundColor: "#Fa8072",
+    backgroundColor: "#3D89F0",
     borderRadius: 50,
     padding: 5,
+  },
+  imageBorder: {
+    width: 130,
+    height: 130,
+    borderRadius: 65,
+    borderWidth: 10,
+    borderColor: "#99C1F7",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
