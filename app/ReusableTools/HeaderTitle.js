@@ -8,7 +8,7 @@ const HeaderTitle = ({ title, isDrawer }) => {
   return (
     <>
       <SafeAreaView />
-      <View className="w-[50%]">
+      <View className="w-[50%] mb-4">
         <TouchableOpacity
           onPress={() =>
             isDrawer
@@ -22,7 +22,7 @@ const HeaderTitle = ({ title, isDrawer }) => {
           />
         </TouchableOpacity>
 
-        <View className="bg-[#CBE0FB] w-full rounded-r-full py-5 items-center">
+        <View className="bg-headers w-full rounded-r-full py-5 items-center">
           <Text className="text-[25px] font-bold">{title}</Text>
         </View>
       </View>

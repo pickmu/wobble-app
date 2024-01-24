@@ -23,7 +23,9 @@ export const translations = {
       logOut: "Log Out",
     },
     setting: {
-      lang: "Language",
+      lang: "Change language",
+      about: "About",
+      support: "Support",
       deleteAccount: {
         text: "Delete Account",
         titleAlert: "Delete Account",
@@ -162,7 +164,9 @@ export const translations = {
       logOut: "تسجيل الخروج",
     },
     setting: {
-      lang: "اللغة",
+      lang: "تغيير اللغة",
+      about: "حول التطبيق",
+      support: "دعم",
       deleteAccount: {
         text: "حذف الحساب",
         titleAlert: "حذف الحساب",

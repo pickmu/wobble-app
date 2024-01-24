@@ -3,7 +3,7 @@ export const colors = {
   secondary: "#E0EDEF",
   accent: "#262262",
   lightBlue: "#E0EDFE",
-  headers: "#CBE0FB"
+  headers: "#CBE0FB",
 };
 
 export const fonts = {
