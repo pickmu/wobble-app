@@ -5,7 +5,10 @@ export const Button = ({ text, onPress, disabled, isTransparent }) => {
   return (
     <View style={styles.container}>
       <Pressable
-        style={({ pressed }) => [pressed && styles.buttonPressed]}
+        style={({ pressed }) => [
+          pressed && styles.buttonPressed,
+          styles.buttno,
+        ]}
         android_ripple={{ color: "#ccc" }}
         onPress={onPress}
         disabled={disabled}
@@ -29,6 +32,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     marginVertical: 10,
     borderRadius: 15,
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
   buttonContainer: {
     backgroundColor: colors.accent,
@@ -36,6 +40,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: "center",
     borderRadius: 15,
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
   },
   text: {
     color: "white",
@@ -49,6 +54,5 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     borderColor: "white",
     borderWidth: 1,
-    borderColor: "white",
   },
 });
