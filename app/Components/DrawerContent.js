@@ -75,7 +75,7 @@ const DrawerContent = () => {
           <View className="flex-row items-center rounded-full">
             {userInfo?.image && userInfo?.image !== null ? (
               <View className="mr-2 p-3">
-                <Image 
+                <Image  
                   source={{
                     uri:
                       `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}` ||
