@@ -2,6 +2,7 @@ import Option from "../../Components/Options.js";
 import DeleteAccount from "../../Components/DeleteAccount.js";
 import { i18nStore } from "../../MobX/I18nStore.js";
 import { useNavigation } from "@react-navigation/native";
+import { Image, Text, View } from "react-native";
 
 const Setting = () => {
   const { i18n } = i18nStore;
@@ -15,7 +16,7 @@ const Setting = () => {
       title: `${i18n.t("setting.lang")}`,
       subTitle: lang,
       onPress: () => {
-        navigation.navigate("switchLang");
+        navigation.navigate(`${i18n.t("userNav.screens.switchLang")}`);
       },
     },
   ];
@@ -33,6 +34,7 @@ const Setting = () => {
         );
       })}
       <DeleteAccount />
+    
     </>
   );
 };

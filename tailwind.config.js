@@ -11,6 +11,7 @@ module.exports = {
         secondary: "#E0EDEF",
         accent: "#262262",
         lightBlue: "#E0EDFE",
+        headers: "#CBE0FB",
       },
       fontFamily: {
         regular: "Agrandi-Regular",

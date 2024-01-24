@@ -258,7 +258,9 @@ const Map = observer(() => {
     await set(position);
 
     await moveTo(position);
+
     handleSendOrder();
+
     handleOpenCarTypes();
   };
 

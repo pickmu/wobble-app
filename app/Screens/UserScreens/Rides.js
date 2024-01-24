@@ -52,10 +52,6 @@ const Rides = () => {
 
   return (
     <View>
-      <Text className="px-5 py-3 text-3xl font-boldText">
-        {`${i18n.t("rides.title")}`}
-      </Text>
-
       <FlatList
         data={data}
         renderItem={renderItem}
