@@ -1,30 +1,22 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { i18nStore } from "../MobX/I18nStore";
 
-const Option = ({ onPress, title, subTitle }) => {
+const Option = ({ onPress, title, icon }) => {
   const { i18n } = i18nStore;
   const isArabic = i18n.locale.includes("ar");
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View>
-        <View className="absolute bottom-0 right-0 h-[1] w-full bg-gray-300 ml-5" />
-        <View className="flex-row justify-between py-4 px-4 border-gray">
-          <View className="items-center flex-row gap-4">
-            <Text className="text-base font-regular">{title}</Text>
-            {subTitle && (
-              <Text className="text-sm text-gray-500 font-regular">
-                {subTitle}
-              </Text>
-            )}
+      <View
+        className="bg-headers w-[65%] rounded-r-full mb-7"
+        style={styles.shadow}
+      >
+        <View className="flex-row p-4 items-center">
+          {icon}
+
+          <View className="pl-2">
+            <Text className="text-[22px] font-regular">{title}</Text>
           </View>
-          <MaterialIcons
-            name="navigate-next"
-            size={36}
-            color="gray"
-            style={{ transform: [{ rotate: isArabic ? "180deg" : "0deg" }] }}
-          />
         </View>
       </View>
     </TouchableOpacity>
@@ -32,3 +24,13 @@ const Option = ({ onPress, title, subTitle }) => {
 };
 
 export default Option;
+
+const styles = StyleSheet.create({
+  shadow: {
+    elevation: 5,
+    shadowColor: "black",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 5 },
+    overflow: Platform.OS === "android" ? "hidden" : "visible",
+  },
+});
