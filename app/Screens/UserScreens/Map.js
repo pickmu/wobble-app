@@ -339,7 +339,7 @@ const Map = observer(() => {
           showComponent={showComponent}
         /> */}
           <View className="pt-6" style={styles.destinationContainer}>
-            <View className="bg-[#9EC4F7] py-4 pl-4 w-[80%] self-center rounded-[45px]">
+            <View className="bg-[#9EC4F7] py-4 pl-4 w-[80%] self-center rounded-[25px]">
               <View className="flex-row items-center gap-4">
                 <Image
                   source={require("../../Images/Icons/location.png")}
