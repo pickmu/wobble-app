@@ -100,11 +100,12 @@ const DrawerContent = () => {
               <Text className="font-regular">{`${userInfo?.first_name} ${userInfo?.last_name}`}</Text>
 
               <TouchableOpacity
-                onPress={() =>
+                onPress={() => {
                   navigation.navigate(
                     `${i18n.t("userNav.screens.editProfile")}`
-                  )
-                }
+                  );
+                  setActiveScreen("");
+                }}
               >
                 <Text className="text-Primary">View Profile</Text>
               </TouchableOpacity>

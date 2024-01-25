@@ -8,7 +8,7 @@ const HeaderTitle = ({ title, isDrawer }) => {
   return (
     <>
       <SafeAreaView />
-      <View className="w-[50%] my-4 ">
+      <View className="w-[50%]">
         <TouchableOpacity
           onPress={() =>
             isDrawer
