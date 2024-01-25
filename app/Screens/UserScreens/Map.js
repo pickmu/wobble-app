@@ -6,6 +6,7 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
@@ -21,6 +22,8 @@ import axios from "axios";
 import AnimatedComponent from "../../Components/AnimatedComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+
+const { width, height } = Dimensions.get("window");
 
 const Map = observer(() => {
   const {
@@ -127,8 +130,6 @@ const Map = observer(() => {
   };
 
   const mapRef = useRef(MapView);
-
-  const { width, height } = Dimensions.get("window");
 
   useEffect(() => {
     requestLocationPermissions();
@@ -337,6 +338,35 @@ const Map = observer(() => {
           animateOut={animateOut}
           showComponent={showComponent}
         /> */}
+          <View className="pt-6" style={styles.destinationContainer}>
+            <View className="bg-[#9EC4F7] py-4 pl-4 w-[80%] self-center rounded-[45px]">
+              <View className="flex-row items-center gap-4">
+                <Image
+                  source={require("../../Images/Icons/location.png")}
+                  className="w-[20px] h-[20px] pl-6"
+                  style={{ resizeMode: "contain" }}
+                />
+                <Text className="text-[#4048A2] text-[19px] w-[100%]">
+                  Current Location
+                </Text>
+              </View>
+
+              <View className="border-l-2 border-dashed border-white ml-3">
+                <View className="border-b-[1px] border-white w-[90%] self-end my-4 border-l-2" />
+              </View>
+
+              <View className="flex-row items-center gap-4">
+                <Image
+                  source={require("../../Images/Icons/location.png")}
+                  className="w-[20px] h-[20px] pl-[26px]"
+                  style={{ resizeMode: "contain" }}
+                />
+                <Text className="text-white text-[19px] w-[100%]">
+                  Select destination
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </>
@@ -360,6 +390,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     height: "100%",
     marginTop: 0,
+    position: "relative",
   },
   searchContainer: {
     position: "absolute",
@@ -374,5 +405,17 @@ const styles = StyleSheet.create({
     borderColor: "#888",
     borderWidth: 1,
     position: "absolute",
+  },
+  destinationContainer: {
+    height: height * 0.4,
+    position: "absolute",
+    bottom: 0,
+    zIndex: 100,
+    flex: 1,
+    backgroundColor: "white",
+    width: "100%",
+    borderTopRightRadius: 40,
+    borderTopLeftRadius: 40,
+    elevation: 5,
   },
 });

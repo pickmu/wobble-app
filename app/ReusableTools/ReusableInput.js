@@ -4,7 +4,6 @@ import { View, Text, TextInput, StyleSheet } from "react-native";
 export const ReusableInput = React.forwardRef(
   (
     {
-      label,
       value,
       placeholder,
       onChangeText,
