@@ -45,6 +45,9 @@ const UserNav = () => {
           },
           drawerActiveBackgroundColor: colors.primary,
           header: () => <HeaderTitle title={route.name} isDrawer={true} />,
+          sceneContainerStyle: {
+            backgroundColor: "#FFFFFF",
+          },
         })}
         drawerContent={() => <DrawerContent />}
       >
@@ -88,6 +91,11 @@ const UserNav = () => {
           name={`${i18n.t("userNav.screens.chat")}`}
           component={Chat}
         />
+
+        <Drawer.Screen
+          name={`${i18n.t("userNav.screens.editProfile")}`}
+          component={EditProfile}
+        />
       </Drawer.Navigator>
     );
   };
@@ -120,11 +128,6 @@ const UserNav = () => {
       <Stack.Screen
         name={i18n.t("userNav.screens.switchLang")}
         component={SwitchLang}
-      />
-
-      <Stack.Screen
-        name={`${i18n.t("userNav.screens.editProfile")}`}
-        component={EditProfile}
       />
 
       <Stack.Screen

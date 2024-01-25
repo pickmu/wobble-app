@@ -33,7 +33,7 @@ export default App = observer(() => {
 
   return (
     <NavigationContainer>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
       <I18nProvider>
         {token ? <UserNav /> : <SignNav />}
         <Toast />
