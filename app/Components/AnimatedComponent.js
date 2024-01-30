@@ -1,19 +1,95 @@
-import { View, Text, StyleSheet } from "react-native";
-import * as Animatable from "react-native-animatable";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
+import { AntDesign } from "@expo/vector-icons";
+import React from "react";
+import InputAutoComplete from "./InputAutoComplete";
 
-const AnimatedComponent = ({ animateOut, showComponent }) => {
+const AnimatedComponent = ({
+  showAnimatedComponent,
+  handleHideAutoComplete,
+  onPlaceSelected,
+  traceRoute,
+  destination,
+  setShowCarTypes,
+  setShowAnimatedComponent,
+  setShowComponent,
+}) => {
+  const translateY = new Animated.Value(0);
+
+  const slideInUp = () => {
+    Animated.timing(translateY, {
+      toValue: 1,
+      duration: 800,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const slideOutDown = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  React.useEffect(() => {
+    if (showAnimatedComponent) {
+      slideInUp();
+    } else {
+      slideOutDown();
+    }
+  }, [showAnimatedComponent]);
+
+  const handlePlaceSelected = async (details) => {
+    await onPlaceSelected(details, "destination");
+
+    handleHideAutoComplete();
+
+    setShowAnimatedComponent(false);
+
+    await traceRoute();
+
+    setShowComponent(false);
+
+    setShowCarTypes(true);
+  };
+
   return (
     <>
-      {showComponent && (
-        <Animatable.View
-          animation={animateOut ? "slideOutDown" : "slideInUp"}
-          duration={500}
-          style={styles.customComponentContainer}
+      {showAnimatedComponent && (
+        <Animated.View
+          style={[
+            styles.customComponentContainer,
+            {
+              transform: [
+                {
+                  translateY: translateY.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [500, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
         >
           <View style={styles.customComponent}>
-            <Text>This is a custom component.</Text>
+            <TouchableOpacity onPress={handleHideAutoComplete}>
+              <AntDesign name="close" size={24} color="black" />
+            </TouchableOpacity>
+
+            <InputAutoComplete
+              onPlaceSelected={(details) => handlePlaceSelected(details)}
+              placeholder={"select your destination"}
+              label={"Destination"}
+              destination={destination}
+            />
           </View>
-        </Animatable.View>
+        </Animated.View>
       )}
     </>
   );
@@ -24,16 +100,16 @@ export default AnimatedComponent;
 const styles = StyleSheet.create({
   customComponentContainer: {
     position: "absolute",
-    bottom: 50,
     width: "100%",
-    zIndex: 100,
+    height: "100%",
+    zIndex: 200,
   },
   customComponent: {
-    marginHorizontal: 20,
     backgroundColor: "white",
-    paddingVertical: 100,
+    paddingVertical: 40,
     paddingHorizontal: 20,
     borderRadius: 10,
     elevation: 5,
+    flex: 1,
   },
 });

@@ -7,6 +7,8 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Image,
+  Animated,
+  Easing,
 } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
@@ -15,13 +17,14 @@ import { observer } from "mobx-react";
 import { colors } from "../../ReusableTools/css";
 import { Entypo } from "@expo/vector-icons";
 import LocationStore from "../../MobX/LocationStore";
-import InputAutoComplete from "../../Components/InputAutoComplete";
 import MapViewDirections from "react-native-maps-directions";
 import useFetch from "../../ReusableTools/UseFetch";
 import axios from "axios";
 import AnimatedComponent from "../../Components/AnimatedComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
+import DestinationContainer from "../../Components/DestinationContainer";
+import CarTypes from "../../Components/CarTypes";
 
 const { width, height } = Dimensions.get("window");
 
@@ -32,6 +35,8 @@ const Map = observer(() => {
     requestLocationPermissions,
     loading,
   } = LocationStore;
+
+  const animatedHeightComponent = useRef(new Animated.Value(height)).current;
 
   const { userInfo } = authStore;
 
@@ -47,9 +52,11 @@ const Map = observer(() => {
 
   const [duration, setDuration] = useState(0);
 
-  const [animateOut, setAnimateOut] = useState(false);
+  const [showComponent, setShowComponent] = useState(true);
 
-  const [showComponent, setShowCustomComponent] = useState(false);
+  const [showAnimatedComponent, setShowAnimatedComponent] = useState(false);
+
+  const [showCarTypes, setShowCarTypes] = useState(false);
 
   const [typeCar, setTypeCar] = useState("Bicycle");
 
@@ -57,9 +64,22 @@ const Map = observer(() => {
 
   const [isOrderSending, setIsOrderSending] = useState(false);
 
+  const [heightComponent, setHeightComponent] = useState(0.4);
+
   const { data, isLoading } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
   );
+
+  useEffect(() => {
+    if (heightComponent > 256.5) return;
+
+    Animated.timing(animatedHeightComponent, {
+      toValue: height * heightComponent,
+      duration: 500,
+      easing: Easing.linear,
+      useNativeDriver: false,
+    }).start();
+  }, [heightComponent]);
 
   useEffect(() => {
     if (currentLocation) {
@@ -235,38 +255,39 @@ const Map = observer(() => {
       longitude: currentLocation.longitude,
     };
     console.log("userPickup", userPickup);
+
     console.log("destination", destination);
     mapRef.current?.fitToCoordinates([userPickup, destination], {
       edgePadding,
     });
   };
 
-  const handleOpenCarTypes = () => {
-    setShowCustomComponent(true);
-    setAnimateOut(false);
-  };
-
-  const onPlaceSelected = async (details, flag) => {
-    const set = flag === "destination" && setDestination;
-
+  const onPlaceSelected = async (details) => {
     const position = {
       latitude: details?.geometry.location.lat || 0,
       longitude: details?.geometry.location.lng || 0,
       name: details?.name,
     };
 
-    await set(position);
+    setDestination(position);
 
     await moveTo(position);
+  };
 
-    handleSendOrder();
+  const handleShowAutoComplete = () => {
+    setShowAnimatedComponent(true);
+  };
 
-    handleOpenCarTypes();
+  const handleHideAutoComplete = () => {
+    setShowAnimatedComponent(false);
+
+    setHeightComponent(0.5);
   };
 
   return (
     <>
       <SafeAreaView className="bg-white" />
+
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -289,10 +310,19 @@ const Map = observer(() => {
             followsUserLocation={true}
             style={styles.map}
             ref={mapRef}
+            mapType="standard"
           >
-            {destination && <Marker coordinate={INITIAL_POSITION} />}
-
-            {destination && <Marker coordinate={destination} />}
+            {destination && (
+              <Marker coordinate={destination}>
+                <View className="bg-[#FAE90B] w-[35px] h-[35px] rounded-full z-10 justify-center items-center">
+                  <Image
+                    source={require("./../../Images/Icons/location.png")}
+                    className="w-[20px] h-[20px] "
+                    style={{ resizeMode: "contain" }}
+                  />
+                </View>
+              </Marker>
+            )}
 
             {showDirections && currentLocation && destination && (
               <MapViewDirections
@@ -300,7 +330,7 @@ const Map = observer(() => {
                 destination={destination}
                 apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
                 strokeColor={colors.primary}
-                strokeWidth={4}
+                strokeWidth={8}
                 onReady={traceRouteOnReady}
               />
             )}
@@ -311,62 +341,52 @@ const Map = observer(() => {
                   latitude: parseFloat(nearbyDriver[0]?.lat),
                   longitude: parseFloat(nearbyDriver[0]?.long),
                 }}
-                title="First Nearby Driver"
+                title={`${nearbyDriver[0]?.driver_id?.first_name} ${nearbyDriver[0]?.driver_id?.last_name}`}
                 description={`Distance: ${calculateDistance(
                   currentLocation?.latitude,
                   currentLocation?.longitude,
                   parseFloat(nearbyDriver[0]?.lat),
                   parseFloat(nearbyDriver[0]?.long)
                 ).toFixed(2)} km`}
-              />
+              >
+                <View className="bg-Primary w-[35px] h-[35px] rounded-full z-10 justify-center items-center">
+                  <Image
+                    source={require("./../../Images/Icons/car.png")}
+                    className="w-[30px] h-[30px] "
+                    style={{ resizeMode: "contain", tintColor: "white" }}
+                  />
+                </View>
+              </Marker>
             )}
           </MapView>
-          {/* {!isOrdered && (
-          <View style={styles.searchContainer}>
-            <InputAutoComplete
-              icon={<Entypo name="location" size={15} color="white" />}
-              label="Destination"
-              placeholder="Destination location"
-              onPlaceSelected={async (details) => {
-                await onPlaceSelected(details, "destination");
-                traceRoute();
-              }}
-            />
-          </View>
-        )} */}
-          {/* <AnimatedComponent
-          animateOut={animateOut}
-          showComponent={showComponent}
-        /> */}
-          <View className="pt-6" style={styles.destinationContainer}>
-            <View className="bg-[#9EC4F7] py-4 pl-4 w-[80%] self-center rounded-[25px]">
-              <View className="flex-row items-center gap-4">
-                <Image
-                  source={require("../../Images/Icons/location.png")}
-                  className="w-[20px] h-[20px] pl-6"
-                  style={{ resizeMode: "contain" }}
-                />
-                <Text className="text-[#4048A2] text-[19px] w-[100%]">
-                  Current Location
-                </Text>
-              </View>
 
-              <View className="border-l-2 border-dashed border-white ml-3">
-                <View className="border-b-[1px] border-white w-[90%] self-end my-4 border-l-2" />
-              </View>
+          <AnimatedComponent
+            handleHideAutoComplete={handleHideAutoComplete}
+            onPlaceSelected={onPlaceSelected}
+            traceRoute={traceRoute}
+            destination={destination}
+            setShowCarTypes={setShowCarTypes}
+            setShowComponent={setShowComponent}
+            showAnimatedComponent={showAnimatedComponent}
+            setShowAnimatedComponent={setShowAnimatedComponent}
+          />
 
-              <View className="flex-row items-center gap-4">
-                <Image
-                  source={require("../../Images/Icons/location.png")}
-                  className="w-[20px] h-[20px] pl-[26px]"
-                  style={{ resizeMode: "contain" }}
-                />
-                <Text className="text-white text-[19px] w-[100%]">
-                  Select destination
-                </Text>
-              </View>
-            </View>
-          </View>
+          <Animated.View
+            className="pt-6 px-5"
+            style={[
+              styles.destinationContainer,
+              { height: animatedHeightComponent },
+            ]}
+          >
+            {showComponent && (
+              <DestinationContainer
+                handleShowAutoComplete={handleShowAutoComplete}
+                destination={destination}
+              />
+            )}
+
+            {showCarTypes && <CarTypes setTypeCar={setTypeCar} />}
+          </Animated.View>
         </View>
       </KeyboardAvoidingView>
     </>
@@ -407,7 +427,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   destinationContainer: {
-    height: height * 0.4,
     position: "absolute",
     bottom: 0,
     zIndex: 100,

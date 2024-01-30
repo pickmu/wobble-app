@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Pickme Up",
-    "slug": "Pickme Up",
+    "name": "Wobble Taxi",
+    "slug": "Wobble-Taxi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

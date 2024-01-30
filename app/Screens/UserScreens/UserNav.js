@@ -95,6 +95,11 @@ const UserNav = () => {
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.editProfile")}`}
           component={EditProfile}
+          options={{
+            sceneContainerStyle:{
+              backgroundColor:colors.primary
+            }
+          }}
         />
       </Drawer.Navigator>
     );
