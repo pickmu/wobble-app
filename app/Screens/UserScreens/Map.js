@@ -19,12 +19,12 @@ import { Entypo } from "@expo/vector-icons";
 import LocationStore from "../../MobX/LocationStore";
 import MapViewDirections from "react-native-maps-directions";
 import useFetch from "../../ReusableTools/UseFetch";
-import axios from "axios";
 import AnimatedComponent from "../../Components/AnimatedComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import DestinationContainer from "../../Components/DestinationContainer";
 import CarTypes from "../../Components/CarTypes";
+import SearchingForDriver from "../../Components/SearchingForDriver";
 
 const { width, height } = Dimensions.get("window");
 
@@ -58,7 +58,7 @@ const Map = observer(() => {
 
   const [showCarTypes, setShowCarTypes] = useState(false);
 
-  const [typeCar, setTypeCar] = useState("Bicycle");
+  const [typeCar, setTypeCar] = useState("");
 
   const [nearbyDriver, setNearbyDriver] = useState([]);
 
@@ -66,13 +66,15 @@ const Map = observer(() => {
 
   const [heightComponent, setHeightComponent] = useState(0.4);
 
-  const { data, isLoading } = useFetch(
+  const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
   );
 
   useEffect(() => {
-    if (heightComponent > 256.5) return;
+    reFetch();
+  }, [typeCar]);
 
+  useEffect(() => {
     Animated.timing(animatedHeightComponent, {
       toValue: height * heightComponent,
       duration: 500,
@@ -210,37 +212,6 @@ const Map = observer(() => {
     }
   };
 
-  const handleSendOrder = async () => {
-    const requestData = {
-      user_id: userInfo?._id,
-      driver_id: nearbyDriver[0]?._id,
-      from: "Tripoli",
-      to: destination?.name,
-      typeOfOrder: typeCar,
-      fromCoordinates: {
-        long: currentLocation?.longitude,
-        lat: currentLocation?.latitude,
-      },
-      toCoordinates: {
-        long: destination?.longitude,
-        lat: destination?.latitude,
-      },
-    };
-
-    try {
-      await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
-        requestData
-      );
-
-      setIsOrderSending(true);
-
-      setIsOrdered(true);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   const traceRouteOnReady = (args) => {
     if (args) {
       setDistance(args.distance);
@@ -280,13 +251,11 @@ const Map = observer(() => {
 
   const handleHideAutoComplete = () => {
     setShowAnimatedComponent(false);
-
-    setHeightComponent(0.5);
   };
 
   return (
     <>
-      <SafeAreaView className="bg-white" />
+      <SafeAreaView className="bg-white" edges={["top"]} />
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -369,10 +338,10 @@ const Map = observer(() => {
             setShowComponent={setShowComponent}
             showAnimatedComponent={showAnimatedComponent}
             setShowAnimatedComponent={setShowAnimatedComponent}
+            setHeightComponent={setHeightComponent}
           />
 
           <Animated.View
-            className="pt-6 px-5"
             style={[
               styles.destinationContainer,
               { height: animatedHeightComponent },
@@ -385,7 +354,21 @@ const Map = observer(() => {
               />
             )}
 
-            {showCarTypes && <CarTypes setTypeCar={setTypeCar} />}
+            {showCarTypes && (
+              <CarTypes
+                setTypeCar={setTypeCar}
+                typeCar={typeCar}
+                nearbyDriver={nearbyDriver}
+                destination={destination}
+                currentLocation={currentLocation}
+                setIsOrderSending={setIsOrderSending}
+                setIsOrdered={setIsOrdered}
+                setHeightComponent={setHeightComponent}
+                setShowCarTypes={setShowCarTypes}
+              />
+            )}
+
+            {isOrderSending && <SearchingForDriver />}
           </Animated.View>
         </View>
       </KeyboardAvoidingView>
@@ -427,14 +410,10 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   destinationContainer: {
-    position: "absolute",
-    bottom: 0,
-    zIndex: 100,
-    flex: 1,
-    backgroundColor: "white",
     width: "100%",
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
-    elevation: 5,
+    marginTop: "auto",
+    backgroundColor: "white",
   },
 });

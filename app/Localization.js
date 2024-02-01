@@ -130,7 +130,7 @@ export const translations = {
     },
     rides: {
       title: "My Rides",
-      norRides: "No rides yet",
+      noRides: "No rides yet",
     },
     tripCard: {
       to: "to",
@@ -138,6 +138,9 @@ export const translations = {
         completed: "Ride completed",
         canceled: "Ride canceled",
       },
+    },
+    map: {
+      letsGo: "Let's go",
     },
   },
   ar: {
@@ -273,7 +276,7 @@ export const translations = {
     },
     rides: {
       title: "رحلاتي",
-      norRides: "لا رحلات بعد",
+      noRides: "لا رحلات بعد",
     },
     tripCard: {
       to: "إلى",
@@ -281,6 +284,9 @@ export const translations = {
         completed: "رحلة مكتملة",
         canceled: "رحلة ملتغية",
       },
+    },
+    map: {
+      letsGo: "هيا بنا",
     },
   },
 };

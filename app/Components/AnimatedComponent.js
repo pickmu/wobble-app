@@ -18,6 +18,7 @@ const AnimatedComponent = ({
   setShowCarTypes,
   setShowAnimatedComponent,
   setShowComponent,
+  setHeightComponent,
 }) => {
   const translateY = new Animated.Value(0);
 
@@ -49,6 +50,8 @@ const AnimatedComponent = ({
     await onPlaceSelected(details, "destination");
 
     handleHideAutoComplete();
+
+    setHeightComponent(0.5);
 
     setShowAnimatedComponent(false);
 

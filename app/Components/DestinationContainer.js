@@ -1,15 +1,8 @@
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const DestinationContainer = ({ handleShowAutoComplete, destination }) => {
   return (
-    <View className="bg-[#9EC4F7] py-4 pl-4 self-center rounded-[25px]">
+    <View className="bg-[#9EC4F7] py-4 pl-4 self-center rounded-[25px] mt-6 mx-5">
       <View className="flex-row items-center gap-4">
         <Image
           source={require("../Images/Icons/currentLocation.png")}

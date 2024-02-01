@@ -3,9 +3,54 @@ import { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { colors } from "../ReusableTools/css";
 import { Button } from "../ReusableTools/Button";
+import { i18nStore } from "../MobX/I18nStore";
+import { showToast } from "../ReusableTools/ShowToast";
+import axios from "axios";
+import { authStore } from "../MobX/AuthStore";
 
-const CarTypes = ({ setTypeCar }) => {
+const CarTypes = ({
+  setTypeCar,
+  typeCar,
+  nearbyDriver,
+  destination,
+  currentLocation,
+  setHeightComponent,
+  setIsOrderSending,
+  setIsOrdered,
+  setShowCarTypes,
+}) => {
+  const { i18n } = i18nStore;
+
+  const { userInfo } = authStore;
+
   const [selectedCard, setSelectedCard] = useState(null);
+
+  let city;
+
+  const getGeolocation = async () => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${currentLocation.latitude},${currentLocation.longitude}&key=${process.env.EXPO_PUBLIC_MAP_API_KEY}`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch address. HTTP status ${response.status}`
+        );
+      }
+
+      const responseJson = await response.json();
+      // console.log(
+      //   "ADDRESS GEOCODE is BACK!! => ",
+      //   JSON.stringify(responseJson.results[0].address_components[1].long_name)
+      // );
+      city = JSON.stringify(
+        responseJson.results[0].address_components[1].long_name
+      );
+    } catch (error) {
+      console.error("Error fetching geolocation data:", error.message);
+    }
+  };
 
   const carTypes = [
     {
@@ -44,16 +89,60 @@ const CarTypes = ({ setTypeCar }) => {
       type: "TukTuk",
       duration: "7",
     },
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/335071.png"),
-      type: "Bike",
-      duration: "7",
-    },
+    // {
+    //   price: "7",
+    //   imagePath: require("../Images/Icons/bike.png"),
+    //   type: "Bike",
+    //   duration: "7",
+    // },
   ];
 
-  const handleCardPress = (index) => {
+  const handleCardPress = (index, type) => {
     setSelectedCard(index === selectedCard ? null : index);
+
+    setTypeCar(type);
+  };
+
+  const handleSendOrder = async () => {
+    if (typeCar === "") {
+      showToast("error", "Please select a type");
+      return;
+    }
+
+    setHeightComponent(0.3);
+
+    setShowCarTypes(false);
+
+    await getGeolocation();
+
+    setIsOrderSending(true);
+
+    const requestData = {
+      user_id: userInfo?._id,
+      driver_id: nearbyDriver[0]?._id,
+      from: city,
+      to: destination?.name,
+      typeOfOrder: typeCar,
+      fromCoordinates: {
+        long: currentLocation?.longitude,
+        lat: currentLocation?.latitude,
+      },
+      toCoordinates: {
+        long: destination?.longitude,
+        lat: destination?.latitude,
+      },
+    };
+
+    try {
+      await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
+        requestData
+      );
+
+      setIsOrdered(true);
+    } catch (error) {
+      console.log("handleSendOrder error", error.message);
+    }
   };
 
   return (
@@ -68,7 +157,7 @@ const CarTypes = ({ setTypeCar }) => {
               elevation: 10,
             },
           ]}
-          onPress={() => handleCardPress(index)}
+          onPress={() => handleCardPress(index, car.type)}
         >
           <View
             style={[
@@ -92,7 +181,11 @@ const CarTypes = ({ setTypeCar }) => {
         </TouchableOpacity>
       ))}
 
-      <Button text={"Let's go"} cars={true} />
+      <Button
+        text={i18n.t("map.letsGo")}
+        cars={true}
+        onPress={handleSendOrder}
+      />
     </View>
   );
 };
@@ -104,6 +197,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
+    marginTop: 10,
   },
   card: {
     alignItems: "center",
