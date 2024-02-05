@@ -16,8 +16,8 @@ const CarTypes = ({
   currentLocation,
   setHeightComponent,
   setIsOrderSending,
-  setIsOrdered,
   setShowCarTypes,
+  fetchOrderStatus,
 }) => {
   const { i18n } = i18nStore;
 
@@ -101,6 +101,7 @@ const CarTypes = ({
     setSelectedCard(index === selectedCard ? null : index);
 
     setTypeCar(type);
+
   };
 
   const handleSendOrder = async () => {
@@ -113,13 +114,13 @@ const CarTypes = ({
 
     setShowCarTypes(false);
 
-    await getGeolocation();
-
     setIsOrderSending(true);
+
+    await getGeolocation();
 
     const requestData = {
       user_id: userInfo?._id,
-      driver_id: nearbyDriver[0]?._id,
+      driver_id: nearbyDriver[0]?.driver_id?._id,
       from: city,
       to: destination?.name,
       typeOfOrder: typeCar,
@@ -134,12 +135,13 @@ const CarTypes = ({
     };
 
     try {
-      await axios.post(
+      const resp = await axios.post(
         `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
         requestData
       );
+      console.log("data handleSendOrder", resp.data);
 
-      setIsOrdered(true);
+      fetchOrderStatus(resp.data?._id);
     } catch (error) {
       console.log("handleSendOrder error", error.message);
     }

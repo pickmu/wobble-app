@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { authStore } from "../../MobX/AuthStore";
 import { observer } from "mobx-react";
 import { colors } from "../../ReusableTools/css";
 import { Entypo } from "@expo/vector-icons";
@@ -25,6 +24,7 @@ import { DrawerActions, useNavigation } from "@react-navigation/native";
 import DestinationContainer from "../../Components/DestinationContainer";
 import CarTypes from "../../Components/CarTypes";
 import SearchingForDriver from "../../Components/SearchingForDriver";
+import axios from "axios";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,15 +38,11 @@ const Map = observer(() => {
 
   const animatedHeightComponent = useRef(new Animated.Value(height)).current;
 
-  const { userInfo } = authStore;
-
   const navigation = useNavigation();
 
   const [destination, setDestination] = useState("");
 
   const [showDirections, setShowDirections] = useState(false);
-
-  const [isOrdered, setIsOrdered] = useState(false);
 
   const [distance, setDistance] = useState(0);
 
@@ -64,6 +60,8 @@ const Map = observer(() => {
 
   const [isOrderSending, setIsOrderSending] = useState(false);
 
+  const [orderId, setOrderId] = useState("");
+
   const [heightComponent, setHeightComponent] = useState(0.4);
 
   const { data, reFetch } = useFetch(
@@ -71,7 +69,10 @@ const Map = observer(() => {
   );
 
   useEffect(() => {
+    console.log(typeCar);
     reFetch();
+
+      console.log("nearby drivers", data);
   }, [typeCar]);
 
   useEffect(() => {
@@ -157,8 +158,33 @@ const Map = observer(() => {
     requestLocationPermissions();
   }, []);
 
+  const fetchOrderStatus = async (orderId) => {
+    const intervalId = setInterval(async () => {
+      try {
+        if (orderId) {
+          console.log("orderId", orderId);
+
+          const resp = await axios.get(
+            `${process.env.EXPO_PUBLIC_API_URL}order/getOrderById/${orderId}`
+          );
+
+          console.log("order request", resp.data.status);
+          if (resp.data?.status === "Accepted") {
+            clearInterval(intervalId); // Stop the interval once the status is accepted
+            // Perform any necessary action here
+            console.log("accepted");
+          }
+
+          console.log("not accepted");
+        }
+      } catch (error) {
+        console.log("fetchOrderStatus error", error.message);
+      }
+    }, 2000); // Check the status every 5 seconds (adjust the interval as needed)
+  };
+
+  // Loading state while waiting for location data
   if (loading) {
-    // Loading state while waiting for location data
     return (
       <View style={styles.indicator}>
         <ActivityIndicator size={"large"} color={colors.primaryYellow} />
@@ -181,6 +207,7 @@ const Map = observer(() => {
     return (
       <View style={styles.indicator}>
         <ActivityIndicator size={"large"} color={colors.primary} />
+        <Text>Fetching location</Text>
       </View>
     );
   }
@@ -362,9 +389,10 @@ const Map = observer(() => {
                 destination={destination}
                 currentLocation={currentLocation}
                 setIsOrderSending={setIsOrderSending}
-                setIsOrdered={setIsOrdered}
                 setHeightComponent={setHeightComponent}
                 setShowCarTypes={setShowCarTypes}
+                setOrderId={setOrderId}
+                fetchOrderStatus={fetchOrderStatus}
               />
             )}
 
