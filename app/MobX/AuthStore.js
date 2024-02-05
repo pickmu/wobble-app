@@ -2,6 +2,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { showToast } from "../ReusableTools/ShowToast";
 
 class AuthStore {
   userInfo = null;
@@ -44,6 +45,12 @@ class AuthStore {
         `${process.env.EXPO_PUBLIC_API_URL}user/login`,
         data
       );
+
+      if (resp.data.message === "Login not successful") {
+        this.setLoading(false);
+        showToast("error", resp.data.error);
+        return;
+      }
 
       this.setUserInfo(resp.data.findUser);
 

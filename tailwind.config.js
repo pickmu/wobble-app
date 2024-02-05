@@ -12,6 +12,7 @@ module.exports = {
         accent: "#262262",
         lightBlue: "#E0EDFE",
         headers: "#CBE0FB",
+        yellow: "#FAE90B"
       },
       fontFamily: {
         regular: "Agrandi-Regular",

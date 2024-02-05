@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { fonts } from "../ReusableTools/css";
 import LocationStore from "../MobX/LocationStore";
+import { useEffect, useRef } from "react";
 
 const InputAutoComplete = ({
   icon,
@@ -9,16 +10,25 @@ const InputAutoComplete = ({
   placeholder,
   onPlaceSelected,
   onSearchError,
+  destination,
 }) => {
   const { currentLocation } = LocationStore;
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current?.setAddressText(`${destination ? destination?.name : ""}`);
+  }, [destination]);
 
   return (
     <>
       <View className="flex-row gap-1 items-center my-2">
         <Text>{icon}</Text>
-        <Text className="text-white font-regular">{label}</Text>
+
+        <Text className="font-regular">{label}</Text>
       </View>
+
       <GooglePlacesAutocomplete
+        ref={ref}
         apiKey={process.env.EXPO_PUBLIC_MAP_API_KEY}
         styles={{ textInput: styles.input }}
         placeholder={placeholder || ""}
@@ -32,6 +42,9 @@ const InputAutoComplete = ({
           radius: 10000,
         }}
         fetchDetails={true}
+        autoFillOnNotFound={true}
+        predefinedPlacesAlwaysVisible={true}
+        debounce={1000}
       />
     </>
   );

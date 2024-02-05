@@ -113,7 +113,9 @@ const SignIn = ({ navigation, route }) => {
           <View>
             <View className="flex-1 items-center mb-1 justify-center flex-row">
               <View className="h-[1px] bg-white w-[100px]" />
+
               <View className="bg-white w-[5px] h-[5px] rounded-full mx-2" />
+              
               <View className="h-[1px] bg-white w-[100px]" />
             </View>
 

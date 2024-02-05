@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Pickme Up",
-    "slug": "Pickme Up",
+    "name": "Wobble Taxi",
+    "slug": "Wobble-Taxi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -24,6 +26,19 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-localization"]
+    "plugins": [
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1d95fc57-7bae-4f67-98f7-8e0b63cf9d28"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1d95fc57-7bae-4f67-98f7-8e0b63cf9d28"
+    }
   }
 }

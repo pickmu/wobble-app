@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
 import { colors, fonts } from "./css";
 
-export const Button = ({ text, onPress, disabled, isTransparent }) => {
+export const Button = ({ text, onPress, disabled, isTransparent, cars }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, cars && { marginHorizontal: 20 }]}>
       <Pressable
         style={({ pressed }) => [
           pressed && styles.buttonPressed,

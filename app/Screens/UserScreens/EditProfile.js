@@ -277,7 +277,7 @@ const EditProfile = () => {
       keyboardShouldPersistTaps="handled"
       extraScrollHeight={20}
     >
-      <View className="m-4">
+      <View className="m-4 ">
         <View className="flex-row items-center justify-center gap-5 mb-3">
           {imageFromBack !== null || imageData !== null ? (
             <View style={styles.imageBorder}>
