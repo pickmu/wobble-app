@@ -44,7 +44,20 @@ const UserNav = () => {
             backgroundColor: "#E3E5EB",
           },
           drawerActiveBackgroundColor: colors.primary,
-          header: () => <HeaderTitle title={route.name} isDrawer={true} />,
+          header: () => {
+            console.log("route drawer", route.name);
+            return (
+              <HeaderTitle
+                title={route.name}
+                isDrawer={true}
+                isChat={
+                  route.name === `${i18n.t("userNav.screens.chat")}`
+                    ? true
+                    : false
+                }
+              />
+            );
+          },
           sceneContainerStyle: {
             backgroundColor: "#FFFFFF",
           },
@@ -96,9 +109,9 @@ const UserNav = () => {
           name={`${i18n.t("userNav.screens.editProfile")}`}
           component={EditProfile}
           options={{
-            sceneContainerStyle:{
-              backgroundColor:colors.primary
-            }
+            sceneContainerStyle: {
+              backgroundColor: colors.primary,
+            },
           }}
         />
       </Drawer.Navigator>
@@ -119,9 +132,19 @@ const UserNav = () => {
         cardStyle: {
           backgroundColor: "white",
         },
-        header: () => (
-          <HeaderTitle title={route.params?.headerTitle || route.name} />
-        ),
+        header: () => {
+          return (
+            <HeaderTitle
+              title={route.params?.headerTitle || route.name}
+              route={route.name}
+              isChat={
+                route.name === `${i18n.t("userNav.screens.chat")}`
+                  ? true
+                  : false
+              }
+            />
+          );
+        },
       })}
     >
       <Stack.Screen
@@ -138,6 +161,11 @@ const UserNav = () => {
       <Stack.Screen
         name={`${i18n.t("userNav.screens.notifications")}`}
         component={Notifications}
+      />
+
+      <Stack.Screen
+        name={`${i18n.t("userNav.screens.chat")}`}
+        component={Chat}
       />
     </Stack.Navigator>
   );

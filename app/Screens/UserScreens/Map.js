@@ -19,12 +19,13 @@ import LocationStore from "../../MobX/LocationStore";
 import MapViewDirections from "react-native-maps-directions";
 import useFetch from "../../ReusableTools/UseFetch";
 import AnimatedComponent from "../../Components/AnimatedComponent";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import DestinationContainer from "../../Components/DestinationContainer";
 import CarTypes from "../../Components/CarTypes";
 import SearchingForDriver from "../../Components/SearchingForDriver";
 import axios from "axios";
+import DriverData from "../../Components/DriverData";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,6 +36,8 @@ const Map = observer(() => {
     requestLocationPermissions,
     loading,
   } = LocationStore;
+
+  const insets = useSafeAreaInsets();
 
   const animatedHeightComponent = useRef(new Animated.Value(height)).current;
 
@@ -60,7 +63,9 @@ const Map = observer(() => {
 
   const [isOrderSending, setIsOrderSending] = useState(false);
 
-  const [orderId, setOrderId] = useState("");
+  const [isOrderAccepted, setIsOrderAccepted] = useState(false);
+
+  const [orderData, setOrderData] = useState();
 
   const [heightComponent, setHeightComponent] = useState(0.4);
 
@@ -69,10 +74,7 @@ const Map = observer(() => {
   );
 
   useEffect(() => {
-    console.log(typeCar);
     reFetch();
-
-      console.log("nearby drivers", data);
   }, [typeCar]);
 
   useEffect(() => {
@@ -162,20 +164,22 @@ const Map = observer(() => {
     const intervalId = setInterval(async () => {
       try {
         if (orderId) {
-          console.log("orderId", orderId);
-
           const resp = await axios.get(
             `${process.env.EXPO_PUBLIC_API_URL}order/getOrderById/${orderId}`
           );
 
-          console.log("order request", resp.data.status);
           if (resp.data?.status === "Accepted") {
             clearInterval(intervalId); // Stop the interval once the status is accepted
-            // Perform any necessary action here
-            console.log("accepted");
-          }
 
-          console.log("not accepted");
+            setOrderData(resp.data);
+
+            setIsOrderSending(false);
+
+            setHeightComponent(0.5);
+
+            setIsOrderAccepted(true);
+          } else {
+          }
         }
       } catch (error) {
         console.log("fetchOrderStatus error", error.message);
@@ -282,10 +286,8 @@ const Map = observer(() => {
 
   return (
     <>
-      <SafeAreaView className="bg-white" edges={["top"]} />
-
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginTop: insets.top }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         enabled={false}
       >
@@ -391,12 +393,13 @@ const Map = observer(() => {
                 setIsOrderSending={setIsOrderSending}
                 setHeightComponent={setHeightComponent}
                 setShowCarTypes={setShowCarTypes}
-                setOrderId={setOrderId}
                 fetchOrderStatus={fetchOrderStatus}
               />
             )}
 
             {isOrderSending && <SearchingForDriver />}
+
+            {isOrderAccepted && <DriverData {...orderData} />}
           </Animated.View>
         </View>
       </KeyboardAvoidingView>

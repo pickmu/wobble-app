@@ -1,11 +1,13 @@
-import { View, Text } from 'react-native'
+import { View, Text } from "react-native";
 
-const Chat = () => {
+const Chat = ({ route }) => {
+  const { user_id, driver_id } = route?.params;
+
   return (
     <View>
       <Text>Chat</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
