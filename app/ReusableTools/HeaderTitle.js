@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const HeaderTitle = ({ title, isDrawer }) => {
+const HeaderTitle = ({ title, isDrawer, isChat }) => {
   const navigation = useNavigation();
 
   return (
@@ -10,10 +10,13 @@ const HeaderTitle = ({ title, isDrawer }) => {
       <SafeAreaView />
       <View className="w-[50%]">
         <TouchableOpacity
-          onPress={() =>
-            isDrawer
-              ? navigation.dispatch(DrawerActions.openDrawer())
-              : navigation.goBack()
+          onPress={
+            () =>
+              isChat
+                ? navigation.navigate("Map") // Navigate to the Home screen if isChat is true
+                : isDrawer
+                ? navigation.dispatch(DrawerActions.openDrawer())
+                : navigation.goBack() // Otherwise, go back
           }
         >
           <Image

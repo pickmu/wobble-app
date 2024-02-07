@@ -19,7 +19,7 @@ import LocationStore from "../../MobX/LocationStore";
 import MapViewDirections from "react-native-maps-directions";
 import useFetch from "../../ReusableTools/UseFetch";
 import AnimatedComponent from "../../Components/AnimatedComponent";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import DestinationContainer from "../../Components/DestinationContainer";
 import CarTypes from "../../Components/CarTypes";
@@ -36,6 +36,8 @@ const Map = observer(() => {
     requestLocationPermissions,
     loading,
   } = LocationStore;
+
+  const insets = useSafeAreaInsets();
 
   const animatedHeightComponent = useRef(new Animated.Value(height)).current;
 
@@ -284,10 +286,8 @@ const Map = observer(() => {
 
   return (
     <>
-      <SafeAreaView className="bg-white" edges={["top"]} />
-
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginTop: insets.top }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         enabled={false}
       >

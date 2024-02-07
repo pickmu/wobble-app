@@ -44,7 +44,20 @@ const UserNav = () => {
             backgroundColor: "#E3E5EB",
           },
           drawerActiveBackgroundColor: colors.primary,
-          header: () => <HeaderTitle title={route.name} isDrawer={true} />,
+          header: () => {
+            console.log("route drawer", route.name);
+            return (
+              <HeaderTitle
+                title={route.name}
+                isDrawer={true}
+                isChat={
+                  route.name === `${i18n.t("userNav.screens.chat")}`
+                    ? true
+                    : false
+                }
+              />
+            );
+          },
           sceneContainerStyle: {
             backgroundColor: "#FFFFFF",
           },
@@ -119,9 +132,19 @@ const UserNav = () => {
         cardStyle: {
           backgroundColor: "white",
         },
-        header: () => (
-          <HeaderTitle title={route.params?.headerTitle || route.name} />
-        ),
+        header: () => {
+          return (
+            <HeaderTitle
+              title={route.params?.headerTitle || route.name}
+              route={route.name}
+              isChat={
+                route.name === `${i18n.t("userNav.screens.chat")}`
+                  ? true
+                  : false
+              }
+            />
+          );
+        },
       })}
     >
       <Stack.Screen
