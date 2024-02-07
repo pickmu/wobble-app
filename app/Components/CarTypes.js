@@ -101,7 +101,6 @@ const CarTypes = ({
     setSelectedCard(index === selectedCard ? null : index);
 
     setTypeCar(type);
-
   };
 
   const handleSendOrder = async () => {
@@ -139,7 +138,6 @@ const CarTypes = ({
         `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
         requestData
       );
-      console.log("data handleSendOrder", resp.data);
 
       fetchOrderStatus(resp.data?._id);
     } catch (error) {

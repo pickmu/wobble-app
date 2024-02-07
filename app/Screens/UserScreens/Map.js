@@ -25,6 +25,7 @@ import DestinationContainer from "../../Components/DestinationContainer";
 import CarTypes from "../../Components/CarTypes";
 import SearchingForDriver from "../../Components/SearchingForDriver";
 import axios from "axios";
+import DriverData from "../../Components/DriverData";
 
 const { width, height } = Dimensions.get("window");
 
@@ -60,7 +61,9 @@ const Map = observer(() => {
 
   const [isOrderSending, setIsOrderSending] = useState(false);
 
-  const [orderId, setOrderId] = useState("");
+  const [isOrderAccepted, setIsOrderAccepted] = useState(false);
+
+  const [orderData, setOrderData] = useState();
 
   const [heightComponent, setHeightComponent] = useState(0.4);
 
@@ -69,10 +72,7 @@ const Map = observer(() => {
   );
 
   useEffect(() => {
-    console.log(typeCar);
     reFetch();
-
-      console.log("nearby drivers", data);
   }, [typeCar]);
 
   useEffect(() => {
@@ -162,20 +162,22 @@ const Map = observer(() => {
     const intervalId = setInterval(async () => {
       try {
         if (orderId) {
-          console.log("orderId", orderId);
-
           const resp = await axios.get(
             `${process.env.EXPO_PUBLIC_API_URL}order/getOrderById/${orderId}`
           );
 
-          console.log("order request", resp.data.status);
           if (resp.data?.status === "Accepted") {
             clearInterval(intervalId); // Stop the interval once the status is accepted
-            // Perform any necessary action here
-            console.log("accepted");
-          }
 
-          console.log("not accepted");
+            setOrderData(resp.data);
+
+            setIsOrderSending(false);
+
+            setHeightComponent(0.5);
+
+            setIsOrderAccepted(true);
+          } else {
+          }
         }
       } catch (error) {
         console.log("fetchOrderStatus error", error.message);
@@ -391,12 +393,13 @@ const Map = observer(() => {
                 setIsOrderSending={setIsOrderSending}
                 setHeightComponent={setHeightComponent}
                 setShowCarTypes={setShowCarTypes}
-                setOrderId={setOrderId}
                 fetchOrderStatus={fetchOrderStatus}
               />
             )}
 
             {isOrderSending && <SearchingForDriver />}
+
+            {isOrderAccepted && <DriverData {...orderData} />}
           </Animated.View>
         </View>
       </KeyboardAvoidingView>

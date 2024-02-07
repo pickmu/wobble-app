@@ -96,9 +96,9 @@ const UserNav = () => {
           name={`${i18n.t("userNav.screens.editProfile")}`}
           component={EditProfile}
           options={{
-            sceneContainerStyle:{
-              backgroundColor:colors.primary
-            }
+            sceneContainerStyle: {
+              backgroundColor: colors.primary,
+            },
           }}
         />
       </Drawer.Navigator>
@@ -138,6 +138,11 @@ const UserNav = () => {
       <Stack.Screen
         name={`${i18n.t("userNav.screens.notifications")}`}
         component={Notifications}
+      />
+
+      <Stack.Screen
+        name={`${i18n.t("userNav.screens.chat")}`}
+        component={Chat}
       />
     </Stack.Navigator>
   );
