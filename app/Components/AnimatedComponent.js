@@ -11,7 +11,6 @@ import InputAutoComplete from "./InputAutoComplete";
 
 const AnimatedComponent = ({
   showAnimatedComponent,
-  handleHideAutoComplete,
   onPlaceSelected,
   traceRoute,
   destination,
@@ -49,8 +48,6 @@ const AnimatedComponent = ({
   const handlePlaceSelected = async (details) => {
     await onPlaceSelected(details, "destination");
 
-    handleHideAutoComplete();
-
     setHeightComponent(0.5);
 
     setShowAnimatedComponent(false);
@@ -81,7 +78,7 @@ const AnimatedComponent = ({
           ]}
         >
           <View style={styles.customComponent}>
-            <TouchableOpacity onPress={handleHideAutoComplete}>
+            <TouchableOpacity onPress={() => setShowAnimatedComponent(false)}>
               <AntDesign name="close" size={24} color="black" />
             </TouchableOpacity>
 
