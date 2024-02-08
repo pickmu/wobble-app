@@ -246,6 +246,7 @@ const Map = observer(() => {
   const traceRouteOnReady = (args) => {
     if (args) {
       setDistance(args.distance);
+
       setDuration(args.duration);
     }
   };
@@ -259,9 +260,9 @@ const Map = observer(() => {
     console.log("userPickup", userPickup);
 
     console.log("destination", destination);
-    mapRef.current?.fitToCoordinates([userPickup, destination], {
-      edgePadding,
-    });
+    // mapRef.current?.fitToCoordinates([userPickup, destination], {
+    //   edgePadding,
+    // });
   };
 
   const onPlaceSelected = async (details) => {
@@ -278,10 +279,6 @@ const Map = observer(() => {
 
   const handleShowAutoComplete = () => {
     setShowAnimatedComponent(true);
-  };
-
-  const handleHideAutoComplete = () => {
-    setShowAnimatedComponent(false);
   };
 
   return (
@@ -350,7 +347,7 @@ const Map = observer(() => {
                 <View className="bg-Primary w-[35px] h-[35px] rounded-full z-10 justify-center items-center">
                   <Image
                     source={require("./../../Images/Icons/car.png")}
-                    className="w-[30px] h-[30px] "
+                    className="w-[30px] h-[30px]"
                     style={{ resizeMode: "contain", tintColor: "white" }}
                   />
                 </View>
@@ -359,7 +356,6 @@ const Map = observer(() => {
           </MapView>
 
           <AnimatedComponent
-            handleHideAutoComplete={handleHideAutoComplete}
             onPlaceSelected={onPlaceSelected}
             traceRoute={traceRoute}
             destination={destination}

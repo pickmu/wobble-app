@@ -44,7 +44,9 @@ const InputAutoComplete = ({
         fetchDetails={true}
         autoFillOnNotFound={true}
         predefinedPlacesAlwaysVisible={true}
-        debounce={1000}
+        minLength={2}
+        debounce={200}
+        nearbyPlacesAPI="GooglePlacesSearch"
       />
     </>
   );
