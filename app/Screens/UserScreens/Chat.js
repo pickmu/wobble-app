@@ -10,7 +10,7 @@ const Chat = ({ route }) => {
 
     const { user_id, driver_id } = route?.params;
 
-    console.log()
+    console.log(user_id)
 
     async function createRoomOrGetRoomId(contact) {
         console.log(contact);
