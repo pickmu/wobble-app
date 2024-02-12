@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
 
 
-const Socket = io("http://localhost:5000");
+const Socket = io(`${process.env.EXPO_PUBLIC_API_URL}`);
 
 export {Socket};
 
