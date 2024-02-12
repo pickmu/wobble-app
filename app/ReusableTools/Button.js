@@ -1,7 +1,14 @@
 import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
 import { colors, fonts } from "./css";
 
-export const Button = ({ text, onPress, disabled, isTransparent, cars }) => {
+export const Button = ({
+  text,
+  onPress,
+  disabled,
+  isTransparent,
+  cars,
+  cancel,
+}) => {
   return (
     <View style={[styles.container, cars && { marginHorizontal: 20 }]}>
       <Pressable
@@ -18,6 +25,7 @@ export const Button = ({ text, onPress, disabled, isTransparent, cars }) => {
             styles.buttonContainer,
             disabled && { backgroundColor: colors.accent },
             isTransparent && styles.transparent,
+            cancel && { borderRadius: 50 },
           ]}
         >
           <Text style={styles.text}>{text}</Text>

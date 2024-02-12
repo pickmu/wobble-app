@@ -18,6 +18,7 @@ const CarTypes = ({
   setIsOrderSending,
   setShowCarTypes,
   fetchOrderStatus,
+  reFetch,
 }) => {
   const { i18n } = i18nStore;
 
@@ -115,7 +116,11 @@ const CarTypes = ({
 
     setIsOrderSending(true);
 
+    await reFetch();
+
     await getGeolocation();
+
+    console.log("driver_id", nearbyDriver[0]?.driver_id?._id);
 
     const requestData = {
       user_id: userInfo?._id,

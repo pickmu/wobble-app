@@ -26,6 +26,7 @@ import CarTypes from "../../Components/CarTypes";
 import SearchingForDriver from "../../Components/SearchingForDriver";
 import axios from "axios";
 import DriverData from "../../Components/DriverData";
+import { authStore } from "../../MobX/AuthStore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -36,6 +37,8 @@ const Map = observer(() => {
     requestLocationPermissions,
     loading,
   } = LocationStore;
+
+  const { userInfo } = authStore;
 
   const insets = useSafeAreaInsets();
 
@@ -73,9 +76,13 @@ const Map = observer(() => {
     `location/getLocationDriverByTypeCar/${typeCar}`
   );
 
-  useEffect(() => {
-    reFetch();
-  }, [typeCar]);
+  // useEffect(() => {
+  //   reFetch();
+  // }, [typeCar]);
+
+  const { data: orderNotEnded } = useFetch(
+    `order/getIsNotEndedOrder/${userInfo?._id}`
+  );
 
   useEffect(() => {
     Animated.timing(animatedHeightComponent, {
@@ -159,7 +166,8 @@ const Map = observer(() => {
   useEffect(() => {
     requestLocationPermissions();
   }, []);
-
+  console.log("height of the screen is " + height);
+  console.log("height of the component is " + height * heightComponent);
   const fetchOrderStatus = async (orderId) => {
     const intervalId = setInterval(async () => {
       try {
@@ -175,7 +183,7 @@ const Map = observer(() => {
 
             setIsOrderSending(false);
 
-            setHeightComponent(0.5);
+            setHeightComponent(0.502);
 
             setIsOrderAccepted(true);
           } else {
@@ -372,11 +380,20 @@ const Map = observer(() => {
               { height: animatedHeightComponent },
             ]}
           >
-            {showComponent && (
-              <DestinationContainer
+            {!orderNotEnded.message ? (
+              <DriverData
+                driver_id={orderNotEnded.driver_id}
+                user_id={orderNotEnded.user_id}
                 handleShowAutoComplete={handleShowAutoComplete}
-                destination={destination}
+                destination={{ name: orderNotEnded?.to }}
               />
+            ) : (
+              showComponent && (
+                <DestinationContainer
+                  handleShowAutoComplete={handleShowAutoComplete}
+                  destination={destination}
+                />
+              )
             )}
 
             {showCarTypes && (
@@ -390,12 +407,19 @@ const Map = observer(() => {
                 setHeightComponent={setHeightComponent}
                 setShowCarTypes={setShowCarTypes}
                 fetchOrderStatus={fetchOrderStatus}
+                reFetch={reFetch}
               />
             )}
 
             {isOrderSending && <SearchingForDriver />}
 
-            {isOrderAccepted && <DriverData {...orderData} />}
+            {isOrderAccepted && (
+              <DriverData
+                {...orderData}
+                handleShowAutoComplete={handleShowAutoComplete}
+                destination={destination}
+              />
+            )}
           </Animated.View>
         </View>
       </KeyboardAvoidingView>
