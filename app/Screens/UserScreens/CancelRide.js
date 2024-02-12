@@ -1,5 +1,11 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { colors } from "../../ReusableTools/css";
 import { Button } from "../../ReusableTools/Button";
@@ -8,7 +14,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 const CancelRide = () => {
   const cancelTexts = [
     {
-      text: "Pickup took to long",
+      text: "Pickup took too long",
     },
     {
       text: "Driver isn't moving",
@@ -23,24 +29,57 @@ const CancelRide = () => {
       text: "Other",
     },
   ];
-  return (
-    <KeyboardAwareScrollView className="flex-1">
-      <View className="px-10 py-10">
-        {cancelTexts.map((text, index) => {
-          return (
-            <View key={index} className="flex-row items-center gap-4 mb-10">
-              <View
-                className="rounded-full w-[15px] h-[15px] items-center justify-center"
-                style={{ backgroundColor: colors.yellow }}
-              >
-                <Entypo name="check" size={10} color="black" />
-              </View>
-              <Text className="font-regular text-[20px]">{text.text}</Text>
-            </View>
-          );
-        })}
 
-        <TextInput style={styles.inputField} multiline numberOfLines={10} />
+  const [selectedReasonIndex, setSelectedReasonIndex] = useState(null);
+
+  const [cancelReason, setCancelReason] = useState("");
+
+  const [otherText, setOtherText] = useState("");
+
+  const handleTextOptionPress = (text, index) => {
+    setSelectedReasonIndex(index === selectedReasonIndex ? null : index);
+
+    setCancelReason(text);
+  };
+
+  const handleTextChange = (text) => {
+    setOtherText(text);
+  };
+
+  return (
+    <KeyboardAwareScrollView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        {cancelTexts.map((text, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleTextOptionPress(text.text, index)}
+          >
+            <View style={styles.textOption}>
+              <View
+                style={[
+                  styles.checkCircle,
+                  selectedReasonIndex === index && {
+                    backgroundColor: colors.yellow,
+                  },
+                ]}
+              >
+                {selectedReasonIndex === index && (
+                  <Entypo name="check" size={10} color="black" />
+                )}
+              </View>
+              <Text style={styles.text}>{text.text}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+
+        <TextInput
+          style={styles.inputField}
+          multiline
+          numberOfLines={10}
+          value={otherText}
+          onChangeText={handleTextChange}
+          editable={selectedReasonIndex === cancelTexts.length - 1 }
+        />
 
         <Button text={"Done"} />
       </View>
@@ -48,14 +87,37 @@ const CancelRide = () => {
   );
 };
 
-export default CancelRide;
-
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+  },
+  textOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  checkCircle: {
+    width: 15,
+    height: 15,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 10,
+    borderWidth: 1,
+  },
+  text: {
+    fontFamily: "regular",
+    fontSize: 20,
+  },
   inputField: {
     borderColor: colors.primary,
     borderWidth: 1,
     borderTopLeftRadius: 15,
     textAlignVertical: "top",
-    padding: 10
+    padding: 10,
+    marginBottom: 10,
   },
 });
+
+export default CancelRide;
