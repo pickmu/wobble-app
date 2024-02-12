@@ -1,10 +1,20 @@
-import { View, Text, Image, Linking, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Linking,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { i18nStore } from "../MobX/I18nStore";
 import { authStore } from "../MobX/AuthStore";
+import { colors } from "../ReusableTools/css";
+import DestinationContainer from "./DestinationContainer";
+import { Button } from "../ReusableTools/Button";
 
-const DriverData = ({ driver_id }) => {
+const DriverData = ({ driver_id, handleShowAutoComplete, destination }) => {
   const navigation = useNavigation();
 
   const { i18n } = i18nStore;
@@ -26,13 +36,13 @@ const DriverData = ({ driver_id }) => {
     //   console.log("WhatsApp number is not available.");
     // }
     navigation.navigate(`${i18n.t("userNav.screens.chat")}`, {
-      driver_id: driver_id?._id,
-      user_id: userInfo?._id,
+      driver_id: driver_id,
+      user_id: userInfo,
     });
   };
 
   return (
-    <View className="flex-1 items-center py-5 px-10">
+    <View className="flex-1 py-5 px-10">
       <View className="flex-row justify-between items-center w-full">
         <Text className="font-regular text-Primary">Rider Details</Text>
 
@@ -54,8 +64,52 @@ const DriverData = ({ driver_id }) => {
           </TouchableOpacity>
         </View>
       </View>
+
+      <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center gap-3">
+          <View style={styles.imageBorder}>
+            <Image
+              source={require("../Images/Icons/profilee.png")}
+              style={{ resizeMode: "contain" }}
+              className="w-full h-full"
+            />
+          </View>
+
+          <View>
+            <Text className="font-regular text-Primary mb-2">Name</Text>
+
+            <Text className="font-regular">
+              {driver_id?.first_name} {driver_id?.last_name}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <View className="px-4">
+        <DestinationContainer
+          handleShowAutoComplete={handleShowAutoComplete}
+          destination={destination}
+          driverData={true}
+        />
+      </View>
+
+      <View className="pb-2">
+        <Button text={"Cancel Ride"} cancel={true} />
+      </View>
     </View>
   );
 };
 
 export default DriverData;
+
+const styles = StyleSheet.create({
+  imageBorder: {
+    borderWidth: 1,
+    width: 70,
+    height: 70,
+    padding: 10,
+    borderColor: colors.primary,
+    borderRadius: 35,
+    flexDirection: "row",
+  },
+});

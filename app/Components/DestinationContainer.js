@@ -1,16 +1,27 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
-const DestinationContainer = ({ handleShowAutoComplete, destination }) => {
+const DestinationContainer = ({
+  handleShowAutoComplete,
+  destination,
+  driverData,
+}) => {
   return (
     <View className="bg-[#9EC4F7] py-4 pl-4 self-center rounded-[25px] mt-6 mx-5">
       <View className="flex-row items-center gap-4">
         <Image
           source={require("../Images/Icons/currentLocation.png")}
-          className="w-[20px] h-[20px] pl-6"
-          style={{ resizeMode: "contain" }}
+          className={`pl-6`}
+          style={{
+            resizeMode: "contain",
+            width: driverData ? 15 : 20,
+            height: driverData ? 15 : 20,
+          }}
         />
 
-        <Text className="text-[#4048A2] text-[19px] flex-1">
+        <Text
+          className={`text-[#4048A2] flex-1`}
+          style={{ fontSize: driverData ? 15 : 19 }}
+          >
           Current Location
         </Text>
       </View>
@@ -22,15 +33,22 @@ const DestinationContainer = ({ handleShowAutoComplete, destination }) => {
       <View className="flex-row items-center gap-4">
         <Image
           source={require("../Images/Icons/location.png")}
-          className="w-[20px] h-[20px] pl-6"
-          style={{ resizeMode: "contain" }}
+          className={`pl-6`}
+          style={{
+            resizeMode: "contain",
+            width: driverData ? 15 : 20,
+            height: driverData ? 15 : 20,
+          }}
         />
 
         <TouchableOpacity
           onPress={handleShowAutoComplete}
           style={{ width: "80%" }}
         >
-          <Text className="text-white text-[19px]">
+          <Text
+            className={`text-white`}
+            style={{ fontSize: driverData ? 15 : 19 }}
+          >
             {destination ? `${destination?.name}` : "Select destination"}
           </Text>
         </TouchableOpacity>
