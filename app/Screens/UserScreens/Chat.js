@@ -48,7 +48,7 @@ const Chat = ({ route }) => {
 
   useEffect(() => {
     Socket.on("receive_message", (data) => {
-      setCurrentChat((list) => [...list, data]);
+      setDataChat((list) => [...list, data]);
     });
   }, [Socket]);
 
