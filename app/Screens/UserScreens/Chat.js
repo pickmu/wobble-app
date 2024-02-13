@@ -1,9 +1,6 @@
 import {
   View,
   Text,
-  Button,
-  Pressable,
-  ScrollView,
   TouchableOpacity,
   FlatList,
   Platform,
@@ -14,13 +11,11 @@ import { Socket } from "../../socket/socket";
 import axios from "axios";
 import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { colors } from "../../ReusableTools/css";
 
 const Chat = ({ route }) => {
   const [dataChat, setDataChat] = useState([]);
   const [textMessage, setTextMessage] = useState("");
-  const [currentChat, setCurrentChat] = useState([]);
 
   const { user_id, driver_id, room } = route?.params;
 
@@ -100,9 +95,6 @@ const Chat = ({ route }) => {
 
   return (
     <View className="flex-1">
-      {/* <View className="p-2"> */}
-      {/* <ScrollView style={{ flex: 1, padding: 8 }}> */}
-
       {dataChat.length > 0 ? (
         <FlatList
           data={dataChat}
@@ -113,30 +105,9 @@ const Chat = ({ route }) => {
         />
       ) : (
         <View className="flex-1 justify-center items-center">
-          <Text>Loading Chat</Text>
+          <Text>Loading Chat...</Text>
         </View>
       )}
-
-
-      {/* <FlatList data={currentChat} renderItem={DataChat} /> */}
-
-      {/* {currentChat.map((message, index) => (
-                <View
-                key={index}
-                style={[
-                    styles.messageContainer,
-                    message.senderModel === "User"
-                    ? styles.userMessage
-                    : styles.otherMessage,
-                ]}
-                >
-                <View style={styles.messageReciver} className="mt-2 ">
-                <Text className="text-white">{message.content}</Text>
-                </View>
-                </View>
-            ))} */}
-      {/* </ScrollView> */}
-      {/* </View> */}
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
