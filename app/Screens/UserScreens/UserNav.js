@@ -17,6 +17,7 @@ import EditProfile from "./EditProfile";
 import Notifications from "./Notifications";
 import Chat from "./Chat";
 import HeaderTitle from "../../ReusableTools/HeaderTitle";
+import CancelRide from "./CancelRide";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -101,11 +102,6 @@ const UserNav = () => {
         />
 
         <Drawer.Screen
-          name={`${i18n.t("userNav.screens.chat")}`}
-          component={Chat}
-        />
-
-        <Drawer.Screen
           name={`${i18n.t("userNav.screens.editProfile")}`}
           component={EditProfile}
           options={{
@@ -166,6 +162,12 @@ const UserNav = () => {
       <Stack.Screen
         name={`${i18n.t("userNav.screens.chat")}`}
         component={Chat}
+      />
+
+      <Stack.Screen
+        name="cancelRide"
+        component={CancelRide}
+        options={{ header: () => <HeaderTitle title={"Where did it go wrong?"} cancel={true} /> }}
       />
     </Stack.Navigator>
   );

@@ -12,7 +12,6 @@ const Chat = ({ route }) => {
 
     const { user_id, driver_id ,room } = route?.params;
 
-
     useEffect(() => {
         if (room) {
             Socket.emit("join_room", room);

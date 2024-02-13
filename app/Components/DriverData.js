@@ -80,7 +80,11 @@ const DriverData = ({ driver_id, handleShowAutoComplete, destination }) => {
                 console.log("Error getting room:", error);
             });
     }
-
+  
+    const cancelRide = () => {
+    navigation.navigate("cancelRide")
+  }
+    
     return (
         <View className="flex-1 py-5 px-10">
             <View className="flex-row justify-between items-center w-full">
@@ -140,7 +144,7 @@ const DriverData = ({ driver_id, handleShowAutoComplete, destination }) => {
             </View>
 
             <View className="pb-2">
-                <Button text={"Cancel Ride"} cancel={true} />
+                <Button text={"Cancel Ride"} cancel={true} onPress={cancelRide} />
             </View>
         </View>
     );

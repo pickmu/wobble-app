@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const HeaderTitle = ({ title, isDrawer, isChat }) => {
+const HeaderTitle = ({ title, isDrawer, isChat, cancel }) => {
   const navigation = useNavigation();
 
   return (
@@ -25,7 +25,10 @@ const HeaderTitle = ({ title, isDrawer, isChat }) => {
           />
         </TouchableOpacity>
 
-        <View className="bg-headers w-full rounded-r-full py-5 items-center">
+        <View
+          className="bg-headers rounded-r-full py-5 items-center"
+          style={{ width: cancel ? "150%" : "100%" }}
+        >
           <Text className="text-[25px] font-bold">{title}</Text>
         </View>
       </View>
