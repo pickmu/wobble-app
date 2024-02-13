@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-import { colors } from "../../ReusableTools/css";
+import { colors, fonts } from "../../ReusableTools/css";
 import { Button } from "../../ReusableTools/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -47,7 +47,7 @@ const CancelRide = () => {
   };
 
   return (
-    <KeyboardAwareScrollView style={{ flex: 1 }}>
+    <KeyboardAwareScrollView>
       <View style={styles.container}>
         {cancelTexts.map((text, index) => (
           <TouchableOpacity
@@ -78,24 +78,24 @@ const CancelRide = () => {
           numberOfLines={10}
           value={otherText}
           onChangeText={handleTextChange}
-          editable={selectedReasonIndex === cancelTexts.length - 1 }
+          editable={selectedReasonIndex === cancelTexts.length - 1}
         />
-
-        <Button text={"Done"} />
       </View>
+
+      <Button text={"Done"} />
     </KeyboardAwareScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   textOption: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10,
+    marginBottom: 15,
   },
   checkCircle: {
     width: 15,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   text: {
-    fontFamily: "regular",
+    fontFamily: fonts.regular,
     fontSize: 20,
   },
   inputField: {
@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     padding: 10,
     marginBottom: 10,
+    fontSize: 18,
   },
 });
 
