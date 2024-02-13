@@ -74,7 +74,7 @@ const Chat = ({ route }) => {
           receiverModel: driver_id.role,
         };
         Socket.emit("send_message", messageData);
-        setCurrentChat([...currentChat, messageData]);
+        setDataChat([...dataChat, messageData]);
       })
       .catch((erorr) => {
         console.log(erorr);
