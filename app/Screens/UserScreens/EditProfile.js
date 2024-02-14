@@ -300,7 +300,11 @@ const EditProfile = () => {
             </View>
           ) : (
             <View style={styles.imageBorder} className="bg-F2F2F2">
-              <Image source={profile} className="w-[50px] h-[50px]" style={{resizeMode: "contain"}} />
+              <Image
+                source={profile}
+                className="w-[50px] h-[50px]"
+                style={{ resizeMode: "contain" }}
+              />
             </View>
           )}
         </View>
@@ -320,6 +324,7 @@ const EditProfile = () => {
                 error={input.error}
                 onSubmitEditing={input.onSubmitEditing}
                 returnKeyType={input.returnKeyType}
+                isBlue={true}
               />
             );
           })}
@@ -344,7 +349,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    resizeMode: "contain"
+    resizeMode: "contain",
   },
   removeIconContainer: {
     position: "absolute",

@@ -46,7 +46,6 @@ const UserNav = () => {
           },
           drawerActiveBackgroundColor: colors.primary,
           header: () => {
-            console.log("route drawer", route.name);
             return (
               <HeaderTitle
                 title={route.name}
@@ -104,11 +103,6 @@ const UserNav = () => {
         <Drawer.Screen
           name={`${i18n.t("userNav.screens.editProfile")}`}
           component={EditProfile}
-          options={{
-            sceneContainerStyle: {
-              backgroundColor: colors.primary,
-            },
-          }}
         />
       </Drawer.Navigator>
     );
@@ -167,7 +161,11 @@ const UserNav = () => {
       <Stack.Screen
         name="cancelRide"
         component={CancelRide}
-        options={{ header: () => <HeaderTitle title={"Where did it go wrong?"} cancel={true} /> }}
+        options={{
+          header: () => (
+            <HeaderTitle title={"Where did it go wrong?"} cancel={true} />
+          ),
+        }}
       />
     </Stack.Navigator>
   );

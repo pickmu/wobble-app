@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import { colors } from "./css";
 
 export const ReusableInput = React.forwardRef(
   (
@@ -20,13 +21,17 @@ export const ReusableInput = React.forwardRef(
       multiline = false, // Default value is false
       onFocus = () => {}, // Default onFocus handler
       onBlur = () => {}, // Default onBlur handler
+      isBlue
     },
     ref
   ) => {
     return (
       <View style={styles.inputContainer}>
         <View className="pr-2 mr-2" style={styles.square}>
-          <View className="bg-white w-[10px] h-[10px] rotate-45" />
+          <View
+            className="w-[10px] h-[10px] rotate-45"
+            style={{ backgroundColor: isBlue ? colors.primary : "white" }}
+          />
         </View>
         <TextInput
           style={styles.inputField}
