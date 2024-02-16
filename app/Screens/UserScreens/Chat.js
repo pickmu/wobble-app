@@ -12,12 +12,18 @@ import axios from "axios";
 import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import { colors } from "../../ReusableTools/css";
+import { i18nStore } from "../../MobX/I18nStore";
 
 const Chat = ({ route }) => {
   const [dataChat, setDataChat] = useState([]);
+
   const [textMessage, setTextMessage] = useState("");
 
+  const [sending, setSending] = useState(false);
+
   const { user_id, driver_id, room } = route?.params;
+
+  const { i18n } = i18nStore;
 
   useEffect(() => {
     if (room) {
@@ -47,8 +53,10 @@ const Chat = ({ route }) => {
     });
   }, [Socket]);
 
-  function sendMessage() {
-    axios
+  async function sendMessage() {
+    setSending(true);
+
+    await axios
       .post(`${process.env.EXPO_PUBLIC_API_URL}chat/createChat`, {
         sender: user_id._id,
         receiver: driver_id._id,
@@ -57,7 +65,6 @@ const Chat = ({ route }) => {
         receiverModel: driver_id.role,
       })
       .then((res) => {
-        console.log(res.data);
         setTextMessage("");
         const messageData = {
           room,
@@ -69,7 +76,10 @@ const Chat = ({ route }) => {
           receiverModel: driver_id.role,
         };
         Socket.emit("send_message", messageData);
+
         setDataChat([...dataChat, messageData]);
+
+        setSending(false)
       })
       .catch((erorr) => {
         console.log(erorr);
@@ -105,7 +115,7 @@ const Chat = ({ route }) => {
         />
       ) : (
         <View className="flex-1 justify-center items-center">
-          <Text>Loading Chat...</Text>
+          <Text>{i18n.t("chat.loadingChat")}</Text>
         </View>
       )}
 
@@ -121,7 +131,9 @@ const Chat = ({ route }) => {
           placeholder="Type a message..."
         />
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text>Send</Text>
+          <Text className="text-white">
+            {sending ? i18n.t("chat.sending") : i18n.t("chat.send")}
+          </Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </View>

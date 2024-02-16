@@ -1,4 +1,11 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
 
 const DestinationContainer = ({
   handleShowAutoComplete,
@@ -21,12 +28,12 @@ const DestinationContainer = ({
         <Text
           className={`text-[#4048A2] flex-1`}
           style={{ fontSize: driverData ? 15 : 19 }}
-          >
+        >
           Current Location
         </Text>
       </View>
 
-      <View className="border-l-2 border-dashed border-white ml-3">
+      <View className="border-l-2 ml-3" style={styles.dashedBorder}>
         <View className="border-b-[1px] border-white w-[90%] self-end my-4 border-l-2" />
       </View>
 
@@ -58,3 +65,10 @@ const DestinationContainer = ({
 };
 
 export default DestinationContainer;
+
+const styles = StyleSheet.create({
+  dashedBorder: {
+    borderStyle: Platform.OS === "android" ? "dashed" : "solid",
+    borderColor: "white",
+  },
+});

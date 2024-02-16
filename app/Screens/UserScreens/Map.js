@@ -165,9 +165,12 @@ const Map = observer(() => {
 
   useEffect(() => {
     requestLocationPermissions();
+
+    if (!orderNotEnded.message === "All orders are ended") {
+      setHeightComponent(0.502);
+    }
   }, []);
-  console.log("height of the screen is " + height);
-  console.log("height of the component is " + height * heightComponent);
+
   const fetchOrderStatus = async (orderId) => {
     const intervalId = setInterval(async () => {
       try {
@@ -265,9 +268,6 @@ const Map = observer(() => {
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
     };
-    console.log("userPickup", userPickup);
-
-    console.log("destination", destination);
     // mapRef.current?.fitToCoordinates([userPickup, destination], {
     //   edgePadding,
     // });
@@ -380,7 +380,7 @@ const Map = observer(() => {
               { height: animatedHeightComponent },
             ]}
           >
-            {!orderNotEnded.message ? (
+            {!orderNotEnded.message === "All orders are ended" ? (
               <DriverData
                 driver_id={orderNotEnded.driver_id}
                 user_id={orderNotEnded.user_id}

@@ -6,17 +6,16 @@ const Option = ({ onPress, title, icon }) => {
   const isArabic = i18n.locale.includes("ar");
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View
-        className="bg-headers w-[65%] rounded-r-full mb-7"
-        style={styles.shadow}
-      >
-        <View className="flex-row p-4 items-center">
-          {icon}
+    <TouchableOpacity
+      onPress={onPress}
+      style={styles.shadow}
+      className="bg-headers w-[65%] rounded-r-full mb-7"
+    >
+      <View className="flex-row p-4 items-center">
+        {icon}
 
-          <View className="pl-2">
-            <Text className="text-[22px] font-regular">{title}</Text>
-          </View>
+        <View className="pl-2">
+          <Text className="text-[22px] font-regular">{title}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -27,7 +26,7 @@ export default Option;
 
 const styles = StyleSheet.create({
   shadow: {
-    elevation: 5,
+    elevation: 10,
     shadowColor: "black",
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 5 },

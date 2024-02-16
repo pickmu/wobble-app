@@ -10,8 +10,12 @@ import { Entypo } from "@expo/vector-icons";
 import { colors, fonts } from "../../ReusableTools/css";
 import { Button } from "../../ReusableTools/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import axios from "axios";
+import { showToast } from "../../ReusableTools/ShowToast";
 
-const CancelRide = () => {
+const CancelRide = ({ route }) => {
+  const { order_id } = route.params;
+
   const cancelTexts = [
     {
       text: "Pickup took too long",
@@ -44,6 +48,32 @@ const CancelRide = () => {
 
   const handleTextChange = (text) => {
     setOtherText(text);
+  };
+
+  const handleCancelRide = async () => {
+    try {
+      if (!cancelReason) {
+        showToast("error", "Please select a reason");
+        return;
+      }
+
+      const requestData = {
+        status: "Canceled",
+        cancel_reason: cancelReason ? cancelReason : otherText,
+        is_ended: true,
+      };
+
+      const resp = await axios.put(
+        `${process.env.EXPO_PUBLIC_API_URL}/updateOrder/${order_id}`,
+        requestData
+      );
+
+      console.log(resp.data);
+
+      showToast("success", "Your ride has been canceled");
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
@@ -82,7 +112,7 @@ const CancelRide = () => {
         />
       </View>
 
-      <Button text={"Done"} />
+      <Button text={"Done"} onPress={handleCancelRide} />
     </KeyboardAwareScrollView>
   );
 };

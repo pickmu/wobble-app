@@ -1,6 +1,7 @@
 export const translations = {
   en: {
     cancel: "cancel",
+    send: "Send",
     userNav: {
       screens: {
         back: "Back",
@@ -142,9 +143,15 @@ export const translations = {
     map: {
       letsGo: "Let's go",
     },
+    chat: {
+      send: "Send",
+      sending: "Sending",
+      loadingChat: "Loading chat...",
+    }
   },
   ar: {
     cancel: "إلغاء",
+    send: "إرسال",
     userNav: {
       screens: {
         back: "الرجوع",
@@ -288,5 +295,10 @@ export const translations = {
     map: {
       letsGo: "هيا بنا",
     },
+    chat: {
+      send: "إرسال",
+      sending: "جاري الإرسال...",
+      loadingChat: "جارٍ تحميل الدردشة..."
+    }
   },
 };
