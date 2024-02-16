@@ -63,12 +63,10 @@ const CancelRide = ({ route }) => {
         is_ended: true,
       };
 
-      const resp = await axios.put(
+      await axios.put(
         `${process.env.EXPO_PUBLIC_API_URL}/updateOrder/${order_id}`,
         requestData
       );
-
-      console.log(resp.data);
 
       showToast("success", "Your ride has been canceled");
     } catch (error) {

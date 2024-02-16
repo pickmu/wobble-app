@@ -9,6 +9,7 @@ import {
   Image,
   Animated,
   Easing,
+  Platform,
 } from "react-native";
 import { useEffect, useState, useRef } from "react";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
@@ -40,6 +41,8 @@ const Map = observer(() => {
 
   const { userInfo } = authStore;
 
+  const { i18n } = authStore;
+
   const insets = useSafeAreaInsets();
 
   const animatedHeightComponent = useRef(new Animated.Value(height)).current;
@@ -62,7 +65,7 @@ const Map = observer(() => {
 
   const [typeCar, setTypeCar] = useState("");
 
-  const [nearbyDriver, setNearbyDriver] = useState([]);
+  const [nearbyDriver, setNearbyDriver] = useState();
 
   const [isOrderSending, setIsOrderSending] = useState(false);
 
@@ -268,9 +271,13 @@ const Map = observer(() => {
       latitude: currentLocation.latitude,
       longitude: currentLocation.longitude,
     };
-    // mapRef.current?.fitToCoordinates([userPickup, destination], {
-    //   edgePadding,
-    // });
+
+    {
+      Platform.OS === "android" &&
+        mapRef.current?.fitToCoordinates([userPickup, destination], {
+          edgePadding,
+        });
+    }
   };
 
   const onPlaceSelected = async (details) => {
@@ -338,7 +345,7 @@ const Map = observer(() => {
               />
             )}
 
-            {nearbyDriver.length > 0 && (
+            {nearbyDriver?.length > 0 && (
               <Marker
                 coordinate={{
                   latitude: parseFloat(nearbyDriver[0]?.lat),

@@ -1,6 +1,7 @@
 export const translations = {
   en: {
     cancel: "cancel",
+    ok: "Ok",
     send: "Send",
     userNav: {
       screens: {
@@ -151,6 +152,7 @@ export const translations = {
   },
   ar: {
     cancel: "إلغاء",
+    ok: "أوك",
     send: "إرسال",
     userNav: {
       screens: {

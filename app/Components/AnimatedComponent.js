@@ -48,7 +48,7 @@ const AnimatedComponent = ({
   const handlePlaceSelected = async (details) => {
     await onPlaceSelected(details, "destination");
 
-    setHeightComponent(0.5);
+    setHeightComponent(0.48);
 
     setShowAnimatedComponent(false);
 

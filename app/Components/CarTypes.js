@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { useState } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { colors } from "../ReusableTools/css";
@@ -119,6 +126,26 @@ const CarTypes = ({
     await reFetch();
 
     await getGeolocation();
+
+    if (nearbyDriver?.length === 0) {
+      Alert.alert(`Sorry`, `No drivers yet`, [
+        {
+          text: `${i18n?.t("cancel")}`,
+          style: "cancel",
+        },
+        {
+          text: `${i18n.t("ok")}`,
+          onPress: async () => {
+            setIsOrderSending(false);
+
+            setShowCarTypes(true);
+
+            setHeightComponent(0.48)
+          },
+        },
+      ]);
+      return;
+    }
 
     console.log("driver_id", nearbyDriver[0]?.driver_id?._id);
 
