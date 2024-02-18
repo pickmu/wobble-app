@@ -40,11 +40,7 @@ const DriverData = ({
 
   const handleOpenChat = () => {
     createRoomOrGetRoomId();
-    // if (driver_id.phone_number) {
-    //   Linking.openURL(`whatsapp://send?phone=${driver_id.phone_number}`);
-    // } else {
-    //   console.log("WhatsApp number is not available.");
-    // }
+
     navigation.navigate(`${i18n.t("userNav.screens.chat")}`, {
       driver_id: driver_id,
       user_id: userInfo,

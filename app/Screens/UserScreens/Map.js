@@ -170,11 +170,11 @@ const Map = observer(() => {
     requestLocationPermissions();
 
     if (!orderNotEnded.message === "All orders are ended") {
-      setHeightComponent(0.502);
+      setHeightComponent(380);
     }
   }, []);
 
-  const fetchOrderStatus = async (orderId) => {
+  const fetchOrderStatus = async (orderId, currentDriverIndex = 0) => {
     const intervalId = setInterval(async () => {
       try {
         if (orderId) {
@@ -192,7 +192,27 @@ const Map = observer(() => {
             setHeightComponent(380);
 
             setIsOrderAccepted(true);
+          } else if (nearbyDriver?.length >= currentDriverIndex) {
+            // Order not accepted by the current driver, try sending to the next one
+            const nextDriverIndex = currentDriverIndex + 1;
+            const nextDriver = nearbyDriver[nextDriverIndex];
+
+            if (nextDriver) {
+              await axios.put(
+                `${process.env.EXPO_PUBLIC_API_URL}order/updateOrder/${orderId}`,
+                {
+                  driver_id: nearbyDriver[1]?.driver_id?._id,
+                }
+              );
+            }
           } else {
+            clearInterval(intervalId);
+
+            setIsOrderSending(false);
+
+            setShowCarTypes(true);
+
+            setHeightComponent(340);
           }
         }
       } catch (error) {
