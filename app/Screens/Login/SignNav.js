@@ -3,6 +3,7 @@ import { colors, fonts } from "../../ReusableTools/css";
 import { i18nStore } from "../../MobX/I18nStore";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import AccountRecovery from "./AccountRecovery";
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,17 @@ const SignNav = () => {
         name={`${i18n.t("signNav.signUp")}`}
         component={SignUp}
         options={{ headerShown: true }}
+      />
+
+      <Stack.Screen
+        name="recovery"
+        component={AccountRecovery}
+        options={{
+          headerShown: false,
+          cardStyle: {
+            backgroundColor: "white",
+          },
+        }}
       />
     </Stack.Navigator>
   );

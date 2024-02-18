@@ -11,6 +11,7 @@ const DestinationContainer = ({
   handleShowAutoComplete,
   destination,
   driverData,
+  isOrder
 }) => {
   return (
     <View className="bg-[#9EC4F7] py-4 pl-4 self-center rounded-[25px] mt-6 mx-5">
@@ -51,6 +52,7 @@ const DestinationContainer = ({
         <TouchableOpacity
           onPress={handleShowAutoComplete}
           style={{ width: "80%" }}
+          disabled={isOrder}
         >
           <Text
             className={`text-white`}

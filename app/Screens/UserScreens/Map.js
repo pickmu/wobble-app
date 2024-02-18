@@ -73,7 +73,7 @@ const Map = observer(() => {
 
   const [orderData, setOrderData] = useState();
 
-  const [heightComponent, setHeightComponent] = useState(0.4);
+  const [heightComponent, setHeightComponent] = useState(280);
 
   const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
@@ -89,7 +89,7 @@ const Map = observer(() => {
 
   useEffect(() => {
     Animated.timing(animatedHeightComponent, {
-      toValue: height * heightComponent,
+      toValue: heightComponent,
       duration: 500,
       easing: Easing.linear,
       useNativeDriver: false,
@@ -189,7 +189,7 @@ const Map = observer(() => {
 
             setIsOrderSending(false);
 
-            setHeightComponent(0.502);
+            setHeightComponent(380);
 
             setIsOrderAccepted(true);
           } else {

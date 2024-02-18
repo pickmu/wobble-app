@@ -79,7 +79,7 @@ const Chat = ({ route }) => {
 
         setDataChat([...dataChat, messageData]);
 
-        setSending(false)
+        setSending(false);
       })
       .catch((erorr) => {
         console.log(erorr);
@@ -130,6 +130,7 @@ const Chat = ({ route }) => {
           value={textMessage}
           placeholder="Type a message..."
         />
+
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
           <Text className="text-white">
             {sending ? i18n.t("chat.sending") : i18n.t("chat.send")}
@@ -141,6 +142,7 @@ const Chat = ({ route }) => {
 };
 
 export default Chat;
+
 const styles = StyleSheet.create({
   message: {
     backgroundColor: "gray",

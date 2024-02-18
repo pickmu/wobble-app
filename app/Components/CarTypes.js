@@ -117,7 +117,7 @@ const CarTypes = ({
       return;
     }
 
-    setHeightComponent(0.3);
+    setHeightComponent(180);
 
     setShowCarTypes(false);
 
@@ -140,7 +140,7 @@ const CarTypes = ({
 
             setShowCarTypes(true);
 
-            setHeightComponent(0.48)
+            setHeightComponent(340);
           },
         },
       ]);
