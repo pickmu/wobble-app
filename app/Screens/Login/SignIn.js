@@ -115,7 +115,7 @@ const SignIn = ({ navigation, route }) => {
               <View className="h-[1px] bg-white w-[100px]" />
 
               <View className="bg-white w-[5px] h-[5px] rounded-full mx-2" />
-              
+
               <View className="h-[1px] bg-white w-[100px]" />
             </View>
 
@@ -140,9 +140,11 @@ const SignIn = ({ navigation, route }) => {
               isTransparent={true}
             />
 
-            <Text className="text-white text-center my-2 text-base">
-              {`${i18n.t("signInUser.forgotPass")}`}
-            </Text>
+            <TouchableOpacity onPress={()=> navigation.navigate("recovery")}>
+              <Text className="text-white text-center my-2 text-base">
+                {`${i18n.t("signInUser.forgotPass")}`}
+              </Text>
+            </TouchableOpacity>
 
             <View className="flex-row gap-1 items-center justify-center mt-1">
               <TouchableOpacity onPress={() => changeLocale("en")}>
