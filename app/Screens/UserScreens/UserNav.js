@@ -18,6 +18,7 @@ import Notifications from "./Notifications";
 import Chat from "./Chat";
 import HeaderTitle from "../../ReusableTools/HeaderTitle";
 import CancelRide from "./CancelRide";
+import OTP from "./OTP";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -156,6 +157,14 @@ const UserNav = () => {
       <Stack.Screen
         name={`${i18n.t("userNav.screens.chat")}`}
         component={Chat}
+      />
+
+      <Stack.Screen
+        name={`otp`}
+        component={OTP}
+        options={{
+          headerShown: false,
+        }}
       />
 
       <Stack.Screen
