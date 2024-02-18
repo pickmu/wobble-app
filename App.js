@@ -9,6 +9,7 @@ import { observer } from "mobx-react";
 import { View, ActivityIndicator } from "react-native";
 import { colors } from "./app/ReusableTools/css.js";
 import { useFonts } from "expo-font";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default App = observer(() => {
   const { token, loading } = authStore;
@@ -31,12 +32,14 @@ export default App = observer(() => {
   }
 
   return (
-    <NavigationContainer>
-      <StatusBar style="dark" />
-      <I18nProvider>
-        {token ? <UserNav /> : <SignNav />}
-        <Toast />
-      </I18nProvider>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <StatusBar style="dark" />
+        <I18nProvider>
+          {token ? <UserNav /> : <SignNav />}
+          <Toast />
+        </I18nProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 });
