@@ -3,6 +3,7 @@ export const translations = {
     cancel: "cancel",
     ok: "Ok",
     send: "Send",
+    submit: "Submit",
     userNav: {
       screens: {
         back: "Back",
@@ -148,12 +149,20 @@ export const translations = {
       send: "Send",
       sending: "Sending",
       loadingChat: "Loading chat...",
-    }
+    },
+    otp: {
+      enterCode: "Enter Code",
+      resendCode: "Resend Code",
+    },
+    accRecovery: {
+      recovery: "Account recovery",
+    },
   },
   ar: {
     cancel: "إلغاء",
     ok: "أوك",
     send: "إرسال",
+    submit: "إرسال",
     userNav: {
       screens: {
         back: "الرجوع",
@@ -300,7 +309,14 @@ export const translations = {
     chat: {
       send: "إرسال",
       sending: "جاري الإرسال...",
-      loadingChat: "جارٍ تحميل الدردشة..."
-    }
+      loadingChat: "جارٍ تحميل الدردشة...",
+    },
+    otp: {
+      enterCode: "أدخل الرمز",
+      resendCode: "إعادة إرسال الرمز",
+    },
+    accRecovery: {
+      recovery: "استرجاع الحساب",
+    },
   },
 };
