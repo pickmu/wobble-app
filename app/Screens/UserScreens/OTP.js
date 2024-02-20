@@ -75,7 +75,7 @@ const OTP = ({ route }) => {
     }
   };
 
-  const handleResend = () => {
+  const handleResend = async () => {
     setResend(true);
   };
 
@@ -89,6 +89,13 @@ const OTP = ({ route }) => {
 
       if (resp.data.otp === otp) {
         setIsLoading(false);
+
+        await axios.post(
+          `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${user_id}`,
+          {
+            has_access: true,
+          }
+        );
 
         if (changePass) {
           navigation.navigate("changePass", {
