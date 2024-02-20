@@ -13,12 +13,12 @@ import Map from "./Map";
 import Rides from "./Rides";
 import Setting from "./Setting";
 import SwitchLang from "./SwitchLang";
-import EditProfile from "./EditProfile";
 import Notifications from "./Notifications";
 import Chat from "./Chat";
 import HeaderTitle from "../../ReusableTools/HeaderTitle";
 import CancelRide from "./CancelRide";
 import OTP from "./OTP";
+import EditProfile from "./EditProfile";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();

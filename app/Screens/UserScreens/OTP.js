@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Image,
   StyleSheet,
@@ -11,19 +11,47 @@ import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
+import axios from "axios";
 
-const OTP = () => {
+const OTP = ({ route }) => {
   const navigation = useNavigation();
 
   const insets = useSafeAreaInsets();
 
   const { i18n } = i18nStore;
 
+  const { phone, user_id } = route.params;
+
   const [focusedInput, setFocusedInput] = useState(0);
 
   const [resend, setResend] = useState(false);
 
   const inputRefs = useRef([]);
+
+  useEffect(() => {
+    const sendWhatsappOtp = async () => {
+      try {
+        let otp = ""; // Initialize otp as an empty string
+
+        for (let i = 0; i < 4; i++) {
+          otp += Math.floor(Math.random() * 10); // Generates a random digit (0-9)
+        }
+
+        await axios.get(
+          `https://www.bestsmsbulk.com/bestsmsbulkapi/common/sendSmsWpAPI.php?username=wobbleapi&password=Wobl45!3&message=${otp}&route=wp&senderid=WOBBLE&destination=${phone}`
+        );
+
+        await axios.patch(
+          `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${user_id}`,
+          {
+            otp: otp,
+          }
+        );
+      } catch (error) {}
+    };
+
+    sendWhatsappOtp();
+  }, [phone]);
 
   const fields = [1, 2, 3, 4];
 

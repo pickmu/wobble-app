@@ -7,12 +7,15 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { i18nStore } from "../../MobX/I18nStore";
 import { Button } from "../../ReusableTools/Button";
 import { colors } from "../../ReusableTools/css";
+import axios from "axios";
+import { showToast } from "../../ReusableTools/ShowToast";
+import Loading from "../../ReusableTools/Loading";
 
 const AccountRecovery = () => {
   const navigation = useNavigation();
@@ -20,6 +23,48 @@ const AccountRecovery = () => {
   const insets = useSafeAreaInsets();
 
   const { i18n } = i18nStore;
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [data, setData] = useState({
+    name: "",
+    phone: "",
+  });
+
+  const CheckUser = async () => {
+    try {
+      setIsLoading(true);
+
+      const resp = await axios.get(
+        `${process.env.EXPO_PUBLIC_API_URL}user/getUserByPhone/${data.phone}`
+      );
+
+      if (resp.data.status === 404) {
+        setIsLoading(false);
+
+        showToast("error", "User not found");
+        return;
+      }
+
+      setIsLoading(false);
+
+      navigation.navigate("otp", { phone: data.phone, user_id: resp.data._id });
+    } catch (error) {
+      console.log("check user", error.message);
+      showToast("error", "User not found");
+    }
+  };
+
+  const handleInputChange = (label, text) => {
+    setData((prevData) => ({
+      ...prevData,
+      [label]: text,
+    }));
+  };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <View className="flex-1">
@@ -50,14 +95,29 @@ const AccountRecovery = () => {
             keyboardVerticalOffset={80}
             style={styles.inputContainer}
           >
-            <TextInput style={styles.input} placeholder="Full Name" />
+            <TextInput
+              style={styles.input}
+              placeholder="Full Name"
+              value={data.name}
+              onChangeText={(text) => handleInputChange("name", text)}
+            />
 
-            <TextInput style={styles.input} placeholder="Phone Number" />
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number"
+              value={data.phone}
+              keyboardType="numeric"
+              onChangeText={(text) => handleInputChange("phone", text)}
+            />
           </KeyboardAvoidingView>
         </View>
 
         <View className="mb-16">
-          <Button text={`${i18n.t("submit")}`} />
+          <Button
+            text={`${i18n.t("submit")}`}
+            onPress={CheckUser}
+            disabled={isLoading}
+          />
         </View>
       </View>
     </View>

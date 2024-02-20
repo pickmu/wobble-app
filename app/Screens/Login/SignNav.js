@@ -4,6 +4,7 @@ import { i18nStore } from "../../MobX/I18nStore";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import AccountRecovery from "./AccountRecovery";
+import OTP from "../UserScreens/OTP";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,17 @@ const SignNav = () => {
       <Stack.Screen
         name="recovery"
         component={AccountRecovery}
+        options={{
+          headerShown: false,
+          cardStyle: {
+            backgroundColor: "white",
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name={`otp`}
+        component={OTP}
         options={{
           headerShown: false,
           cardStyle: {
