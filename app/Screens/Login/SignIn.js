@@ -17,7 +17,7 @@ import { authStore } from "../../MobX/AuthStore";
 import Toast from "react-native-toast-message";
 
 const SignIn = ({ navigation, route }) => {
-  const { login } = authStore;
+  const { login, loginResponse } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
 
   useEffect(() => {
@@ -62,6 +62,14 @@ const SignIn = ({ navigation, route }) => {
         phone_number: data.phone_number,
         password: data.password,
       });
+
+      if (loginResponse.has_access === false) {
+        navigation.navigate("otp", {
+          phone: loginResponse.phone_number,
+          user_id: loginResponse._id,
+          login: true
+        });
+      }
 
       setSubmitting(false);
     } catch (error) {
@@ -140,7 +148,7 @@ const SignIn = ({ navigation, route }) => {
               isTransparent={true}
             />
 
-            <TouchableOpacity onPress={()=> navigation.navigate("recovery")}>
+            <TouchableOpacity onPress={() => navigation.navigate("recovery")}>
               <Text className="text-white text-center my-2 text-base">
                 {`${i18n.t("signInUser.forgotPass")}`}
               </Text>

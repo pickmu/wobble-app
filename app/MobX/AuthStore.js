@@ -8,6 +8,7 @@ class AuthStore {
   userInfo = null;
   token = null;
   loading = false;
+  loginResponse = null;
 
   constructor() {
     makeObservable(this, {
@@ -15,6 +16,7 @@ class AuthStore {
       token: observable,
       loading: observable,
       login: action.bound,
+      loginResponse: observable,
       isLoggedIn: action.bound,
       setLoading: action.bound,
       setUserInfo: action.bound,
@@ -37,6 +39,10 @@ class AuthStore {
     this.loading = value;
   }
 
+  setLoginResponse(value) {
+    this.loginResponse = value;
+  }
+
   async login(data) {
     try {
       this.setLoading(true);
@@ -48,7 +54,13 @@ class AuthStore {
 
       if (resp.data.message === "Login not successful") {
         this.setLoading(false);
+
         showToast("error", resp.data.error);
+        return;
+      }
+
+      if (resp.data.has_access === false) {
+        this.setLoginResponse(resp.data);
         return;
       }
 

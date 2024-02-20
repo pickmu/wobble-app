@@ -13,6 +13,8 @@ import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
 import axios from "axios";
 import { showToast } from "../../ReusableTools/ShowToast";
+import { authStore } from "../../MobX/AuthStore";
+import { observer } from "mobx-react";
 
 const OTP = ({ route }) => {
   const navigation = useNavigation();
@@ -23,7 +25,9 @@ const OTP = ({ route }) => {
 
   const { i18n } = i18nStore;
 
-  const { phone, user_id, changePass } = route.params;
+  const { loginResponse, setUserInfo, setUserToken } = authStore;
+
+  const { phone, user_id, changePass, login } = route.params;
 
   const [focusedInput, setFocusedInput] = useState(0);
 
@@ -90,6 +94,12 @@ const OTP = ({ route }) => {
           navigation.navigate("changePass", {
             user_id: user_id,
           });
+        } else if (login) {
+          setUserInfo(loginResponse.findUser);
+
+          setUserToken(loginResponse.token);
+
+          setIsLoading(false);
         }
       } else {
         setIsLoading(false);
@@ -161,7 +171,7 @@ const OTP = ({ route }) => {
   );
 };
 
-export default OTP;
+export default observer(OTP);
 
 const styles = StyleSheet.create({
   field: {
