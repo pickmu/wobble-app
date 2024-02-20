@@ -151,6 +151,7 @@ export const translations = {
       send: "Send",
       sending: "Sending",
       loadingChat: "Loading chat...",
+      type: "Type your message",
     },
     otp: {
       enterCode: "Enter Code",
@@ -318,6 +319,7 @@ export const translations = {
       send: "إرسال",
       sending: "جاري الإرسال...",
       loadingChat: "جارٍ تحميل الدردشة...",
+      type: "اكتب رسالتك",
     },
     otp: {
       enterCode: "أدخل الرمز",

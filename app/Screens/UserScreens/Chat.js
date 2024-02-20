@@ -11,7 +11,7 @@ import { Socket } from "../../socket/socket";
 import axios from "axios";
 import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
-import { colors } from "../../ReusableTools/css";
+import { colors, fonts } from "../../ReusableTools/css";
 import { i18nStore } from "../../MobX/I18nStore";
 
 const Chat = ({ route }) => {
@@ -105,6 +105,12 @@ const Chat = ({ route }) => {
 
   return (
     <View className="flex-1">
+      <View style={styles.driverData}>
+        <Text className="text-[20px]">
+          {driver_id.first_name} {driver_id.last_name}
+        </Text>
+      </View>
+
       {dataChat.length > 0 ? (
         <FlatList
           data={dataChat}
@@ -128,7 +134,7 @@ const Chat = ({ route }) => {
           style={styles.inputField}
           onChangeText={(text) => setTextMessage(text)}
           value={textMessage}
-          placeholder="Type a message..."
+          placeholder={i18n.t("chat.type")}
         />
 
         <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
@@ -171,14 +177,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 8,
     paddingVertical: 5,
-    borderTopWidth: 1,
-    borderTopColor: colors.primary,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    borderRadius: 15,
   },
   inputField: {
     flex: 1,
     height: 40,
-    borderWidth: 1,
-    borderColor: colors.primary,
     borderRadius: 20,
     paddingHorizontal: 10,
     marginRight: 8,
@@ -187,5 +194,11 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.primary,
     borderRadius: 20,
+  },
+  driverData: {
+    backgroundColor: colors.lightBlue,
+    marginTop: 10,
+    padding: 5,
+    fontFamily: fonts.regular,
   },
 });
