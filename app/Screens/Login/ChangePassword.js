@@ -17,47 +17,58 @@ import axios from "axios";
 import { showToast } from "../../ReusableTools/ShowToast";
 import Loading from "../../ReusableTools/Loading";
 
-const AccountRecovery = () => {
+const ChangePassword = ({ route }) => {
   const navigation = useNavigation();
 
   const insets = useSafeAreaInsets();
+
+  const { user_id } = route.params;
 
   const { i18n } = i18nStore;
 
   const [isLoading, setIsLoading] = useState(false);
 
   const [data, setData] = useState({
-    name: "",
-    phone: "",
+    password: "",
+    confirm_password: "",
   });
 
-  const CheckUser = async () => {
+  const ChangeUserPassword = async () => {
     try {
-      if (!data.name || !data.phone) {
+      if (!data.password || !data.confirm_password) {
         showToast("error", `${i18n.t("toast.error.emptyFields")}`);
+        return;
+      }
+
+      if (data.password.trim() !== "") {
+        // Validate password format
+        const passwordRegex = /^(?=.*[A-Za-z\d]).{8,}$/;
+        if (!passwordRegex.test(data.password)) {
+          showToast("error", `${i18n.t("signUpUser.error.password.invalid")}`);
+
+          return;
+        }
+      }
+
+      if (data.password !== data.confirm_password) {
+        showToast("error", `${i18n.t("toast.error.passwordNotMatch")}`);
         return;
       }
 
       setIsLoading(true);
 
-      const resp = await axios.get(
-        `${process.env.EXPO_PUBLIC_API_URL}user/getUserByPhone/${data.phone}`
+      await axios.post(
+        `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${user_id}`,
+        {
+          password: data.password,
+        }
       );
-
-      if (resp.data.status === 404) {
-        setIsLoading(false);
-
-        showToast("error", "User not found");
-        return;
-      }
 
       setIsLoading(false);
 
-      navigation.navigate("otp", {
-        phone: data.phone,
-        user_id: resp.data._id,
-        changePass: true,
-      });
+      showToast("success", `${i18n.t("toast.success.changePass")}`);
+
+      navigation.navigate(`${i18n.t("signNav.signIn")}`);
     } catch (error) {
       console.log("check user", error.message);
       showToast("error", "User not found");
@@ -106,17 +117,18 @@ const AccountRecovery = () => {
           >
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
-              value={data.name}
-              onChangeText={(text) => handleInputChange("name", text)}
+              placeholder="New Password"
+              value={data.password}
+              onChangeText={(text) => handleInputChange("password", text)}
             />
 
             <TextInput
               style={styles.input}
-              placeholder="Phone Number"
-              value={data.phone}
-              keyboardType="numeric"
-              onChangeText={(text) => handleInputChange("phone", text)}
+              placeholder="confirm Password"
+              value={data.confirm_password}
+              onChangeText={(text) =>
+                handleInputChange("confirm_password", text)
+              }
             />
           </KeyboardAvoidingView>
         </View>
@@ -124,7 +136,7 @@ const AccountRecovery = () => {
         <View className="mb-16">
           <Button
             text={`${i18n.t("submit")}`}
-            onPress={CheckUser}
+            onPress={ChangeUserPassword}
             disabled={isLoading}
           />
         </View>
@@ -133,7 +145,7 @@ const AccountRecovery = () => {
   );
 };
 
-export default AccountRecovery;
+export default ChangePassword;
 
 const styles = StyleSheet.create({
   input: {

@@ -12,42 +12,49 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
 import axios from "axios";
+import { showToast } from "../../ReusableTools/ShowToast";
 
 const OTP = ({ route }) => {
   const navigation = useNavigation();
 
   const insets = useSafeAreaInsets();
 
+  let otp = "";
+
   const { i18n } = i18nStore;
 
-  const { phone, user_id } = route.params;
+  const { phone, user_id, changePass } = route.params;
 
   const [focusedInput, setFocusedInput] = useState(0);
 
   const [resend, setResend] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputRefs = useRef([]);
 
   useEffect(() => {
     const sendWhatsappOtp = async () => {
       try {
-        let otp = ""; // Initialize otp as an empty string
-
         for (let i = 0; i < 4; i++) {
-          otp += Math.floor(Math.random() * 10); // Generates a random digit (0-9)
+          otp += Math.floor(Math.random() * 10);
         }
 
-        await axios.get(
+        const resp = await axios.get(
           `https://www.bestsmsbulk.com/bestsmsbulkapi/common/sendSmsWpAPI.php?username=wobbleapi&password=Wobl45!3&message=${otp}&route=wp&senderid=WOBBLE&destination=${phone}`
         );
 
-        await axios.patch(
+        console.log("best Mulkk response", resp.data);
+
+        await axios.post(
           `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${user_id}`,
           {
             otp: otp,
           }
         );
-      } catch (error) {}
+      } catch (error) {
+        console.log("sendWhatsappOtp error: " + error.message);
+      }
     };
 
     sendWhatsappOtp();
@@ -66,6 +73,32 @@ const OTP = ({ route }) => {
 
   const handleResend = () => {
     setResend(true);
+  };
+
+  const checkOtpValidation = async () => {
+    try {
+      setIsLoading(true);
+
+      const resp = await axios.get(
+        `${process.env.EXPO_PUBLIC_API_URL}user/getUserByPhone/${phone}`
+      );
+
+      if (resp.data.otp === otp) {
+        setIsLoading(false);
+
+        if (changePass) {
+          navigation.navigate("changePass", {
+            user_id: user_id,
+          });
+        }
+      } else {
+        setIsLoading(false);
+
+        showToast("error", "Invalid otp");
+      }
+    } catch (error) {
+      console.log("checkOtpValidation error", error.message);
+    }
   };
 
   return (
@@ -114,12 +147,14 @@ const OTP = ({ route }) => {
           </View>
 
           <TouchableOpacity onPress={handleResend}>
-            <Text className="text-Primary">{i18n.t("otp.resendCode")}</Text>
+            <Text className="text-Primary text-center mt-5">
+              {i18n.t("otp.resendCode")}
+            </Text>
           </TouchableOpacity>
         </View>
 
         <View className="mb-16">
-          <Button text={`${i18n.t("submit")}`} />
+          <Button text={`${i18n.t("submit")}`} onPress={checkOtpValidation} />
         </View>
       </View>
     </View>

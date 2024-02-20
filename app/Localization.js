@@ -41,9 +41,11 @@ export const translations = {
         emptyFields: "Please fill all fields",
         submissionFailedTitle: "Form submission failed",
         submissionFailedSubTitle: "Please check the errors and try again.",
+        passwordNotMatch: "Passwords do not match",
       },
       success: {
         registered: "Registered successfully",
+        changePass: "You password has been updated successfully",
       },
       info: {
         noChanges: "No changes were made",
@@ -201,9 +203,11 @@ export const translations = {
         submissionFailedTitle: "فشل الإرسال",
         submissionFailedSubTitle:
           "الرجاء التأكد من الأخطاء وإعادة الإرسال مجدداً",
+        passwordNotMatch: "كلمة المرور غير مطابقة",
       },
       success: {
         registered: "تم إنشاء الحساب",
+        changePass: "لقد تم تحديث كلمة المرور الخاصة بك بنجاح",
       },
       info: {
         noChanges: "لم يتم إجراء أية تغييرات",
