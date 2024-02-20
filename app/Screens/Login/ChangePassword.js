@@ -117,14 +117,14 @@ const ChangePassword = ({ route }) => {
           >
             <TextInput
               style={styles.input}
-              placeholder="New Password"
+              placeholder={i18n.t("accRecovery.newPass")}
               value={data.password}
               onChangeText={(text) => handleInputChange("password", text)}
             />
 
             <TextInput
               style={styles.input}
-              placeholder="confirm Password"
+              placeholder={i18n.t("accRecovery.confirmPass")}
               value={data.confirm_password}
               onChangeText={(text) =>
                 handleInputChange("confirm_password", text)

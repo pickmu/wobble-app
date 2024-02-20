@@ -106,14 +106,14 @@ const AccountRecovery = () => {
           >
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
+              placeholder={i18n.t("accRecovery.fullName")}
               value={data.name}
               onChangeText={(text) => handleInputChange("name", text)}
             />
 
             <TextInput
               style={styles.input}
-              placeholder="Phone Number"
+              placeholder={i18n.t("accRecovery.phone")}
               value={data.phone}
               keyboardType="numeric"
               onChangeText={(text) => handleInputChange("phone", text)}

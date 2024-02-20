@@ -158,6 +158,10 @@ export const translations = {
     },
     accRecovery: {
       recovery: "Account recovery",
+      fullName: "Full Name",
+      phone: "Phone Number",
+      newPass: "New Password",
+      confirmPass: "Confirm Password",
     },
   },
   ar: {
@@ -321,6 +325,10 @@ export const translations = {
     },
     accRecovery: {
       recovery: "استرجاع الحساب",
+      fullName: "الاسم الكامل",
+      phone: "رقم الهاتف",
+      newPass: "كلمة السر الجديدة",
+      confirmPass: "تأكيد كلمة السر",
     },
   },
 };
