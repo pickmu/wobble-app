@@ -56,10 +56,13 @@ const SignIn = ({ navigation, route }) => {
         return;
       }
 
+      // Remove spaces and other non-digit characters from the phone number
+      const formattedPhoneNumber = data.phone_number.replace(/\D/g, "");
+
       setSubmitting(true);
 
       await login({
-        phone_number: data.phone_number,
+        phone_number: formattedPhoneNumber,
         password: data.password,
       });
 
@@ -67,7 +70,7 @@ const SignIn = ({ navigation, route }) => {
         navigation.navigate("otp", {
           phone: loginResponse.phone_number,
           user_id: loginResponse._id,
-          login: true
+          login: true,
         });
       }
 

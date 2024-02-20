@@ -300,9 +300,10 @@ const SignUp = ({ navigation }) => {
         return;
       }
 
-      navigation.navigate(`${i18n.t("signNav.signIn")}`, {
+      navigation.navigate(`otp`, {
         phone: data.phone,
-        password: data.password,
+        user_id: resp.data._id,
+        login: true,
       });
 
       Toast.show({
