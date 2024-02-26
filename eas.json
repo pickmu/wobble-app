@@ -6,16 +6,24 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development"
+      "channel": "development",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://back.wobble-ah.com/",
+        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyArAvLNgfWTq07Dkdnwdwa9F2f9hYCi0EY"
+      }
     },
     "preview": {
       "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      },
       "channel": "preview"
     },
     "production": {
       "channel": "production",
-      "android": {
-        "buildType": "apk"
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://back.wobble-ah.com/",
+        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyArAvLNgfWTq07Dkdnwdwa9F2f9hYCi0EY"
       }
     }
   },

@@ -13,20 +13,16 @@ const Setting = () => {
   const options = [
     {
       title: `${i18n.t("setting.about")}`,
-      icon: (
-        <AntDesign name="exclamationcircleo" size={30} color="#7a7979" />
-      ),
+      icon: <AntDesign name="exclamationcircleo" size={30} color="#7a7979" />,
       onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.switchLang")}`);
+        navigation.navigate(`${i18n.t("userNav.screens.about")}`);
       },
     },
     {
       title: `${i18n.t("setting.support")}`,
-      icon: (
-        <AntDesign name="questioncircleo" size={30} color="#7a7979" />
-      ),
+      icon: <AntDesign name="questioncircleo" size={30} color="#7a7979" />,
       onPress: () => {
-        navigation.navigate(`${i18n.t("userNav.screens.switchLang")}`);
+        navigation.navigate(`${i18n.t("userNav.screens.support")}`);
       },
     },
     {

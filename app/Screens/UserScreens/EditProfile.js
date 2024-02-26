@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 import { authStore } from "../../MobX/AuthStore";
 import { Button } from "../../ReusableTools/Button";
@@ -15,7 +15,7 @@ import { colors } from "../../ReusableTools/css";
 const EditProfile = () => {
   const { i18n } = i18nStore;
 
-  const { userInfo } = authStore;
+  const { userInfo, setUserInfo } = authStore;
 
   const [imageFromBack, setImageFromBack] = useState(null);
 
@@ -41,10 +41,10 @@ const EditProfile = () => {
   });
 
   useEffect(() => {
-    if (userInfo?.image) {
+    if (userInfo?.image !== "null") {
       setImageFromBack(userInfo.image);
     }
-  }, []);
+  }, [userInfo]);
 
   const firstNameRef = useRef();
   const lastNameRef = useRef();
@@ -227,9 +227,15 @@ const EditProfile = () => {
       requestData.append("password", data.password.trim());
 
       if (imageData) {
+        const currentDate = new Date();
+        const timestamp = currentDate.getTime(); // Get current timestamp in milliseconds
+
+        const fileName = `image_${timestamp}.jpg`;
+
         requestData.append(`image`, {
           uri: imageData[0].uri,
           type: "image/jpeg",
+          name: fileName,
         });
       } else if (!imageFromBack && !imageData) {
         requestData.append(`image`, null);
@@ -241,10 +247,13 @@ const EditProfile = () => {
       );
 
       setSaving(false);
+
       Toast.show({
         type: "success",
         text1: `${i18n.t("editProfile.dataSaved")}`,
       });
+
+      setUserInfo(resp.data);
     } catch (error) {
       console.log("handel edit error", error);
       Toast.show({
@@ -279,7 +288,9 @@ const EditProfile = () => {
     >
       <View className="m-4 ">
         <View className="flex-row items-center justify-center gap-5 mb-3">
-          {imageFromBack !== null || imageData !== null ? (
+          {imageFromBack !== "null" ||
+          imageData !== "null" ||
+          userInfo?.image !== "null" ? (
             <View style={styles.imageBorder}>
               <Image
                 source={{
@@ -300,6 +311,13 @@ const EditProfile = () => {
             </View>
           ) : (
             <View style={styles.imageBorder} className="bg-F2F2F2">
+              <TouchableOpacity
+                onPress={handleSelectImage}
+                style={styles.removeIconContainer}
+                disabled={saving}
+              >
+                <AntDesign name="plus" size={24} color="white" />
+              </TouchableOpacity>
               <Image
                 source={profile}
                 className="w-[50px] h-[50px]"
@@ -309,7 +327,7 @@ const EditProfile = () => {
           )}
         </View>
 
-        <View className="">
+        <View>
           {inputFields.map((input, index) => {
             return (
               <ReusableInput
@@ -350,6 +368,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "contain",
+    borderRadius: 100,
   },
   removeIconContainer: {
     position: "absolute",

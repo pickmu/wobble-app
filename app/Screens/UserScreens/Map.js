@@ -28,6 +28,7 @@ import SearchingForDriver from "../../Components/SearchingForDriver";
 import axios from "axios";
 import DriverData from "../../Components/DriverData";
 import { authStore } from "../../MobX/AuthStore";
+import { i18nStore } from "../../MobX/I18nStore";
 
 const { width, height } = Dimensions.get("window");
 
@@ -41,7 +42,7 @@ const Map = observer(() => {
 
   const { userInfo } = authStore;
 
-  const { i18n } = authStore;
+  const { i18n } = i18nStore;
 
   const insets = useSafeAreaInsets();
 
@@ -226,7 +227,7 @@ const Map = observer(() => {
     return (
       <View style={styles.indicator}>
         <ActivityIndicator size={"large"} color={colors.primaryYellow} />
-        <Text>Loading map...</Text>
+        <Text>{i18n.t("map.loadingMap")}</Text>
       </View>
     );
   }
@@ -235,7 +236,7 @@ const Map = observer(() => {
     // Handle the case where location permission is not granted
     return (
       <View style={styles.indicator}>
-        <Text>Location permission not granted</Text>
+        <Text>{i18n.t("map.notGranted")}</Text>
       </View>
     );
   }
@@ -245,7 +246,7 @@ const Map = observer(() => {
     return (
       <View style={styles.indicator}>
         <ActivityIndicator size={"large"} color={colors.primary} />
-        <Text>Fetching location</Text>
+        <Text>{i18n.t("map.fetchLocation")}</Text>
       </View>
     );
   }
@@ -365,7 +366,7 @@ const Map = observer(() => {
               />
             )}
 
-            {nearbyDriver?.length > 0 && (
+            {isOrderAccepted && nearbyDriver?.length > 0 && (
               <Marker
                 coordinate={{
                   latitude: parseFloat(nearbyDriver[0]?.lat),
@@ -411,6 +412,7 @@ const Map = observer(() => {
               <DriverData
                 driver_id={orderNotEnded.driver_id}
                 user_id={orderNotEnded.user_id}
+                _id={orderNotEnded._id}
                 handleShowAutoComplete={handleShowAutoComplete}
                 destination={{ name: orderNotEnded?.to }}
               />

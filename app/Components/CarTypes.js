@@ -33,6 +33,8 @@ const CarTypes = ({
 
   const [selectedCard, setSelectedCard] = useState(null);
 
+  const [selectedType, setSelectedType] = useState("taxi");
+
   let city;
 
   const getGeolocation = async () => {
@@ -48,10 +50,7 @@ const CarTypes = ({
       }
 
       const responseJson = await response.json();
-      // console.log(
-      //   "ADDRESS GEOCODE is BACK!! => ",
-      //   JSON.stringify(responseJson.results[0].address_components[1].long_name)
-      // );
+
       city = JSON.stringify(
         responseJson.results[0].address_components[1].long_name
       );
@@ -60,29 +59,11 @@ const CarTypes = ({
     }
   };
 
-  const carTypes = [
+  const taxiTypes = [
     {
       price: "7",
       imagePath: require("../Images/Icons/car.png"),
       type: "Car",
-      duration: "7",
-    },
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/luxurycar.png"),
-      type: "Comfort",
-      duration: "7",
-    },
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/bus.png"),
-      type: "Van",
-      duration: "7",
-    },
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/bus.png"),
-      type: "Bus",
       duration: "7",
     },
     {
@@ -97,12 +78,27 @@ const CarTypes = ({
       type: "TukTuk",
       duration: "7",
     },
-    // {
-    //   price: "7",
-    //   imagePath: require("../Images/Icons/bike.png"),
-    //   type: "Bike",
-    //   duration: "7",
-    // },
+  ];
+
+  const deliveryTypes = [
+    {
+      price: "7",
+      imagePath: require("../Images/Icons/bike.png"),
+      type: "Bike",
+      duration: "7",
+    },
+    {
+      price: "7",
+      imagePath: require("../Images/Icons/moto.png"),
+      type: "Moto",
+      duration: "7",
+    },
+    {
+      price: "7",
+      imagePath: require("../Images/Icons/335071.png"),
+      type: "TukTuk",
+      duration: "7",
+    },
   ];
 
   const handleCardPress = (index, type) => {
@@ -147,8 +143,6 @@ const CarTypes = ({
       return;
     }
 
-    console.log("driver_id", nearbyDriver[0]?.driver_id?._id);
-
     const requestData = {
       user_id: userInfo?._id,
       driver_id: nearbyDriver[0]?.driver_id?._id,
@@ -177,48 +171,66 @@ const CarTypes = ({
     }
   };
 
+  const carTypes = selectedType === "taxi" ? taxiTypes : deliveryTypes;
+
   return (
-    <View style={styles.container}>
-      {carTypes.map((car, index) => (
-        <TouchableOpacity
-          key={index}
-          style={[
-            styles.card,
-            selectedCard === index && {
-              shadowColor: colors.yellow,
-              elevation: 10,
-            },
-          ]}
-          onPress={() => handleCardPress(index, car.type)}
-        >
-          <View
-            style={[
-              styles.checkContainer,
-              selectedCard === index && { backgroundColor: colors.yellow },
-            ]}
-          >
-            {selectedCard === index && (
-              <Entypo name="check" size={10} color="black" />
-            )}
-          </View>
-
-          <Text style={styles.price}>${car.price}</Text>
-
-          <Image source={car.imagePath} style={styles.image} />
-
-          <Text style={styles.title} className="text-[10px] font-regular">
-            Wobble {car.type}
+    <>
+      <View className="flex-row justify-between pt-2 px-10">
+        <TouchableOpacity onPress={() => setSelectedType("taxi")}>
+          <Text style={selectedType === "taxi" && styles.selectedType}>
+            Taxi
           </Text>
-          <Text>{car.duration} min</Text>
         </TouchableOpacity>
-      ))}
 
-      <Button
-        text={i18n.t("map.letsGo")}
-        cars={true}
-        onPress={handleSendOrder}
-      />
-    </View>
+        <TouchableOpacity onPress={() => setSelectedType("delivery")}>
+          <Text style={selectedType === "delivery" && styles.selectedType}>
+            Delivery
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.container}>
+        {carTypes.map((car, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.card,
+              selectedCard === index && {
+                shadowColor: colors.yellow,
+                elevation: 10,
+              },
+            ]}
+            onPress={() => handleCardPress(index, car.type)}
+          >
+            <View
+              style={[
+                styles.checkContainer,
+                selectedCard === index && { backgroundColor: colors.yellow },
+              ]}
+            >
+              {selectedCard === index && (
+                <Entypo name="check" size={10} color="black" />
+              )}
+            </View>
+
+            <Text style={styles.price}>${car.price}</Text>
+
+            <Image source={car.imagePath} style={styles.image} />
+
+            <Text style={styles.title} className="text-[10px] font-regular">
+              Wobble {car.type}
+            </Text>
+            <Text>{car.duration} min</Text>
+          </TouchableOpacity>
+        ))}
+
+        <Button
+          text={i18n.t("map.letsGo")}
+          cars={true}
+          onPress={handleSendOrder}
+        />
+      </View>
+    </>
   );
 };
 
@@ -263,5 +275,9 @@ const styles = StyleSheet.create({
     width: 70,
     height: 40,
     resizeMode: "contain",
+  },
+  selectedType: {
+    color: colors.primary,
+    textDecorationLine: "underline",
   },
 });

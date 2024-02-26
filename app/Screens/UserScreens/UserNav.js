@@ -19,6 +19,8 @@ import HeaderTitle from "../../ReusableTools/HeaderTitle";
 import CancelRide from "./CancelRide";
 import OTP from "./OTP";
 import EditProfile from "./EditProfile";
+import About from "./About";
+import Support from "./Support";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -126,8 +128,7 @@ const UserNav = () => {
         header: () => {
           return (
             <HeaderTitle
-              title={route.params?.headerTitle || route.name}
-              route={route.name}
+              title={route.name}
               isChat={
                 route.name === `${i18n.t("userNav.screens.chat")}`
                   ? true
@@ -166,6 +167,10 @@ const UserNav = () => {
           headerShown: false,
         }}
       />
+
+      <Stack.Screen name={`${i18n.t("userNav.screens.about")}`} component={About} />
+
+      <Stack.Screen name={`${i18n.t("userNav.screens.support")}`} component={Support} />
 
       <Stack.Screen
         name="cancelRide"

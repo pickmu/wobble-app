@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "649791989045",
+    "project_id": "wobble-1be07",
+    "storage_bucket": "wobble-1be07.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649791989045:android:ca30518f238741f477187c",
+        "android_client_info": {
+          "package_name": "com.pickmeup01.Wobble"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBejEcBCaF9zaDasljyQU3U_h4e03Ac6yQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

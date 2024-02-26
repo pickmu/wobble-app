@@ -76,6 +76,7 @@ const SignIn = ({ navigation, route }) => {
 
       setSubmitting(false);
     } catch (error) {
+      setSubmitting(false);
       console.log("handel submit sign up error", error);
       Toast.show({
         type: "error",
@@ -141,11 +142,7 @@ const SignIn = ({ navigation, route }) => {
             />
 
             <Button
-              text={
-                submitting
-                  ? `${i18n.t("signUpUser.button.submitting")}`
-                  : `${i18n.t("signInUser.signUp")}`
-              }
+              text={`${i18n.t("signInUser.signUp")}`}
               onPress={() => navigation.navigate(`${i18n.t("signNav.signUp")}`)}
               disabled={submitting}
               isTransparent={true}

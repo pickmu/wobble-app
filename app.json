@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Wobble Taxi",
+    "name": "Wobble",
     "slug": "Wobble-Taxi",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,14 +14,18 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.pickmeup01.Wobble"
+      "bundleIdentifier": "com.pickmeup01.Wobble",
+      "infoPlist": {
+        "ExpoLocalization_supportsRTL": true
+      }
     },
     "android": {
       "package": "com.pickmeup01.Wobble",
+      "versionCode": 2,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#3886EF"
       }
     },
     "web": {
@@ -29,15 +33,17 @@
     },
     "plugins": ["expo-localization"],
     "extra": {
+      "supportsRTL": true,
       "eas": {
-        "projectId": "1d95fc57-7bae-4f67-98f7-8e0b63cf9d28"
+        "projectId": "b6f27941-5ae8-479e-9589-015c3b1f13fe"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/1d95fc57-7bae-4f67-98f7-8e0b63cf9d28"
-    }
+      "url": "https://u.expo.dev/b6f27941-5ae8-479e-9589-015c3b1f13fe"
+    },
+    "owner": "pickmeup01"
   }
 }

@@ -21,37 +21,39 @@ export const ReusableInput = React.forwardRef(
       multiline = false, // Default value is false
       onFocus = () => {}, // Default onFocus handler
       onBlur = () => {}, // Default onBlur handler
-      isBlue
+      isBlue,
     },
     ref
   ) => {
     return (
       <View style={styles.inputContainer}>
-        <View className="pr-2 mr-2" style={styles.square}>
-          <View
-            className="w-[10px] h-[10px] rotate-45"
-            style={{ backgroundColor: isBlue ? colors.primary : "white" }}
+        <View className="flex-row">
+          <View className="pr-2 mr-2" style={styles.square}>
+            <View
+              className="w-[10px] h-[10px] rotate-45"
+              style={{ backgroundColor: isBlue ? colors.primary : "white" }}
+            />
+          </View>
+          <TextInput
+            style={styles.inputField}
+            ref={ref}
+            value={value}
+            keyboardType={keyboardType}
+            maxLength={maxLength}
+            secureTextEntry={secureTextEntry}
+            placeholder={placeholder}
+            returnKeyType={returnKeyType}
+            onChangeText={onChangeText}
+            onSubmitEditing={onSubmitEditing}
+            autoCapitalize={autoCapitalize}
+            clearButtonMode={clearButtonMode}
+            onKeyPress={onKeyPress}
+            editable={editable}
+            multiline={multiline}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         </View>
-        <TextInput
-          style={styles.inputField}
-          ref={ref}
-          value={value}
-          keyboardType={keyboardType}
-          maxLength={maxLength}
-          secureTextEntry={secureTextEntry}
-          placeholder={placeholder}
-          returnKeyType={returnKeyType}
-          onChangeText={onChangeText}
-          onSubmitEditing={onSubmitEditing}
-          autoCapitalize={autoCapitalize}
-          clearButtonMode={clearButtonMode}
-          onKeyPress={onKeyPress}
-          editable={editable}
-          multiline={multiline}
-          onFocus={onFocus}
-          onBlur={onBlur}
-        />
         {error && <Text style={styles.error}>{error}</Text>}
       </View>
     );
@@ -61,7 +63,6 @@ export const ReusableInput = React.forwardRef(
 const styles = StyleSheet.create({
   inputContainer: {
     marginBottom: 20,
-    flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 15,
   },

@@ -14,6 +14,8 @@ export const translations = {
         editProfile: "Edit Profile",
         notifications: "Notifications",
         chat: "Chat",
+        about: "About",
+        support: "Support",
       },
       homeTitle: "Book a Taxi",
     },
@@ -45,7 +47,7 @@ export const translations = {
       },
       success: {
         registered: "Registered successfully",
-        changePass: "You password has been updated successfully",
+        changePass: "Your password has been updated successfully",
       },
       info: {
         noChanges: "No changes were made",
@@ -146,6 +148,9 @@ export const translations = {
     },
     map: {
       letsGo: "Let's go",
+      fetchLocation: "Fetching location",
+      loadingMap: "Loading map...",
+      notGranted: "Location permission not granted",
     },
     chat: {
       send: "Send",
@@ -164,6 +169,17 @@ export const translations = {
       newPass: "New Password",
       confirmPass: "Confirm Password",
     },
+    about:
+      " Experience top-notch taxi and delivery services with Wobble. Easy to use, affordable prices, and available nationwide services in the whole country of Lebanon. (For customers) Join our vibrant community with zero commissions and flexible rules. Simply pay the monthly fee to activate your account and get an access to receive orders from customers. (For drivers who would like to have a job in Wobble) Welcome to the Wobble community  Where smooth rides await !",
+    support: {
+      contact: "Contact Us:",
+      phone: "Phone Number:",
+      insta: "Instagram:",
+    },
+    carTypes: {
+      taxi: "Taxi",
+      delivery: "Delivery",
+    },
   },
   ar: {
     cancel: "إلغاء",
@@ -180,6 +196,8 @@ export const translations = {
         editProfile: "تعديل الملف الشخصي",
         notifications: "الإشعارات",
         chat: "الدردشة",
+        about: "حول التطبيق",
+        support: "الدعم",
       },
       homeTitle: "اطلب تاكسي",
     },
@@ -314,6 +332,9 @@ export const translations = {
     },
     map: {
       letsGo: "هيا بنا",
+      fetchLocation: "جارٍ تحديد الموقع",
+      loadingMap: "جارٍ تحميل الخريطة...",
+      notGranted: "لم يتم منح إذن تحديد الموقع",
     },
     chat: {
       send: "إرسال",
@@ -331,6 +352,17 @@ export const translations = {
       phone: "رقم الهاتف",
       newPass: "كلمة السر الجديدة",
       confirmPass: "تأكيد كلمة السر",
+    },
+    about:
+      "استمتع بتجربة خدمات سيارات الأجرة والتوصيل من الدرجة الأولى مع Wobble. سهلة ل  الاستخدام والأسعار المعقولة والخدمات المتاحة على المستوى الوطني بشكل عام  بلد لبنان. (للعملاء) انضم إلى مجتمعنا النابض بالحياة مع الصفر اللجان والقواعد المرنة. ما عليك سوى دفع الرسوم الشهرية للتفعيل حسابك والحصول على إمكانية الوصول لتلقي الطلبات من العملاء. (ل السائقون الذين يرغبون في الحصول على وظيفة في Wobble) مرحبًا بكم في Wobble المجتمع حيث تنتظر الرحلات السلسة!",
+    support: {
+      contact: "تواصل معنا:",
+      phone: "رقم الهاتف:",
+      insta: "انتسغرام:",
+    },
+    carTypes: {
+      taxi: "تاكسي",
+      delivery: "خدمة توصيل",
     },
   },
 };

@@ -111,11 +111,22 @@ const DriverData = ({
 
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-3">
-          <View style={styles.imageBorder}>
+          <View
+            style={[
+              styles.imageBorder,
+              { padding: driver_id?.image.includes("uploads") ? 5 : 10 },
+            ]}
+          >
             <Image
-              source={require("../Images/Icons/profilee.png")}
+              source={
+                driver_id?.image.includes("uploads")
+                  ? {
+                      uri: `${process.env.EXPO_PUBLIC_API_URL}${driver_id?.image}`,
+                    }
+                  : require("../Images/Icons/profilee.png")
+              }
               style={{ resizeMode: "contain" }}
-              className="w-full h-full"
+              className="w-full h-full rounded-full"
             />
           </View>
 
@@ -152,7 +163,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 70,
     height: 70,
-    padding: 10,
     borderColor: colors.primary,
     borderRadius: 35,
     flexDirection: "row",
