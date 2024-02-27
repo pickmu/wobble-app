@@ -15,6 +15,7 @@ import { Button } from "../../ReusableTools/Button";
 import { i18nStore } from "../../MobX/I18nStore";
 import { authStore } from "../../MobX/AuthStore";
 import Toast from "react-native-toast-message";
+import { observer } from "mobx-react";
 
 const SignIn = ({ navigation, route }) => {
   const { login, loginResponse } = authStore;
@@ -66,7 +67,9 @@ const SignIn = ({ navigation, route }) => {
         password: data.password,
       });
 
-      if (loginResponse.has_access === false) {
+      console.log("loginResponse", loginResponse);
+      
+      if (loginResponse?.has_access === false) {
         navigation.navigate("otp", {
           phone: loginResponse.phone_number,
           user_id: loginResponse._id,
@@ -77,7 +80,7 @@ const SignIn = ({ navigation, route }) => {
       setSubmitting(false);
     } catch (error) {
       setSubmitting(false);
-      console.log("handel submit sign up error", error);
+      console.log("handel submit sign in error", error.message);
       Toast.show({
         type: "error",
         text1: error.message,
@@ -211,4 +214,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignIn;
+export default observer(SignIn);

@@ -6,6 +6,7 @@ import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { i18nStore } from "../MobX/I18nStore";
 import { authStore } from "../MobX/AuthStore";
 import profile from "../Images/Icons/profilee.png";
+import { observer } from "mobx-react";
 
 const DrawerContent = () => {
   const { i18n } = i18nStore;
@@ -73,13 +74,11 @@ const DrawerContent = () => {
           style={styles.borderBottom}
         >
           <View className="flex-row items-center rounded-full">
-            {userInfo?.image && userInfo?.image !== null ? (
+            {userInfo?.image && userInfo?.image.includes("uploads") ? (
               <View className="mr-2 p-3">
                 <Image
                   source={{
-                    uri:
-                      `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}` ||
-                      imageData?.uri,
+                    uri: `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}`,
                   }}
                   className="w-11 h-11 rounded-full "
                 />
@@ -161,7 +160,7 @@ const DrawerContent = () => {
   );
 };
 
-export default DrawerContent;
+export default observer(DrawerContent);
 
 const styles = StyleSheet.create({
   activeMenuItem: {

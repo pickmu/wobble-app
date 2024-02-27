@@ -11,6 +11,7 @@ import axios from "axios";
 import { ReusableInput } from "../../ReusableTools/ReusableInput";
 import profile from "../../Images/Icons/profilee.png";
 import { colors } from "../../ReusableTools/css";
+import { observer } from "mobx-react";
 
 const EditProfile = () => {
   const { i18n } = i18nStore;
@@ -41,8 +42,8 @@ const EditProfile = () => {
   });
 
   useEffect(() => {
-    if (userInfo?.image !== "null") {
-      setImageFromBack(userInfo.image);
+    if (userInfo?.image !== null) {
+      setImageFromBack(userInfo?.image);
     }
   }, [userInfo]);
 
@@ -278,6 +279,7 @@ const EditProfile = () => {
 
   const handleRemoveImage = () => {
     setImageFromBack(null);
+
     setImageData(null);
   };
 
@@ -288,14 +290,12 @@ const EditProfile = () => {
     >
       <View className="m-4 ">
         <View className="flex-row items-center justify-center gap-5 mb-3">
-          {imageFromBack !== "null" ||
-          imageData !== "null" ||
-          userInfo?.image !== "null" ? (
+          {imageFromBack?.includes("uploads") || imageData ? (
             <View style={styles.imageBorder}>
               <Image
                 source={{
                   uri: !imageData
-                    ? `${process.env.EXPO_PUBLIC_API_URL}${userInfo.image}`
+                    ? `${process.env.EXPO_PUBLIC_API_URL}${userInfo?.image}`
                     : imageData[0]?.uri,
                 }}
                 style={styles.image}
@@ -361,7 +361,7 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default observer(EditProfile);
 
 const styles = StyleSheet.create({
   image: {

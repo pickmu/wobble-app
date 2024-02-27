@@ -20,11 +20,7 @@
       "channel": "preview"
     },
     "production": {
-      "channel": "production",
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://back.wobble-ah.com/",
-        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyArAvLNgfWTq07Dkdnwdwa9F2f9hYCi0EY"
-      }
+      "channel": "production"
     }
   },
   "submit": {

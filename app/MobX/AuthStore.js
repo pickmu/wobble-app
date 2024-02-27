@@ -15,8 +15,8 @@ class AuthStore {
       userInfo: observable,
       token: observable,
       loading: observable,
-      login: action.bound,
       loginResponse: observable,
+      login: action.bound,
       isLoggedIn: action.bound,
       setLoading: action.bound,
       setUserInfo: action.bound,
@@ -59,10 +59,12 @@ class AuthStore {
         return;
       }
 
-      if (resp.data.has_access === false) {
-        this.setLoginResponse(resp.data);
-        return;
-      }
+      // if (resp.data.findUser.has_access === false) {
+      //   this.setLoginResponse(resp.data.findUser);
+
+      //   this.setLoading(false);
+      //   return;
+      // }
 
       this.setUserInfo(resp.data.findUser);
 
