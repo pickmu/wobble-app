@@ -34,7 +34,7 @@ export default App = observer(() => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <StatusBar style="dark" />
+        <StatusBar style={`${token ? "dark" : "light"}`} />
         <I18nProvider>
           {token ? <UserNav /> : <SignNav />}
           <Toast />

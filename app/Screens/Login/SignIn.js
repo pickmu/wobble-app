@@ -103,6 +103,7 @@ const SignIn = ({ navigation, route }) => {
               accessibilityLabel="Logo of the app"
             />
           </View>
+          
           <View>
             <ReusableInput
               value={data.phone_number}
