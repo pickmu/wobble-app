@@ -26,6 +26,7 @@ export const translations = {
       rides: "Rides",
       settings: "Settings",
       logOut: "Log Out",
+      viewProf: "View Profile",
     },
     setting: {
       lang: "Change language",
@@ -180,6 +181,10 @@ export const translations = {
       taxi: "Taxi",
       delivery: "Delivery",
     },
+    destinationContainer: {
+      currentLocation: "Current Location",
+      destination: "Select Destination",
+    },
   },
   ar: {
     cancel: "إلغاء",
@@ -208,6 +213,7 @@ export const translations = {
       rides: "رحلاتك السابقة",
       settings: "الإعدادات",
       logOut: "تسجيل الخروج",
+      viewProf: "عرض الصفحة الشخصية"
     },
     setting: {
       lang: "تغيير اللغة",
@@ -363,6 +369,10 @@ export const translations = {
     carTypes: {
       taxi: "تاكسي",
       delivery: "خدمة توصيل",
+    },
+    destinationContainer: {
+      currentLocation: "الموقع الحالي",
+      destination: "الوجهة التالية",
     },
   },
 };

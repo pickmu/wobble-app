@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { i18nStore } from "../../MobX/I18nStore";
 import { authStore } from "../../MobX/AuthStore";
@@ -10,7 +10,6 @@ import Toast from "react-native-toast-message";
 import axios from "axios";
 import { ReusableInput } from "../../ReusableTools/ReusableInput";
 import profile from "../../Images/Icons/profilee.png";
-import { colors } from "../../ReusableTools/css";
 import { observer } from "mobx-react";
 
 const EditProfile = () => {
@@ -208,7 +207,7 @@ const EditProfile = () => {
         text1: `${i18n.t("toast.error.submissionFailedTitle")}`,
         text2: `${i18n.t("toast.error.submissionFailedSubTitle")}`,
       });
-      setSubmitting(false);
+      setSaving(false);
       return;
     }
 

@@ -106,7 +106,9 @@ const DrawerContent = () => {
                   setActiveScreen("");
                 }}
               >
-                <Text className="text-Primary">View Profile</Text>
+                <Text className="text-Primary">
+                  {i18n.t("drawerContent.viewProf")}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

@@ -12,9 +12,13 @@ import { Button } from "../../ReusableTools/Button";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
 import { showToast } from "../../ReusableTools/ShowToast";
+import { observer } from "mobx-react";
+import { orderAcceptedStore } from "../../MobX/OrderAccepted";
 
-const CancelRide = ({ route }) => {
+const CancelRide = ({ route, navigation }) => {
   const { order_id } = route.params;
+
+  const { setOrderAccepted } = orderAcceptedStore;
 
   const cancelTexts = [
     {
@@ -64,9 +68,13 @@ const CancelRide = ({ route }) => {
       };
 
       await axios.put(
-        `${process.env.EXPO_PUBLIC_API_URL}/updateOrder/${order_id}`,
+        `${process.env.EXPO_PUBLIC_API_URL}order/updateOrder/${order_id}`,
         requestData
       );
+
+      navigation.navigate("Map")
+
+      setOrderAccepted(false);
 
       showToast("success", "Your ride has been canceled");
     } catch (error) {
@@ -149,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CancelRide;
+export default observer(CancelRide);

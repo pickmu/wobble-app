@@ -9,7 +9,7 @@
       "channel": "development",
       "env": {
         "EXPO_PUBLIC_API_URL": "http://back.wobble-ah.com/",
-        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyArAvLNgfWTq07Dkdnwdwa9F2f9hYCi0EY"
+        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyBejEcBCaF9zaDasljyQU3U_h4e03Ac6yQ"
       }
     },
     "preview": {
@@ -17,13 +17,27 @@
       "android": {
         "buildType": "apk"
       },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://back.wobble-ah.com/",
+        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyBejEcBCaF9zaDasljyQU3U_h4e03Ac6yQ"
+      },
       "channel": "preview"
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://back.wobble-ah.com/",
+        "EXPO_PUBLIC_MAP_API_KEY": "AIzaSyBejEcBCaF9zaDasljyQU3U_h4e03Ac6yQ"
+      }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "ibraheemahacc@gmail.com",
+        "ascAppId": "6478554705",
+        "appleTeamId": "9KD9FFR5P8"
+      }
+    }
   }
 }

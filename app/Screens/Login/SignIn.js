@@ -58,17 +58,22 @@ const SignIn = ({ navigation, route }) => {
       }
 
       // Remove spaces and other non-digit characters from the phone number
-      const formattedPhoneNumber = data.phone_number.replace(/\D/g, "");
+      function removeSpaces(numberWithSpaces) {
+        // Split the number by spaces and join them without spaces
+        return numberWithSpaces.trim().split(" ").join("");
+      }
+
+      const numberWithoutSpaces = removeSpaces(data.phone_number);
 
       setSubmitting(true);
 
       await login({
-        phone_number: formattedPhoneNumber,
+        phone_number: removeSpaces(numberWithoutSpaces),
         password: data.password,
       });
 
       console.log("loginResponse", loginResponse);
-      
+
       if (loginResponse?.has_access === false) {
         navigation.navigate("otp", {
           phone: loginResponse.phone_number,
@@ -103,7 +108,7 @@ const SignIn = ({ navigation, route }) => {
               accessibilityLabel="Logo of the app"
             />
           </View>
-          
+
           <View>
             <ReusableInput
               value={data.phone_number}

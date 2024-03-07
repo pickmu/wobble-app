@@ -2,7 +2,7 @@
   "expo": {
     "name": "Wobble",
     "slug": "Wobble-Taxi",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -17,15 +17,15 @@
       "bundleIdentifier": "com.pickmeup01.Wobble",
       "infoPlist": {
         "ExpoLocalization_supportsRTL": true
-      }
+      },
+      "buildNumber": "3"
     },
     "android": {
       "package": "com.pickmeup01.Wobble",
-      "versionCode": 2,
-      "googleServicesFile": "./google-services.json",
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#3886EF"
+        "backgroundColor": "#1C75BC"
       }
     },
     "web": {

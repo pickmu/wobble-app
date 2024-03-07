@@ -6,13 +6,16 @@ import {
   View,
   Platform,
 } from "react-native";
+import { i18nStore } from "../MobX/I18nStore";
 
 const DestinationContainer = ({
   handleShowAutoComplete,
   destination,
   driverData,
-  isOrder
+  isOrder,
 }) => {
+  const { i18n } = i18nStore;
+
   return (
     <View className="bg-[#9EC4F7] py-4 pl-4 self-center rounded-[25px] mt-6 mx-5">
       <View className="flex-row items-center gap-4">
@@ -30,7 +33,7 @@ const DestinationContainer = ({
           className={`text-[#4048A2] flex-1`}
           style={{ fontSize: driverData ? 15 : 19 }}
         >
-          Current Location
+          {i18n.t("destinationContainer.currentLocation")}
         </Text>
       </View>
 
@@ -58,7 +61,7 @@ const DestinationContainer = ({
             className={`text-white`}
             style={{ fontSize: driverData ? 15 : 19 }}
           >
-            {destination ? `${destination?.name}` : "Select destination"}
+            {destination ? `${destination?.name}` : `${i18n.t("destinationContainer.destination")}`}
           </Text>
         </TouchableOpacity>
       </View>

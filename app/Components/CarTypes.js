@@ -136,7 +136,7 @@ const CarTypes = ({
 
             setShowCarTypes(true);
 
-            setHeightComponent(340);
+            setHeightComponent(240);
           },
         },
       ]);

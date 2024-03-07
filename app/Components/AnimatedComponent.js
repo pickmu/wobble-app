@@ -24,7 +24,7 @@ const AnimatedComponent = ({
   const slideInUp = () => {
     Animated.timing(translateY, {
       toValue: 1,
-      duration: 800,
+      duration: 500,
       useNativeDriver: true,
     }).start();
   };

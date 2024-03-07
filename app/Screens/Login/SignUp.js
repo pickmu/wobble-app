@@ -262,12 +262,24 @@ const SignUp = ({ navigation }) => {
         return;
       }
 
+      // Remove spaces and other non-digit characters from the phone number
+      function removeSpaces(numberWithSpaces) {
+        // Split the number by spaces and join them without spaces
+        return numberWithSpaces.trim().split(" ").join("");
+      }
+
+      const numberWithoutSpaces = removeSpaces(data.phone);
+
       const requestData = new FormData();
 
       requestData.append("first_name", data.first_name.trim());
+
       requestData.append("last_name", data.last_name.trim());
+
       requestData.append("email", data.email.trim());
-      requestData.append("phone_number", data.phone.trim());
+
+      requestData.append("phone_number", numberWithoutSpaces);
+
       requestData.append("password", data.password.trim());
 
       if (imageData) {

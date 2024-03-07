@@ -29,6 +29,7 @@ import axios from "axios";
 import DriverData from "../../Components/DriverData";
 import { authStore } from "../../MobX/AuthStore";
 import { i18nStore } from "../../MobX/I18nStore";
+import { orderAcceptedStore } from "../../MobX/OrderAccepted";
 
 const { width, height } = Dimensions.get("window");
 
@@ -43,6 +44,8 @@ const Map = observer(() => {
   const { userInfo } = authStore;
 
   const { i18n } = i18nStore;
+
+  const { orderAccepted, setOrderAccepted } = orderAcceptedStore;
 
   const insets = useSafeAreaInsets();
 
@@ -69,8 +72,6 @@ const Map = observer(() => {
   const [nearbyDriver, setNearbyDriver] = useState();
 
   const [isOrderSending, setIsOrderSending] = useState(false);
-
-  const [isOrderAccepted, setIsOrderAccepted] = useState(false);
 
   const [orderData, setOrderData] = useState();
 
@@ -192,7 +193,7 @@ const Map = observer(() => {
 
             setHeightComponent(380);
 
-            setIsOrderAccepted(true);
+            setOrderAccepted(true);
           } else if (nearbyDriver?.length >= currentDriverIndex) {
             // Order not accepted by the current driver, try sending to the next one
             const nextDriverIndex = currentDriverIndex + 1;
@@ -366,7 +367,7 @@ const Map = observer(() => {
               />
             )}
 
-            {isOrderAccepted && nearbyDriver?.length > 0 && (
+            {orderAccepted && nearbyDriver?.length > 0 && (
               <Marker
                 coordinate={{
                   latitude: parseFloat(nearbyDriver[0]?.lat),
@@ -442,7 +443,7 @@ const Map = observer(() => {
 
             {isOrderSending && <SearchingForDriver />}
 
-            {isOrderAccepted && (
+            {orderAccepted && (
               <DriverData
                 {...orderData}
                 handleShowAutoComplete={handleShowAutoComplete}
