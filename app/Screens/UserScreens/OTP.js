@@ -21,11 +21,11 @@ const OTP = ({ route }) => {
 
   const insets = useSafeAreaInsets();
 
-  let otp = "";
+  const [otp, setOtp] = useState("");
 
   const { i18n } = i18nStore;
 
-  const { loginResponse, setUserInfo, setUserToken } = authStore;
+  const { loginResponse, setUserInfo, setUserToken, setLoading } = authStore;
 
   const { phone, user_id, changePass, login } = route.params;
 
@@ -40,20 +40,26 @@ const OTP = ({ route }) => {
   useEffect(() => {
     const sendWhatsappOtp = async () => {
       try {
+        let generatedOtp = ""; // Declare variable to store generated OTP
         for (let i = 0; i < 4; i++) {
-          otp += Math.floor(Math.random() * 10);
+          generatedOtp += String(Math.floor(Math.random() * 10)); // Concatenate each digit to the OTP string
         }
 
+        // Send OTP via WhatsApp API
         const resp = await axios.get(
-          `https://www.bestsmsbulk.com/bestsmsbulkapi/common/sendSmsWpAPI.php?username=wobbleapi&password=Wobl45!3&message=${otp}&route=wp&senderid=WOBBLE&destination=${phone}`
+          `https://www.bestsmsbulk.com/bestsmsbulkapi/common/sendSmsWpAPI.php?username=wobbleapi&password=Wobl45!3&message=${generatedOtp}&route=wp&senderid=WOBBLE&destination=${phone}`
         );
 
-        console.log("best Mulkk response", resp.data);
+        console.log("WhatsApp OTP response", resp.data);
 
+        // Update state with generated OTP
+        setOtp(generatedOtp);
+
+        // Update OTP in backend
         await axios.post(
           `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${user_id}`,
           {
-            otp: otp,
+            otp: generatedOtp,
           }
         );
       } catch (error) {
@@ -62,7 +68,7 @@ const OTP = ({ route }) => {
     };
 
     sendWhatsappOtp();
-  }, [phone]);
+  }, [phone, user_id]);
 
   const fields = [1, 2, 3, 4];
 
@@ -78,7 +84,6 @@ const OTP = ({ route }) => {
   const handleResend = async () => {
     setResend(true);
   };
-
   const checkOtpValidation = async () => {
     try {
       setIsLoading(true);
@@ -87,7 +92,11 @@ const OTP = ({ route }) => {
         `${process.env.EXPO_PUBLIC_API_URL}user/getUserByPhone/${phone}`
       );
 
-      if (resp.data.otp === otp) {
+      console.log("resp.data.otp", resp.data.otp);
+
+      console.log("otp", otp);
+
+      if (resp.data.otp == otp) {
         setIsLoading(false);
 
         await axios.post(
@@ -102,10 +111,13 @@ const OTP = ({ route }) => {
             user_id: user_id,
           });
         } else if (login) {
+          console.log("loginResponse in otp", loginResponse);
+          setLoading(true);
           setUserInfo(loginResponse.findUser);
 
           setUserToken(loginResponse.token);
 
+          setLoading(false);
           setIsLoading(false);
         }
       } else {
@@ -171,7 +183,14 @@ const OTP = ({ route }) => {
         </View>
 
         <View className="mb-16">
-          <Button text={`${i18n.t("submit")}`} onPress={checkOtpValidation} />
+          <Button
+            text={
+              isLoading
+                ? `${i18n.t("signUpUser.button.submitting")}`
+                : ` ${i18n.t("submit")}`
+            }
+            onPress={checkOtpValidation}
+          />
         </View>
       </View>
     </View>

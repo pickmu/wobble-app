@@ -185,6 +185,10 @@ export const translations = {
       currentLocation: "Current Location",
       destination: "Select Destination",
     },
+    driverData :{
+      riderDetails: "Rider Details",
+      name: "Name"
+    }
   },
   ar: {
     cancel: "إلغاء",
@@ -374,5 +378,9 @@ export const translations = {
       currentLocation: "الموقع الحالي",
       destination: "الوجهة التالية",
     },
+    driverData :{
+      riderDetails: "تفاصيل الراكب",
+      name: "الاسم"
+    }
   },
 };

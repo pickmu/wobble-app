@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
@@ -72,9 +71,7 @@ const SignIn = ({ navigation, route }) => {
         password: data.password,
       });
 
-      console.log("loginResponse", loginResponse);
-
-      if (loginResponse?.has_access === false) {
+      if (loginResponse?.findUser?.has_access === false) {
         navigation.navigate("otp", {
           phone: loginResponse.phone_number,
           user_id: loginResponse._id,

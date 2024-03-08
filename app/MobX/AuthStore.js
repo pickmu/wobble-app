@@ -22,6 +22,7 @@ class AuthStore {
       setUserInfo: action.bound,
       setUserToken: action.bound,
       logout: action.bound,
+      setLoginResponse: action.bound,
     });
 
     this.isLoggedIn();
@@ -52,8 +53,6 @@ class AuthStore {
         data
       );
 
-      
-
       if (resp.data.message === "Login not successful") {
         this.setLoading(false);
 
@@ -61,12 +60,14 @@ class AuthStore {
         return;
       }
 
-      // if (resp.data.findUser.has_access === false) {
-      //   this.setLoginResponse(resp.data.findUser);
+      if (resp.data.findUser.has_access === false) {
+        this.setLoginResponse(resp.data.findUser);
 
-      //   this.setLoading(false);
-      //   return;
-      // }
+        this.setLoading(false);
+        return;
+      }
+
+      this.setLoginResponse(resp.data);
 
       this.setUserInfo(resp.data.findUser);
 

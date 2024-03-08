@@ -295,6 +295,8 @@ const SignUp = ({ navigation }) => {
         requestData
       );
 
+      console.log(resp.data);
+
       // return an error if the user entered an existing phone number
       if (resp.status === 400) {
         setSubmitting(false);

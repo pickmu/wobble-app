@@ -89,7 +89,9 @@ const DriverData = ({
   return (
     <View className="flex-1 py-5 px-10">
       <View className="flex-row justify-between items-center w-full">
-        <Text className="font-regular text-Primary">Rider Details</Text>
+        <Text className="font-regular text-Primary">
+          {i18n.t("driverData.riderDetails")}
+        </Text>
 
         <View className="flex-row items-center gap-5">
           <TouchableOpacity onPress={handlePhoneCall}>
@@ -132,7 +134,7 @@ const DriverData = ({
           </View>
 
           <View>
-            <Text className="font-regular text-Primary mb-2">Name</Text>
+            <Text className="font-regular text-Primary mb-2">{i18n.t("driverData.name")}</Text>
 
             <Text className="font-regular">
               {driver_id?.first_name} {driver_id?.last_name}
