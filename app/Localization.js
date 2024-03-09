@@ -27,6 +27,7 @@ export const translations = {
       settings: "Settings",
       logOut: "Log Out",
       viewProf: "View Profile",
+      rating: "Rating"
     },
     setting: {
       lang: "Change language",
@@ -217,7 +218,8 @@ export const translations = {
       rides: "رحلاتك السابقة",
       settings: "الإعدادات",
       logOut: "تسجيل الخروج",
-      viewProf: "عرض الصفحة الشخصية"
+      viewProf: "عرض الصفحة الشخصية",
+      rating: "التقييم"
     },
     setting: {
       lang: "تغيير اللغة",

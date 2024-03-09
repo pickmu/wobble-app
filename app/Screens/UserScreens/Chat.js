@@ -13,11 +13,14 @@ import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import { colors, fonts } from "../../ReusableTools/css";
 import { i18nStore } from "../../MobX/I18nStore";
+import Loading from "../../ReusableTools/Loading";
 
 const Chat = ({ route }) => {
   const [dataChat, setDataChat] = useState([]);
 
   const [textMessage, setTextMessage] = useState("");
+
+  const [loadingChat, setLoadingChat] = useState(false);
 
   const [sending, setSending] = useState(false);
 
@@ -32,14 +35,17 @@ const Chat = ({ route }) => {
     getDataChat();
   }, [room]);
 
-  function getDataChat() {
+  async function getDataChat() {
     if (driver_id) {
-      axios
+      setLoadingChat(true);
+
+      await axios
         .get(
           `${process.env.EXPO_PUBLIC_API_URL}chat/chattingHistory?senderId=${user_id._id}&receiverId=${driver_id._id}`
         )
         .then((res) => {
           setDataChat(res.data.chattingHistory);
+          setLoadingChat(false);
         })
         .catch(() => {
           console.log("cant find chat");
@@ -103,6 +109,10 @@ const Chat = ({ route }) => {
     );
   };
 
+  if (loadingChat) {
+    return <Loading />;
+  }
+
   return (
     <View className="flex-1">
       <View style={styles.driverData}>
@@ -111,19 +121,13 @@ const Chat = ({ route }) => {
         </Text>
       </View>
 
-      {dataChat.length > 0 ? (
-        <FlatList
-          data={dataChat}
-          renderItem={DataChat}
-          style={{ flex: 1, paddingHorizontal: 8 }}
-          inverted
-          contentContainerStyle={{ flexDirection: "column-reverse" }}
-        />
-      ) : (
-        <View className="flex-1 justify-center items-center">
-          <Text>{i18n.t("chat.loadingChat")}</Text>
-        </View>
-      )}
+      <FlatList
+        data={dataChat}
+        renderItem={DataChat}
+        style={{ flex: 1, paddingHorizontal: 8 }}
+        inverted
+        contentContainerStyle={{ flexDirection: "column-reverse" }}
+      />
 
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}

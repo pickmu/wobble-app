@@ -118,7 +118,7 @@ const DrawerContent = () => {
 
             <Text className="font-bold mr-1">5.00</Text>
 
-            <Text className="text-gray-600">Rating</Text>
+            <Text className="text-gray-600">{i18n.t("drawerContent.rating")}</Text>
           </View>
         </View>
 
