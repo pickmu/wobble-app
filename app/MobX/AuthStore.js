@@ -44,9 +44,11 @@ class AuthStore {
     this.loginResponse = value;
   }
 
-  async login(data) {
+  async login(data, isLogin) {
     try {
-      this.setLoading(true);
+      if (isLogin) {
+        this.setLoading(true);
+      }
 
       const resp = await axios.post(
         `${process.env.EXPO_PUBLIC_API_URL}user/login`,
@@ -61,9 +63,8 @@ class AuthStore {
       }
 
       if (resp.data.findUser.has_access === false) {
-        this.setLoginResponse(resp.data.findUser);
+        this.setLoginResponse(resp.data);
 
-        this.setLoading(false);
         return;
       }
 

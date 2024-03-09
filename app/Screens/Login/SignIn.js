@@ -17,7 +17,7 @@ import Toast from "react-native-toast-message";
 import { observer } from "mobx-react";
 
 const SignIn = ({ navigation, route }) => {
-  const { login, loginResponse } = authStore;
+  const { login, loginResponse, userInfo } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
 
   useEffect(() => {
@@ -66,10 +66,13 @@ const SignIn = ({ navigation, route }) => {
 
       setSubmitting(true);
 
-      await login({
-        phone_number: removeSpaces(numberWithoutSpaces),
-        password: data.password,
-      });
+      await login(
+        {
+          phone_number: removeSpaces(numberWithoutSpaces),
+          password: data.password,
+        },
+        true
+      );
 
       if (loginResponse?.findUser?.has_access === false) {
         navigation.navigate("otp", {

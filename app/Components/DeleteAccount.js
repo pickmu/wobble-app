@@ -3,10 +3,12 @@ import { i18nStore } from "../MobX/I18nStore";
 import { authStore } from "../MobX/AuthStore";
 import Toast from "react-native-toast-message";
 import axios from "axios";
+import { observer } from "mobx-react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DeleteAccount = () => {
   const { i18n } = i18nStore;
-  const { userInfo, setUserToken, setUserInfo, setLoading } = authStore;
+  const { userInfo, setUserToken, setUserInfo, setLoading, logout } = authStore;
 
   const handleAlertDeleteAccount = () => {
     Alert.alert(
@@ -32,9 +34,12 @@ const DeleteAccount = () => {
   const handleDeleteAccount = async () => {
     try {
       setLoading(true);
+
       await axios.delete(
         `${process.env.EXPO_PUBLIC_API_URL}user/deleteUser/${userInfo._id}`
       );
+
+      logout();
 
       setUserToken(null);
 
@@ -58,4 +63,4 @@ const DeleteAccount = () => {
   );
 };
 
-export default DeleteAccount;
+export default observer(DeleteAccount);
