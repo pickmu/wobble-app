@@ -109,7 +109,7 @@ const OTP = ({ route }) => {
           });
         } else if (login) {
           setLoading(true);
-          console.log("loginResponse", loginResponse);
+          console.log("loginResponse in check otp validation", loginResponse);
           setUserInfo(loginResponse.findUser);
 
           setUserToken(loginResponse.token);

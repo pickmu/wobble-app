@@ -299,7 +299,7 @@ const SignUp = ({ navigation }) => {
       );
 
       // return an error if the user entered an existing phone number
-      if (resp.status === 400) {
+      if (resp.data.status === 400) {
         setSubmitting(false);
 
         setError((prevErrors) => ({
@@ -319,14 +319,12 @@ const SignUp = ({ navigation }) => {
         phone_number: removeSpaces(numberWithoutSpaces),
         password: data.password,
       });
-      console.log("heyyy");
+
       navigation.navigate(`otp`, {
         phone: data.phone,
         user_id: resp.data._id,
         login: true,
       });
-      console.log("-------------");
-      console.log("holaa");
 
       Toast.show({
         type: "success",
