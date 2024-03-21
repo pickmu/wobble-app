@@ -14,11 +14,14 @@ import axios from "axios";
 import { showToast } from "../../ReusableTools/ShowToast";
 import { observer } from "mobx-react";
 import { orderAcceptedStore } from "../../MobX/OrderAccepted";
+import { orderStore } from "../../MobX/OrderStore";
 
 const CancelRide = ({ route, navigation }) => {
   const { order_id } = route.params;
 
-  const { setOrderAccepted } = orderAcceptedStore;
+  const { setOrderAccepted, setShowComponent } = orderAcceptedStore;
+
+  const { setDestination } = orderStore;
 
   const cancelTexts = [
     {
@@ -75,6 +78,10 @@ const CancelRide = ({ route, navigation }) => {
       navigation.navigate("Map");
 
       setOrderAccepted(false);
+
+      setShowComponent(true);
+
+      setDestination("");
 
       showToast("success", "Your ride has been canceled");
     } catch (error) {

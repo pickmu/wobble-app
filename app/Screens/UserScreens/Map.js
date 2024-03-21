@@ -45,7 +45,8 @@ const Map = observer(() => {
 
   const { i18n } = i18nStore;
 
-  const { orderAccepted, setOrderAccepted } = orderAcceptedStore;
+  const { orderAccepted, setOrderAccepted, setShowComponent, showComponent } =
+    orderAcceptedStore;
 
   const insets = useSafeAreaInsets();
 
@@ -61,8 +62,6 @@ const Map = observer(() => {
 
   const [duration, setDuration] = useState(0);
 
-  const [showComponent, setShowComponent] = useState(true);
-
   const [showAnimatedComponent, setShowAnimatedComponent] = useState(false);
 
   const [showCarTypes, setShowCarTypes] = useState(false);
@@ -75,7 +74,7 @@ const Map = observer(() => {
 
   const [orderData, setOrderData] = useState();
 
-  const [heightComponent, setHeightComponent] = useState(270);
+  const [heightComponent, setHeightComponent] = useState(280);
 
   const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`

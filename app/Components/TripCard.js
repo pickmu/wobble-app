@@ -73,6 +73,12 @@ const TripCard = ({
             "tripCard.ride.canceled"
           )}`}</Text>
         )}
+       
+        {ride_status === "Pending" && (
+          <Text className="text-[12px] text-red-500">{`${i18n.t(
+            "tripCard.ride.pending"
+          )}`}</Text>
+        )}
 
         {ride_status === "Completed" && (
           <Text className="text-[14px] text-green-500">{`${i18n.t(

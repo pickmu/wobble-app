@@ -142,6 +142,7 @@ export const translations = {
       ride: {
         completed: "Ride completed",
         canceled: "Ride canceled",
+        pending: "Pending",
       },
     },
     map: {
@@ -333,6 +334,7 @@ export const translations = {
       ride: {
         completed: "رحلة مكتملة",
         canceled: "رحلة ملتغية",
+        pending: "معلقة",
       },
     },
     map: {

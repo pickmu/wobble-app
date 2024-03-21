@@ -16,9 +16,14 @@ class I18nStore {
       locale: observable,
       loadInitialLocale: action.bound,
       changeLocale: action.bound,
+      setLocale: action.bound,
     });
 
     this.loadInitialLocale();
+  }
+
+  setLocale(locale) {
+    this.locale = locale;
   }
 
   async loadInitialLocale() {
@@ -42,7 +47,7 @@ class I18nStore {
       }
     } else {
       i18nInstance.locale = Localization.locale;
-      this.locale = Localization.locale;
+      this.setLocale(Localization.locale);
     }
 
     i18nInstance.enableFallback = true;
@@ -71,7 +76,7 @@ class I18nStore {
       }
     }
 
-    this.locale = locale;
+    this.setLocale(locale);
   }
 }
 

@@ -2,16 +2,23 @@ import { action, makeObservable, observable } from "mobx";
 
 class OrderAcceptedStore {
   orderAccepted = false;
+  showComponent = true;
 
   constructor() {
     makeObservable(this, {
       orderAccepted: observable,
-      setOrderAccepted: action.bound
+      showComponent: observable,
+      setOrderAccepted: action.bound,
+      setShowComponent: action.bound,
     });
   }
 
   setOrderAccepted(value) {
     this.orderAccepted = value;
+  }
+
+  setShowComponent(value) {
+    this.showComponent = value;
   }
 }
 

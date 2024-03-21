@@ -4,6 +4,7 @@ import { i18nStore } from "../../MobX/I18nStore";
 
 const SwitchLang = () => {
   const { i18n, changeLocale } = i18nStore;
+
   const languages = [
     { code: "en", label: "English" },
     { code: "ar", label: "العربية" },

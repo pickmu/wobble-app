@@ -8,6 +8,8 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import InputAutoComplete from "./InputAutoComplete";
+import { observer } from "mobx-react";
+import { orderAcceptedStore } from "../MobX/OrderAccepted";
 
 const AnimatedComponent = ({
   showAnimatedComponent,
@@ -16,10 +18,11 @@ const AnimatedComponent = ({
   destination,
   setShowCarTypes,
   setShowAnimatedComponent,
-  setShowComponent,
   setHeightComponent,
 }) => {
   const translateY = new Animated.Value(0);
+
+  const { setShowComponent } = orderAcceptedStore;
 
   const slideInUp = () => {
     Animated.timing(translateY, {
@@ -95,7 +98,7 @@ const AnimatedComponent = ({
   );
 };
 
-export default AnimatedComponent;
+export default observer(AnimatedComponent);
 
 const styles = StyleSheet.create({
   customComponentContainer: {
