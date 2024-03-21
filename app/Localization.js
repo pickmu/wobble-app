@@ -327,7 +327,7 @@ export const translations = {
     },
     rides: {
       title: "رحلاتي",
-      noRides: "لا رحلات بعد",
+      noRides: "لا طلبات بعد",
     },
     tripCard: {
       to: "إلى",
