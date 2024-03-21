@@ -27,7 +27,7 @@ export const translations = {
       settings: "Settings",
       logOut: "Log Out",
       viewProf: "View Profile",
-      rating: "Rating"
+      rating: "Rating",
     },
     setting: {
       lang: "Change language",
@@ -71,7 +71,7 @@ export const translations = {
         },
         email: {
           label: "Email",
-          placeholder: "Enter your email address",
+          placeholder: "Enter your email address (optional)",
         },
         phone: {
           label: "Phone Number",
@@ -94,10 +94,6 @@ export const translations = {
         last_name: {
           empty: "Please enter your last name",
           length: "Last name should be at least 3 characters",
-        },
-        email: {
-          empty: "Please enter your email address",
-          invalid: "Invalid email address",
         },
         phone: {
           empty: "Please enter your phone number",
@@ -186,10 +182,11 @@ export const translations = {
       currentLocation: "Current Location",
       destination: "Select Destination",
     },
-    driverData :{
+    driverData: {
       riderDetails: "Rider Details",
-      name: "Name"
-    }
+      name: "Name",
+    },
+    lookingADriver: "Looking for a driver...",
   },
   ar: {
     cancel: "إلغاء",
@@ -219,7 +216,7 @@ export const translations = {
       settings: "الإعدادات",
       logOut: "تسجيل الخروج",
       viewProf: "عرض الصفحة الشخصية",
-      rating: "التقييم"
+      rating: "التقييم",
     },
     setting: {
       lang: "تغيير اللغة",
@@ -264,7 +261,7 @@ export const translations = {
         },
         email: {
           label: "ألبريد الإلكتروني",
-          placeholder: "ادخل بريدك الإلكتروني",
+          placeholder: "ادخل بريدك الإلكتروني )اختياري(",
         },
         phone: {
           label: "رقم الهاتف",
@@ -288,10 +285,6 @@ export const translations = {
         last_name: {
           empty: "الرجاء إدخال الإسم الأخير",
           length: "يجب أن يحتوي الإسم الثاني على الأقل ثلاث أحرف",
-        },
-        email: {
-          empty: "الرجاء إدخال البريد الإلكتروني",
-          invalid: "بريد الكتروني غير صالح",
         },
         phone: {
           empty: "الرجاء إدخال رقم الهاتف",
@@ -380,9 +373,10 @@ export const translations = {
       currentLocation: "الموقع الحالي",
       destination: "الوجهة التالية",
     },
-    driverData :{
+    driverData: {
       riderDetails: "تفاصيل الراكب",
-      name: "الاسم"
-    }
+      name: "الاسم",
+    },
+    lookingADriver: "جاري البحث عن سائق...",
   },
 };

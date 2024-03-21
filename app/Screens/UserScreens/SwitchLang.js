@@ -23,7 +23,7 @@ const SwitchLang = () => {
                 {i18n.locale.includes(language.code) ? (
                   <AntDesign name="check" size={26} color="black" />
                 ) : (
-                  <View className="w-[26px] h-[26px]" /> // Empty view for spacing
+                  <View className="w-[26px] h-[26px]" />
                 )}
                 <Text className="text-lg font-regular">{language.label}</Text>
               </View>

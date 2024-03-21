@@ -17,6 +17,7 @@ export default {
       bundleIdentifier: "com.pickmeup01.Wobble",
       infoPlist: {
         ExpoLocalization_supportsRTL: true,
+        CFBundleAllowMixedLocalizations: true,
       },
       config: {
         googleMapsApiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
@@ -41,7 +42,6 @@ export default {
     },
     plugins: ["expo-localization"],
     extra: {
-      supportsRTL: true,
       eas: {
         projectId: "b6f27941-5ae8-479e-9589-015c3b1f13fe",
       },

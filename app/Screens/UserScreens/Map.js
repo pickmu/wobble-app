@@ -75,7 +75,7 @@ const Map = observer(() => {
 
   const [orderData, setOrderData] = useState();
 
-  const [heightComponent, setHeightComponent] = useState(280);
+  const [heightComponent, setHeightComponent] = useState(270);
 
   const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
@@ -185,7 +185,7 @@ const Map = observer(() => {
           );
 
           if (resp.data?.status === "Accepted") {
-            clearInterval(intervalId); // Stop the interval once the status is accepted
+            clearInterval(intervalId);
 
             setOrderData(resp.data);
 

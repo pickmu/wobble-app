@@ -192,13 +192,7 @@ const SignUp = ({ navigation }) => {
         emptyFields.push("First Name");
       }
 
-      if (!data.email) {
-        setError((prevErrors) => ({
-          ...prevErrors,
-          email: `${i18n.t("signUpUser.error.email.empty")}`,
-        }));
-        emptyFields.push("Email");
-      } else if (data.email.trim() !== "") {
+      if (data.email.trim() !== "") {
         const emailRegex = /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(data.email)) {
           setError((prevErrors) => ({
@@ -279,7 +273,9 @@ const SignUp = ({ navigation }) => {
 
       requestData.append("last_name", data.last_name.trim());
 
-      requestData.append("email", data.email.trim());
+      if (data.email) {
+        requestData.append("email", data.email.trim());
+      }
 
       requestData.append("phone_number", numberWithoutSpaces);
 

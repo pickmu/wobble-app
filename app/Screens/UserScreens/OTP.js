@@ -78,13 +78,16 @@ const OTP = ({ route }) => {
     } else if (index < fields.length - 1 && text !== "") {
       inputRefs.current[index + 1].focus(); // Shift focus to the next input field
     }
+
+    if (index === 3 && text !== "") {
+      checkOtpValidation(); // Call the checkOtpValidation function
+    }
   };
 
   const handleResend = async () => {
     setResend(true);
   };
 
-  console.log("otp", otp);
   const checkOtpValidation = async () => {
     try {
       setIsLoading(true);
@@ -148,7 +151,7 @@ const OTP = ({ route }) => {
           </TouchableOpacity>
         </View>
 
-        <View className="flex-1 mx-10 mt-5 justify-between items-center">
+        <View className="flex-1 mx-10 mt-5 items-center">
           <View>
             <View className="bg-headers rounded-2xl py-5 items-center mb-10">
               <Text className="text-[25px] font-regular">

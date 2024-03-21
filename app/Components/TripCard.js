@@ -5,7 +5,14 @@ import Bus from "../Images/bus.png";
 import Moto from "../Images/moto.png";
 import Bicycle from "../Images/bicycle.png";
 
-const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
+const TripCard = ({
+  from,
+  to,
+  status,
+  typeOfOrder,
+  createdAt,
+  ride_status,
+}) => {
   const { i18n } = i18nStore;
 
   const checkType = () => {
@@ -61,13 +68,13 @@ const TripCard = ({ from, to, status, typeOfOrder, createdAt }) => {
         <Text className="text-[12px] text-gray-500">{result}</Text>
       </View>
       <View className="flex flex-col items-center justify-end w-2/6">
-        {status && (
+        {ride_status === "Canceled" && (
           <Text className="text-[12px] text-red-500">{`${i18n.t(
             "tripCard.ride.canceled"
           )}`}</Text>
         )}
 
-        {!status && (
+        {ride_status === "Completed" && (
           <Text className="text-[14px] text-green-500">{`${i18n.t(
             "tripCard.ride.completed"
           )}`}</Text>

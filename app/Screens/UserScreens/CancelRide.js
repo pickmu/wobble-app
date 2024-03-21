@@ -62,7 +62,7 @@ const CancelRide = ({ route, navigation }) => {
       }
 
       const requestData = {
-        status: "Canceled",
+        ride_status: "Canceled",
         cancel_reason: cancelReason ? cancelReason : otherText,
         is_ended: true,
       };
@@ -72,7 +72,7 @@ const CancelRide = ({ route, navigation }) => {
         requestData
       );
 
-      navigation.navigate("Map")
+      navigation.navigate("Map");
 
       setOrderAccepted(false);
 

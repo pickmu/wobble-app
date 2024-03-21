@@ -28,6 +28,18 @@ class I18nStore {
     if (storedLang) {
       i18nInstance.locale = storedLang;
       this.locale = storedLang;
+
+      if (storedLang.includes("ar") && I18nManager.isRTL === false) {
+        // Enable right-to-left layout for Arabic
+        I18nManager.allowRTL(true);
+        I18nManager.forceRTL(true);
+        // Reload the app to apply the layout changes
+      } else if (storedLang.includes("en") && I18nManager.isRTL === true) {
+        // Disable right-to-left layout for English
+        I18nManager.allowRTL(false);
+        I18nManager.forceRTL(false);
+        // Reload the app to apply the layout changes
+      }
     } else {
       i18nInstance.locale = Localization.locale;
       this.locale = Localization.locale;
@@ -45,17 +57,17 @@ class I18nStore {
     if (locale.includes("ar")) {
       await AsyncStorage.setItem("pickmuLang", "ar");
       if (I18nManager.isRTL === false) {
-        Updates.reloadAsync();
         I18nManager.allowRTL(true);
         I18nManager.forceRTL(true);
+        Updates.reloadAsync();
       }
     }
     if (locale.includes("en")) {
       await AsyncStorage.setItem("pickmuLang", "en");
       if (I18nManager.isRTL === true) {
-        Updates.reloadAsync();
         I18nManager.allowRTL(false);
         I18nManager.forceRTL(false);
+        Updates.reloadAsync();
       }
     }
 

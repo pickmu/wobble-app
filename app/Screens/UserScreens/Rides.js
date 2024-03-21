@@ -20,7 +20,7 @@ const Rides = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const { data, isLoading, reFetch } = useFetch(
-    `userInfo/tripHistory/${userInfo?._id}`
+    `order/getOrdersByUser/${userInfo?._id}`
   );
 
   if (isLoading)
