@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Pressable, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  Platform,
+  ActivityIndicator,
+} from "react-native";
 import { colors, fonts } from "./css";
 
 export const Button = ({
@@ -8,6 +15,7 @@ export const Button = ({
   isTransparent,
   cars,
   cancel,
+  loading,
 }) => {
   return (
     <View style={[styles.container, cars && { marginHorizontal: 20 }]}>
@@ -28,7 +36,11 @@ export const Button = ({
             cancel && { borderRadius: 50 },
           ]}
         >
-          <Text style={styles.text}>{text}</Text>
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.text}>{text}</Text>
+          )}
         </View>
       </Pressable>
     </View>

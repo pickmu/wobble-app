@@ -17,7 +17,7 @@ import Toast from "react-native-toast-message";
 import { observer } from "mobx-react";
 
 const SignIn = ({ navigation, route }) => {
-  const { login, loginResponse, userInfo } = authStore;
+  const { login, loginResponse, loading } = authStore;
   const { i18n, changeLocale, locale } = i18nStore;
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const SignIn = ({ navigation, route }) => {
   }, [route.params]);
 
   const [submitting, setSubmitting] = useState(false);
+
   const [data, setData] = useState({
     phone_number: "",
     password: "",
@@ -148,6 +149,7 @@ const SignIn = ({ navigation, route }) => {
               }
               onPress={handleLogin}
               disabled={submitting}
+              loading={loading}
             />
 
             <Button

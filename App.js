@@ -6,13 +6,11 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { I18nProvider } from "./app/Context/I18n.js";
 import { authStore } from "./app/MobX/AuthStore.js";
 import { observer } from "mobx-react";
-import { View, ActivityIndicator } from "react-native";
-import { colors } from "./app/ReusableTools/css.js";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default App = observer(() => {
-  const { token, loading } = authStore;
+  const { token } = authStore;
 
   const [fontsLoaded] = useFonts({
     "Agrandi-Regular": require("./app/Fonts/Agrandir-Regular.otf"),
@@ -21,14 +19,6 @@ export default App = observer(() => {
 
   if (!fontsLoaded) {
     return null;
-  }
-
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size={"large"} color={colors.primaryYellow} />
-      </View>
-    );
   }
 
   return (

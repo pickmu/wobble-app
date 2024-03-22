@@ -55,14 +55,15 @@ class AuthStore {
         data
       );
 
-      if (resp.data.message === "Login not successful") {
+      if (resp.data.status === 400 || resp.data.status === 404) {
         this.setLoading(false);
 
-        showToast("error", resp.data.error);
+        showToast("error", resp.data.message);
+
         return;
       }
 
-      if (resp.data.findUser.has_access === false) {
+      if (resp.data?.findUser?.has_access === false) {
         this.setLoginResponse(resp.data);
 
         return;
