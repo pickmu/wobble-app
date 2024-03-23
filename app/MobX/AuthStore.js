@@ -25,6 +25,7 @@ class AuthStore {
       setUserToken: action.bound,
       logout: action.bound,
       setLoginResponse: action.bound,
+      setGlobalLoading: action.bound
     });
 
     this.isLoggedIn();
