@@ -9,6 +9,7 @@ class AuthStore {
   token = null;
   loading = false;
   loginResponse = null;
+  globalLoading = false;
 
   constructor() {
     makeObservable(this, {
@@ -16,6 +17,7 @@ class AuthStore {
       token: observable,
       loading: observable,
       loginResponse: observable,
+      globalLoading: observable,
       login: action.bound,
       isLoggedIn: action.bound,
       setLoading: action.bound,
@@ -42,6 +44,10 @@ class AuthStore {
 
   setLoginResponse(value) {
     this.loginResponse = value;
+  }
+
+  setGlobalLoading(value) {
+    this.globalLoading = value;
   }
 
   async login(data, isLogin) {

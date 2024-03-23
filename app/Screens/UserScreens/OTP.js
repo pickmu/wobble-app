@@ -26,7 +26,8 @@ const OTP = ({ route }) => {
 
   const { i18n } = i18nStore;
 
-  const { loginResponse, setUserInfo, setUserToken, setLoading } = authStore;
+  const { loginResponse, setUserInfo, setUserToken, setGlobalLoading } =
+    authStore;
 
   const { phone, user_id, changePass, login } = route.params;
 
@@ -111,13 +112,13 @@ const OTP = ({ route }) => {
             user_id: user_id,
           });
         } else if (login) {
-          setLoading(true);
-          console.log("loginResponse in check otp validation", loginResponse);
+          setGlobalLoading(true);
+
           setUserInfo(loginResponse.findUser);
 
           setUserToken(loginResponse.token);
 
-          setLoading(false);
+          setGlobalLoading(false);
 
           setIsLoading(false);
         }

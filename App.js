@@ -8,9 +8,10 @@ import { authStore } from "./app/MobX/AuthStore.js";
 import { observer } from "mobx-react";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Loading from "./app/ReusableTools/Loading.js";
 
 export default App = observer(() => {
-  const { token } = authStore;
+  const { token, globalLoading } = authStore;
 
   const [fontsLoaded] = useFonts({
     "Agrandi-Regular": require("./app/Fonts/Agrandir-Regular.otf"),
@@ -19,6 +20,10 @@ export default App = observer(() => {
 
   if (!fontsLoaded) {
     return null;
+  }
+
+  if (globalLoading) {
+    return <Loading />;
   }
 
   return (

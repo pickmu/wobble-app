@@ -109,6 +109,9 @@ export const translations = {
           empty: "Please confirm your password",
           notMatch: "Passwords do not match",
         },
+        email: {
+          invalid: "Please enter a valid email address",
+        },
       },
       addImage: {
         text: "Add your profile image(optional):",
@@ -298,6 +301,9 @@ export const translations = {
         confirm_password: {
           empty: "الرجاء تأكيد كلمة السر",
           notMatch: "كلمة المرور غير مطابقة",
+        },
+        email: {
+          invalid: "بريد الكتروني غير صالح",
         },
       },
       addImage: {

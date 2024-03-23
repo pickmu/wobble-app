@@ -11,16 +11,16 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { ReusableInput } from "../../ReusableTools/ReusableInput";
 import { authStore } from "../../MobX/AuthStore";
-// import { I18nContext } from "../../Context/I18n";
 
 const SignUp = ({ navigation }) => {
   const { i18n } = i18nStore;
-  // const { i18n} = useContext(I18nContext);
 
   const { login } = authStore;
 
   const [imageData, setImageData] = useState(null);
+
   const [submitting, setSubmitting] = useState(false);
+
   const [data, setData] = useState({
     first_name: "",
     last_name: "",
