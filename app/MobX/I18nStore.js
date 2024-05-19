@@ -1,9 +1,8 @@
 import { makeObservable, observable, action } from "mobx";
-import { I18nManager } from "react-native";
+import { I18nManager, NativeModules, Platform } from "react-native";
 import { I18n } from "i18n-js";
 import { translations } from "../Localization.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as Localization from "expo-localization";
 import * as Updates from "expo-updates";
 
 class I18nStore {
@@ -46,8 +45,14 @@ class I18nStore {
         // Reload the app to apply the layout changes
       }
     } else {
-      i18nInstance.locale = Localization.locale;
-      this.setLocale(Localization.locale);
+      const systemLanguage = (
+        (Platform.OS === "ios"
+          ? NativeModules.SettingsManager.settings.AppleLocale ||
+            NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
+          : NativeModules.I18nManager.localeIdentifier) || ""
+      ).substring(0, 2);
+
+      this.setLocale(systemLanguage);
     }
 
     i18nInstance.enableFallback = true;

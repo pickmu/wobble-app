@@ -11,6 +11,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { ReusableInput } from "../../ReusableTools/ReusableInput";
 import { authStore } from "../../MobX/AuthStore";
+import { remove } from "mobx";
 
 const SignUp = ({ navigation }) => {
   const { i18n } = i18nStore;
@@ -162,6 +163,17 @@ const SignUp = ({ navigation }) => {
         return;
       }
 
+      // Remove spaces and other non-digit characters from the phone number
+      function removeSpaces(numberWithSpaces) {
+        console.log(numberWithSpaces);
+        if (!numberWithSpaces) {
+          return ""; // or any default value you prefer
+        }
+
+        // Split the number by spaces and join them without spaces
+        return numberWithSpaces.trim().split(" ").join("");
+      }
+
       const emptyFields = [];
 
       if (!data.first_name) {
@@ -238,7 +250,7 @@ const SignUp = ({ navigation }) => {
           phone: `${i18n.t("signUpUser.error.phone.empty")}`,
         }));
         emptyFields.push("Phone Number");
-      } else if (data.phone.trim() !== "") {
+      } else if (removeSpaces(data.phone)) {
         const phoneRegex = /^(70|71|76|78|79|81|03)[0-9]{6}$/;
         if (!phoneRegex.test(data.phone)) {
           setError((prevErrors) => ({
@@ -257,12 +269,6 @@ const SignUp = ({ navigation }) => {
         });
         setSubmitting(false);
         return;
-      }
-
-      // Remove spaces and other non-digit characters from the phone number
-      function removeSpaces(numberWithSpaces) {
-        // Split the number by spaces and join them without spaces
-        return numberWithSpaces.trim().split(" ").join("");
       }
 
       const numberWithoutSpaces = removeSpaces(data.phone);

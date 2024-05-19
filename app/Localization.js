@@ -191,6 +191,7 @@ export const translations = {
       name: "Name",
     },
     lookingADriver: "Looking for a driver...",
+    changePassword: "Change Password",
   },
   ar: {
     cancel: "إلغاء",

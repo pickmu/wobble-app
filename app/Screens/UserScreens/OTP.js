@@ -16,6 +16,7 @@ import { showToast } from "../../ReusableTools/ShowToast";
 import { authStore } from "../../MobX/AuthStore";
 import { observer } from "mobx-react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const OTP = ({ route }) => {
   const navigation = useNavigation();
@@ -121,6 +122,13 @@ const OTP = ({ route }) => {
           setGlobalLoading(false);
 
           setIsLoading(false);
+
+          await axios.post(
+            `${process.env.EXPO_PUBLIC_API_URL}user/updateUser/${user_id}`,
+            {
+              has_access: true,
+            }
+          );
         }
       } else {
         setIsLoading(false);
@@ -140,14 +148,11 @@ const OTP = ({ route }) => {
       <View style={{ flex: 1 }}>
         <View style={{ paddingTop: insets.top, width: "50%" }}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Image
-              source={require("../../Images/Icons/arrow.png")}
-              style={{
-                width: 50,
-                height: 20,
-                marginBottom: 3,
-                alignSelf: "center",
-              }}
+            <MaterialIcons
+              name="arrow-back-ios"
+              size={30}
+              color="black"
+              style={{ marginStart: 12, marginBottom: 10 }}
             />
           </TouchableOpacity>
         </View>

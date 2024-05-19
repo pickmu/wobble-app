@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const HeaderTitle = ({ title, isDrawer, isChat, cancel }) => {
   const navigation = useNavigation();
@@ -19,9 +20,11 @@ const HeaderTitle = ({ title, isDrawer, isChat, cancel }) => {
               : navigation.goBack() // Otherwise, go back
         }
       >
-        <Image
-          source={require("../Images/Icons/arrow.png")}
-          className="w-[50px] h-[20px] mb-3 self-center"
+        <MaterialIcons
+          name="arrow-back-ios"
+          size={30}
+          color="black"
+          style={{ marginStart: 12, marginBottom: 10 }}
         />
       </TouchableOpacity>
 
@@ -29,7 +32,12 @@ const HeaderTitle = ({ title, isDrawer, isChat, cancel }) => {
         className="bg-headers rounded-r-full py-5 items-center"
         style={{ width: cancel ? "150%" : "100%" }}
       >
-        <Text className="text-[25px] font-bold">{title}</Text>
+        <Text
+          className="font-bold"
+          style={{ fontSize: title.length > 13 ? 22 : 25 }}
+        >
+          {title}
+        </Text>
       </View>
     </View>
   );

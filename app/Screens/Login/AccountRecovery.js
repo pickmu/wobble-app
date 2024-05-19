@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
@@ -16,6 +15,7 @@ import { colors } from "../../ReusableTools/css";
 import axios from "axios";
 import { showToast } from "../../ReusableTools/ShowToast";
 import Loading from "../../ReusableTools/Loading";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const AccountRecovery = () => {
   const navigation = useNavigation();
@@ -79,14 +79,11 @@ const AccountRecovery = () => {
     <View className="flex-1">
       <View style={{ paddingTop: insets.top, width: "50%" }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Image
-            source={require("../../Images/Icons/arrow.png")}
-            style={{
-              width: 50,
-              height: 20,
-              marginBottom: 3,
-              alignSelf: "center",
-            }}
+          <MaterialIcons
+            name="arrow-back-ios"
+            size={30}
+            color="black"
+            style={{ marginStart: 12, marginBottom: 10 }}
           />
         </TouchableOpacity>
       </View>

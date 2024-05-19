@@ -92,7 +92,7 @@ const EditProfile = () => {
     },
     {
       label: `${i18n.t("signUpUser.input.password.label")}`,
-      placeholder: `${i18n.t("signUpUser.input.password.placeholder")}`,
+      placeholder: `${i18n.t("changePassword")}`,
       secureTextEntry: true,
       value: data.password,
       key: "password",
@@ -317,6 +317,7 @@ const EditProfile = () => {
               >
                 <AntDesign name="plus" size={24} color="white" />
               </TouchableOpacity>
+
               <Image
                 source={profile}
                 className="w-[50px] h-[50px]"

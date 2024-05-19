@@ -102,7 +102,14 @@ const Chat = ({ route }) => {
             : styles.otherMessage,
         ]}
       >
-        <View style={styles.message}>
+        <View
+          style={[
+            styles.message,
+            item.senderModel === "User"
+              ? styles.userBackground
+              : styles.otherBackground,
+          ]}
+        >
           <Text style={styles.messageText}>{item.content}</Text>
         </View>
       </View>
@@ -172,6 +179,12 @@ const styles = StyleSheet.create({
   },
   otherMessage: {
     justifyContent: "flex-start",
+  },
+  userBackground: {
+    backgroundColor: colors.primary,
+  },
+  otherBackground: {
+    backgroundColor: "gray",
   },
   messageText: {
     color: "white",

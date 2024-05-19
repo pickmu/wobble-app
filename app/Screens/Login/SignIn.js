@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Platform,
   KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { colors } from "../../ReusableTools/css";
@@ -80,6 +81,7 @@ const SignIn = ({ navigation, route }) => {
           phone: loginResponse.phone_number,
           user_id: loginResponse._id,
           login: true,
+          notBack: true,
         });
       }
 
@@ -101,91 +103,103 @@ const SignIn = ({ navigation, route }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         enabled={false}
       >
-        <View style={styles.contentView}>
-          <View style={styles.roundedLogo}>
-            <Image
-              source={require("../../Images/Icons/Untitled-5.png")}
-              style={styles.image}
-              accessibilityLabel="Logo of the app"
-            />
-          </View>
-
-          <View>
-            <ReusableInput
-              value={data.phone_number}
-              label={`${i18n.t("signUpUser.input.phone.label")}`}
-              placeholder={`${i18n.t("signUpUser.input.phone.placeholder")}`}
-              keyboardType="numeric"
-              onChangeText={(value) => handleInputChange("phone_number", value)}
-              onSubmitEditing={() => passwordRef.current.focus()}
-            />
-
-            <ReusableInput
-              value={data.password}
-              label={`${i18n.t("signUpUser.input.password.label")}`}
-              placeholder={`${i18n.t("signUpUser.input.password.placeholder")}`}
-              onChangeText={(value) => handleInputChange("password", value)}
-              secureTextEntry={true}
-              ref={passwordRef}
-              onSubmitEditing={handleLogin}
-              returnKeyType={"done"}
-            />
-          </View>
-
-          <View>
-            <View className="flex-1 items-center mb-1 justify-center flex-row">
-              <View className="h-[1px] bg-white w-[100px]" />
-
-              <View className="bg-white w-[5px] h-[5px] rounded-full mx-2" />
-
-              <View className="h-[1px] bg-white w-[100px]" />
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={styles.contentView}>
+            <View style={styles.roundedLogo}>
+              <Image
+                source={require("../../Images/Icons/Untitled-5.png")}
+                style={styles.image}
+                accessibilityLabel="Logo of the app"
+              />
             </View>
 
-            <Button
-              text={
-                submitting
-                  ? `${i18n.t("signUpUser.button.submitting")}`
-                  : `${i18n.t("signInUser.signIn")}`
-              }
-              onPress={handleLogin}
-              disabled={submitting}
-              loading={loading}
-            />
+            <View>
+              <ReusableInput
+                value={data.phone_number}
+                label={`${i18n.t("signUpUser.input.phone.label")}`}
+                placeholder={`${i18n.t("signUpUser.input.phone.placeholder")}`}
+                keyboardType="numeric"
+                onChangeText={(value) =>
+                  handleInputChange("phone_number", value)
+                }
+                onSubmitEditing={() => passwordRef.current.focus()}
+              />
 
-            <Button
-              text={`${i18n.t("signInUser.signUp")}`}
-              onPress={() => navigation.navigate(`${i18n.t("signNav.signUp")}`)}
-              disabled={submitting}
-              isTransparent={true}
-            />
+              <ReusableInput
+                value={data.password}
+                label={`${i18n.t("signUpUser.input.password.label")}`}
+                placeholder={`${i18n.t(
+                  "signUpUser.input.password.placeholder"
+                )}`}
+                onChangeText={(value) => handleInputChange("password", value)}
+                secureTextEntry={true}
+                ref={passwordRef}
+                onSubmitEditing={handleLogin}
+                returnKeyType={"done"}
+              />
+            </View>
 
-            <TouchableOpacity onPress={() => navigation.navigate("recovery")}>
-              <Text className="text-white text-center my-2 text-base">
-                {`${i18n.t("signInUser.forgotPass")}`}
-              </Text>
-            </TouchableOpacity>
+            <View>
+              <View className="flex-1 items-center mb-1 justify-center flex-row">
+                <View className="h-[1px] bg-white w-[100px]" />
 
-            <View className="flex-row gap-1 items-center justify-center mt-1">
-              <TouchableOpacity onPress={() => changeLocale("en")}>
-                <Text
-                  style={[locale.includes("en") && styles.activeLanguageButton]}
-                >
-                  English
+                <View className="bg-white w-[5px] h-[5px] rounded-full mx-2" />
+
+                <View className="h-[1px] bg-white w-[100px]" />
+              </View>
+
+              <Button
+                text={
+                  submitting
+                    ? `${i18n.t("signUpUser.button.submitting")}`
+                    : `${i18n.t("signInUser.signIn")}`
+                }
+                onPress={handleLogin}
+                disabled={submitting}
+                loading={loading}
+              />
+
+              <Button
+                text={`${i18n.t("signInUser.signUp")}`}
+                onPress={() =>
+                  navigation.navigate(`${i18n.t("signNav.signUp")}`)
+                }
+                disabled={submitting}
+                isTransparent={true}
+              />
+
+              <TouchableOpacity onPress={() => navigation.navigate("recovery")}>
+                <Text className="text-white text-center my-2 text-base">
+                  {`${i18n.t("signInUser.forgotPass")}`}
                 </Text>
               </TouchableOpacity>
 
-              <Text>|</Text>
+              <View className="flex-row gap-1 items-center justify-center mt-1">
+                <TouchableOpacity onPress={() => changeLocale("en")}>
+                  <Text
+                    style={[
+                      locale.includes("en") && styles.activeLanguageButton,
+                    ]}
+                  >
+                    English
+                  </Text>
+                </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => changeLocale("ar")}>
-                <Text
-                  style={[locale.includes("ar") && styles.activeLanguageButton]}
-                >
-                  العربية
-                </Text>
-              </TouchableOpacity>
+                <Text>|</Text>
+
+                <TouchableOpacity onPress={() => changeLocale("ar")}>
+                  <Text
+                    style={[
+                      locale.includes("ar") && styles.activeLanguageButton,
+                    ]}
+                  >
+                    العربية
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </View>
   );

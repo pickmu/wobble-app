@@ -2,7 +2,7 @@ export default {
   expo: {
     name: "Wobble",
     slug: "Wobble-Taxi",
-    version: "1.0.3",
+    version: "1.0.8",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -18,11 +18,19 @@ export default {
       infoPlist: {
         ExpoLocalization_supportsRTL: true,
         CFBundleAllowMixedLocalizations: true,
+        NSLocationWhenInUseUsageDescription:
+          "Your location is used to find closest drivers to you.",
+        NSLocationAlwaysUsageDescription:
+          "Your location is used to find closest drivers to you.",
+        NSLocationAlwaysAndWhenInUseUsageDescription:
+          "Your location is used to find closest drivers to you.",
+        NSPhotoLibraryUsageDescription:
+          "Allow app to use the photo library to update your profile image.",
       },
       config: {
         googleMapsApiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
       },
-      buildNumber: "4",
+      buildNumber: "8",
     },
     android: {
       package: "com.pickmeup01.Wobble",
@@ -35,12 +43,11 @@ export default {
           apiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
         },
       },
-      versionCode: 4,
+      versionCode: 7,
     },
     web: {
       favicon: "./assets/favicon.png",
     },
-    plugins: ["expo-localization"],
     extra: {
       eas: {
         projectId: "b6f27941-5ae8-479e-9589-015c3b1f13fe",

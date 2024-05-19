@@ -102,7 +102,7 @@ const ChangePassword = ({ route }) => {
         </TouchableOpacity>
       </View>
 
-      <View className="flex-1 mx-10 mt-5 justify-between items-center">
+      <View className="flex-1 mx-10 mt-5 items-center">
         <View>
           <View className="bg-headers rounded-2xl py-5 items-center mb-10">
             <Text className="text-[25px] font-regular text-center px-5">
@@ -133,13 +133,11 @@ const ChangePassword = ({ route }) => {
           </KeyboardAvoidingView>
         </View>
 
-        <View className="mb-16">
-          <Button
-            text={`${i18n.t("submit")}`}
-            onPress={ChangeUserPassword}
-            disabled={isLoading}
-          />
-        </View>
+        <Button
+          text={`${i18n.t("submit")}`}
+          onPress={ChangeUserPassword}
+          disabled={isLoading}
+        />
       </View>
     </View>
   );

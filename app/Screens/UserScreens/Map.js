@@ -62,6 +62,10 @@ const Map = observer(() => {
 
   const [duration, setDuration] = useState(0);
 
+  const [driverDistance, setDriverDistance] = useState(0);
+
+  const [driverDuration, setDriverDuration] = useState(0);
+
   const [showAnimatedComponent, setShowAnimatedComponent] = useState(false);
 
   const [showCarTypes, setShowCarTypes] = useState(false);
@@ -74,7 +78,7 @@ const Map = observer(() => {
 
   const [orderData, setOrderData] = useState();
 
-  const [heightComponent, setHeightComponent] = useState(280);
+  const [heightComponent, setHeightComponent] = useState(250);
 
   const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
@@ -255,8 +259,8 @@ const Map = observer(() => {
   const LATITUDE_DELTA = 0.02;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
   const INITIAL_POSITION = {
-    latitude: currentLocation.latitude,
-    longitude: currentLocation.longitude,
+    latitude: currentLocation?.latitude,
+    longitude: currentLocation?.longitude,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   };
@@ -286,11 +290,19 @@ const Map = observer(() => {
     }
   };
 
+  const traceDriverRouteOnReady = (args) => {
+    if (args) {
+      setDriverDistance(args.distance);
+
+      setDriverDuration(args.duration);
+    }
+  };
+
   const traceRoute = () => {
     setShowDirections(true);
     const userPickup = {
-      latitude: currentLocation.latitude,
-      longitude: currentLocation.longitude,
+      latitude: currentLocation?.latitude,
+      longitude: currentLocation?.longitude,
     };
 
     {
@@ -315,6 +327,13 @@ const Map = observer(() => {
 
   const handleShowAutoComplete = () => {
     setShowAnimatedComponent(true);
+  };
+
+  const DRIVER_POSITION = {
+    latitude: orderData?.latitude,
+    longitude: orderData?.longitude,
+    latitudeDelta: LATITUDE_DELTA,
+    longitudeDelta: LONGITUDE_DELTA,
   };
 
   return (
@@ -363,6 +382,17 @@ const Map = observer(() => {
                 strokeColor={colors.primary}
                 strokeWidth={8}
                 onReady={traceRouteOnReady}
+              />
+            )}
+
+            {showDirections && currentLocation && destination && orderData && (
+              <MapViewDirections
+                origin={DRIVER_POSITION}
+                destination={destination}
+                apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
+                strokeColor={colors.primary}
+                strokeWidth={8}
+                onReady={traceDriverRouteOnReady}
               />
             )}
 

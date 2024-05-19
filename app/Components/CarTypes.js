@@ -124,22 +124,26 @@ const CarTypes = ({
     await getGeolocation();
 
     if (nearbyDriver?.length === 0) {
-      Alert.alert(`Sorry`, `No drivers yet`, [
-        {
-          text: `${i18n?.t("cancel")}`,
-          style: "cancel",
-        },
-        {
-          text: `${i18n.t("ok")}`,
-          onPress: async () => {
-            setIsOrderSending(false);
-
-            setShowCarTypes(true);
-
-            setHeightComponent(240);
+      Alert.alert(
+        `Sorry`,
+        `All the drivers are busy at the moment, try again later`,
+        [
+          {
+            text: `${i18n?.t("cancel")}`,
+            style: "cancel",
           },
-        },
-      ]);
+          {
+            text: `${i18n.t("ok")}`,
+            onPress: async () => {
+              setIsOrderSending(false);
+
+              setShowCarTypes(true);
+
+              setHeightComponent(240);
+            },
+          },
+        ]
+      );
       return;
     }
 
@@ -213,14 +217,17 @@ const CarTypes = ({
               )}
             </View>
 
-            <Text style={styles.price}>${car.price}</Text>
+            {/* <Text style={styles.price}>${car.price}</Text> */}
 
             <Image source={car.imagePath} style={styles.image} />
 
-            <Text style={styles.title} className="text-[10px] font-regular">
+            <Text
+              style={styles.title}
+              className="text-[10px] my-2 font-regular"
+            >
               Wobble {car.type}
             </Text>
-            <Text>{car.duration} min</Text>
+            {/* <Text>{car.duration} min</Text> */}
           </TouchableOpacity>
         ))}
 
