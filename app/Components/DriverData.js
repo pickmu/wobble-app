@@ -32,8 +32,18 @@ const DriverData = ({
   const [room, setRoom] = useState(null);
 
   const handlePhoneCall = () => {
-    if (driver_id.phone_number) {
-      Linking.openURL(`tel:${driver_id.phone_number}`);
+    if (user_id.phone_number) {
+      const phoneNumber = driver_id.phone_number;
+      const url = `https://wa.me/${phoneNumber}`;
+      Linking.canOpenURL(url)
+        .then((supported) => {
+          if (supported) {
+            Linking.openURL(url);
+          } else {
+            Alert.alert("WhatsApp not installed");
+          }
+        })
+        .catch((err) => console.error("Error opening WhatsApp", err));
     } else {
       console.log("Phone number is not available.");
     }
@@ -134,7 +144,9 @@ const DriverData = ({
           </View>
 
           <View>
-            <Text className="font-regular text-Primary mb-2">{i18n.t("driverData.name")}</Text>
+            <Text className="font-regular text-Primary mb-2">
+              {i18n.t("driverData.name")}
+            </Text>
 
             <Text className="font-regular">
               {driver_id?.first_name} {driver_id?.last_name}

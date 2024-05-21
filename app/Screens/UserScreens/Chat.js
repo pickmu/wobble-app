@@ -1,32 +1,19 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Platform,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, Text } from "react-native";
 import { useState, useEffect } from "react";
 import { Socket } from "../../socket/socket";
 import axios from "axios";
-import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import { colors, fonts } from "../../ReusableTools/css";
-import { i18nStore } from "../../MobX/I18nStore";
 import Loading from "../../ReusableTools/Loading";
+import { GiftedChat } from "react-native-gifted-chat";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const Chat = ({ route }) => {
   const [dataChat, setDataChat] = useState([]);
 
-  const [textMessage, setTextMessage] = useState("");
-
   const [loadingChat, setLoadingChat] = useState(false);
 
-  const [sending, setSending] = useState(false);
-
   const { user_id, driver_id, room } = route?.params;
-
-  const { i18n } = i18nStore;
 
   useEffect(() => {
     if (room) {
@@ -36,7 +23,7 @@ const Chat = ({ route }) => {
   }, [room]);
 
   async function getDataChat() {
-    if (driver_id) {
+    if (user_id) {
       setLoadingChat(true);
 
       await axios
@@ -44,7 +31,18 @@ const Chat = ({ route }) => {
           `${process.env.EXPO_PUBLIC_API_URL}chat/chattingHistory?senderId=${user_id._id}&receiverId=${driver_id._id}`
         )
         .then((res) => {
-          setDataChat(res.data.chattingHistory);
+          const formattedMessages = res.data.chattingHistory.map((msg) => ({
+            _id: msg._id,
+            text: msg.content,
+            createdAt: new Date(msg.createdAt),
+            user: {
+              _id: msg.sender._id,
+              name: `${msg.sender.first_name} ${msg.sender.last_name}`,
+              avatar: `http://back.wobble-ah.com/${msg.sender.image}`,
+            },
+          }));
+
+          setDataChat(formattedMessages.reverse());
           setLoadingChat(false);
         })
         .catch(() => {
@@ -59,102 +57,61 @@ const Chat = ({ route }) => {
     });
   }, [Socket]);
 
-  async function sendMessage() {
-    setSending(true);
+  async function onSend(newMessages) {
+    setDataChat((previousMessages) =>
+      GiftedChat.append(previousMessages, newMessages)
+    );
 
     await axios
       .post(`${process.env.EXPO_PUBLIC_API_URL}chat/createChat`, {
         sender: user_id._id,
         receiver: driver_id._id,
-        content: textMessage,
+        content: newMessages[0].text,
         senderModel: user_id.role,
         receiverModel: driver_id.role,
       })
       .then((res) => {
-        setTextMessage("");
         const messageData = {
           room,
           name: user_id.first_name,
           sender: user_id._id,
           receiver: driver_id._id,
-          content: textMessage,
+          content: newMessages[0].text,
           senderModel: user_id.role,
           receiverModel: driver_id.role,
         };
         Socket.emit("send_message", messageData);
-
-        setDataChat([...dataChat, messageData]);
-
-        setSending(false);
       })
       .catch((erorr) => {
         console.log(erorr);
       });
   }
 
-  const DataChat = ({ item }) => {
-    return (
-      <View
-        style={[
-          styles.messageContainer,
-          item.senderModel === "User"
-            ? styles.userMessage
-            : styles.otherMessage,
-        ]}
-      >
-        <View
-          style={[
-            styles.message,
-            item.senderModel === "User"
-              ? styles.userBackground
-              : styles.otherBackground,
-          ]}
-        >
-          <Text style={styles.messageText}>{item.content}</Text>
-        </View>
-      </View>
-    );
-  };
-
   if (loadingChat) {
     return <Loading />;
   }
 
   return (
-    <View className="flex-1">
-      <View style={styles.driverData}>
-        <Text className="text-[20px]">
-          {driver_id.first_name} {driver_id.last_name}
-        </Text>
-      </View>
-
-      <FlatList
-        data={dataChat}
-        renderItem={DataChat}
-        style={{ flex: 1, paddingHorizontal: 8 }}
-        inverted
-        contentContainerStyle={{ flexDirection: "column-reverse" }}
-      />
-
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={80}
-        style={styles.inputContainer}
-      >
-        <TextInput
-          style={styles.inputField}
-          onChangeText={(text) => setTextMessage(text)}
-          value={textMessage}
-          placeholder={i18n.t("chat.type")}
-        />
-
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text className="text-white">
-            {sending ? i18n.t("chat.sending") : i18n.t("chat.send")}
+    <KeyboardAwareScrollView
+      contentContainerStyle={{ flex: 1 }}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View className="flex-1">
+        <View style={styles.driverData}>
+          <Text className="text-[20px]">
+            {user_id.first_name} {user_id.last_name}
           </Text>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </View>
+        </View>
+
+        <GiftedChat
+          messages={dataChat}
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: driver_id?._id,
+          }}
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -162,7 +119,6 @@ export default Chat;
 
 const styles = StyleSheet.create({
   message: {
-    backgroundColor: "gray",
     paddingVertical: 10,
     paddingHorizontal: 10,
     maxWidth: "100%",
@@ -174,17 +130,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     marginBottom: 8,
   },
-  userMessage: {
-    justifyContent: "flex-end",
-  },
-  otherMessage: {
-    justifyContent: "flex-start",
-  },
   userBackground: {
-    backgroundColor: colors.primary,
+    backgroundColor: "gray",
   },
   otherBackground: {
-    backgroundColor: "gray",
+    backgroundColor: colors.primary,
+  },
+  userMessage: {
+    justifyContent: "flex-start",
+  },
+  otherMessage: {
+    justifyContent: "flex-end",
   },
   messageText: {
     color: "white",

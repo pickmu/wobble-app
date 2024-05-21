@@ -279,9 +279,7 @@ const SignUp = ({ navigation }) => {
 
       requestData.append("last_name", data.last_name.trim());
 
-      if (data.email) {
-        requestData.append("email", data.email.trim());
-      }
+      requestData.append("email", data.email.trim());
 
       requestData.append("phone_number", numberWithoutSpaces);
 

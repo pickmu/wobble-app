@@ -2,7 +2,7 @@ export default {
   expo: {
     name: "Wobble",
     slug: "Wobble-Taxi",
-    version: "1.0.8",
+    version: "1.0.9",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -43,11 +43,21 @@ export default {
           apiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
         },
       },
-      versionCode: 7,
+      versionCode: 8,
     },
     web: {
       favicon: "./assets/favicon.png",
     },
+    plugins: [
+      [
+        "expo-build-properties",
+        {
+          android: {
+            usesCleartextTraffic: true,
+          },
+        },
+      ],
+    ],
     extra: {
       eas: {
         projectId: "b6f27941-5ae8-479e-9589-015c3b1f13fe",

@@ -71,7 +71,7 @@ export const translations = {
         },
         email: {
           label: "Email",
-          placeholder: "Enter your email address (optional)",
+          placeholder: "Enter your email address",
         },
         phone: {
           label: "Phone Number",
@@ -266,7 +266,7 @@ export const translations = {
         },
         email: {
           label: "ألبريد الإلكتروني",
-          placeholder: "ادخل بريدك الإلكتروني )اختياري(",
+          placeholder: "ادخل بريدك الإلكتروني",
         },
         phone: {
           label: "رقم الهاتف",

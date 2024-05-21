@@ -17,6 +17,7 @@ const InputAutoComplete = ({
 
   useEffect(() => {
     ref.current?.setAddressText(`${destination ? destination?.name : ""}`);
+    ref.current?.focus();
   }, [destination]);
 
   return (
