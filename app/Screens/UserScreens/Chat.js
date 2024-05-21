@@ -42,7 +42,7 @@ const Chat = ({ route }) => {
             },
           }));
 
-          setDataChat(formattedMessages.reverse());
+          setDataChat(formattedMessages);
           setLoadingChat(false);
         })
         .catch(() => {
