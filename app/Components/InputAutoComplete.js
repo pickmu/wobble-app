@@ -19,7 +19,7 @@ const InputAutoComplete = ({
     ref.current?.setAddressText(`${destination ? destination?.name : ""}`);
     ref.current?.focus();
   }, [destination]);
-
+  
   return (
     <>
       <View className="flex-row gap-1 items-center my-2">
@@ -48,6 +48,7 @@ const InputAutoComplete = ({
         minLength={2}
         debounce={200}
         nearbyPlacesAPI="GooglePlacesSearch"
+        enableHighAccuracyLocation
       />
     </>
   );

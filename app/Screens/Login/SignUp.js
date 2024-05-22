@@ -12,6 +12,7 @@ import { Image } from "react-native";
 import { ReusableInput } from "../../ReusableTools/ReusableInput";
 import { authStore } from "../../MobX/AuthStore";
 import { remove } from "mobx";
+import PhoneInputComponent from "../../Components/PhoneInput";
 
 const SignUp = ({ navigation }) => {
   const { i18n } = i18nStore;
@@ -79,14 +80,7 @@ const SignUp = ({ navigation }) => {
       autoCapitalize: "none",
     },
     {
-      label: `${i18n.t("signUpUser.input.phone.label")}`,
-      placeholder: `${i18n.t("signUpUser.input.phone.placeholder")}`,
-      value: data.phone,
       key: "phone",
-      error: error.phone,
-      keyboardType: "numeric",
-      ref: phoneRef,
-      onSubmitEditing: () => passwordRef.current.focus(),
     },
     {
       label: `${i18n.t("signUpUser.input.password.label")}`,
@@ -341,6 +335,11 @@ const SignUp = ({ navigation }) => {
       setSubmitting(false);
     }
   };
+
+  const setPhone = (phone) => {
+    setData((prevData) => ({ ...prevData, phone: phone }));
+  };
+
   return (
     <>
       <KeyboardAwareScrollView
@@ -357,20 +356,32 @@ const SignUp = ({ navigation }) => {
 
         {inputFields.map((input, index) => {
           return (
-            <ReusableInput
-              key={index}
-              label={input.label}
-              placeholder={input.placeholder}
-              ref={input.ref}
-              value={input.value}
-              onChangeText={(value) => handleInputChange(input.key, value)}
-              secureTextEntry={input.secureTextEntry}
-              keyboardType={input.keyboardType}
-              error={input.error}
-              onSubmitEditing={input.onSubmitEditing}
-              returnKeyType={input.returnKeyType}
-              autoCapitalize={input.autoCapitalize}
-            />
+            <>
+              {input.key === "phone" ? (
+                <PhoneInputComponent
+                  key={index}
+                  value={data.phone}
+                  setValue={setPhone}
+                  phoneInput={phoneRef}
+                  error={error.phone}
+                />
+              ) : (
+                <ReusableInput
+                  key={index}
+                  label={input.label}
+                  placeholder={input.placeholder}
+                  ref={input.ref}
+                  value={input.value}
+                  onChangeText={(value) => handleInputChange(input.key, value)}
+                  secureTextEntry={input.secureTextEntry}
+                  keyboardType={input.keyboardType}
+                  error={input.error}
+                  onSubmitEditing={input.onSubmitEditing}
+                  returnKeyType={input.returnKeyType}
+                  autoCapitalize={input.autoCapitalize}
+                />
+              )}
+            </>
           );
         })}
 
