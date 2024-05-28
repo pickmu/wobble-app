@@ -1,9 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
-console.log(process.env.EXPO_PUBLIC_MAP_API_KEY);
-console.log(process.env.process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID);
-console.log(process.env.EXPO_PUBLIC_MESSAGING_SENDER_ID);
-console.log(process.env.EXPO_PUBLIC_FIREBASE_APP_ID);
+
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
   authDomain: `${process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID}.firebaseapp.com`,

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import PhoneInput from "react-native-phone-number-input";
-import { colors, fonts } from "../ReusableTools/css";
+import { fonts } from "../ReusableTools/css";
 
 const PhoneInputComponent = ({ phoneInput, value, setValue, error }) => {
   return (
@@ -18,7 +18,7 @@ const PhoneInputComponent = ({ phoneInput, value, setValue, error }) => {
           defaultValue={value}
           defaultCode="LB"
           layout="first"
-          onChangeFormattedText={(text) => {
+          onChangeFormattedText={(text = "") => {
             setValue(text);
           }}
           textContainerStyle={{
@@ -37,8 +37,9 @@ const PhoneInputComponent = ({ phoneInput, value, setValue, error }) => {
             fontFamily: fonts.regular,
           }}
         />
-        {error && <Text style={styles.error}>{error}</Text>}
       </View>
+
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };

@@ -21,6 +21,8 @@ import OTP from "./OTP";
 import EditProfile from "./EditProfile";
 import About from "./About";
 import Support from "./Support";
+import { authStore } from "../../MobX/AuthStore";
+import { useEffect } from "react";
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -168,9 +170,15 @@ const UserNav = () => {
         }}
       />
 
-      <Stack.Screen name={`${i18n.t("userNav.screens.about")}`} component={About} />
+      <Stack.Screen
+        name={`${i18n.t("userNav.screens.about")}`}
+        component={About}
+      />
 
-      <Stack.Screen name={`${i18n.t("userNav.screens.support")}`} component={Support} />
+      <Stack.Screen
+        name={`${i18n.t("userNav.screens.support")}`}
+        component={Support}
+      />
 
       <Stack.Screen
         name="cancelRide"

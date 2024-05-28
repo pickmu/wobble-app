@@ -30,6 +30,7 @@ import DriverData from "../../Components/DriverData";
 import { authStore } from "../../MobX/AuthStore";
 import { i18nStore } from "../../MobX/I18nStore";
 import { orderAcceptedStore } from "../../MobX/OrderAccepted";
+import { initializeOneSignal } from "../../../InitializeOneSignal";
 
 const { width, height } = Dimensions.get("window");
 
@@ -90,8 +91,7 @@ const Map = observer(() => {
   );
 
   // useEffect(() => {
-  //   reFetch();
-  // }, [typeCar]);
+  // }, [userInfo]);
 
   const { data: orderNotEnded } = useFetch(
     `order/getIsNotEndedOrder/${userInfo?._id}`
@@ -177,7 +177,9 @@ const Map = observer(() => {
   const mapRef = useRef(MapView);
 
   useEffect(() => {
-    requestLocationPermissions();
+    requestLocationPermissions().then(() => {
+      userInfo && initializeOneSignal(userInfo?.phone_number);
+    });
 
     if (!orderNotEnded.message === "All orders are ended") {
       setHeightComponent(380);
@@ -340,8 +342,8 @@ const Map = observer(() => {
   };
 
   const DRIVER_POSITION = {
-    latitude: orderData?.latitude,
-    longitude: orderData?.longitude,
+    latitude: driverLocation?.lat,
+    longitude: driverLocation?.long,
     latitudeDelta: LATITUDE_DELTA,
     longitudeDelta: LONGITUDE_DELTA,
   };

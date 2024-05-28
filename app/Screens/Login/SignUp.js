@@ -76,7 +76,6 @@ const SignUp = ({ navigation }) => {
       key: "email",
       error: error.email,
       ref: emailRef,
-      onSubmitEditing: () => phoneRef.current.focus(),
       autoCapitalize: "none",
     },
     {
@@ -159,7 +158,6 @@ const SignUp = ({ navigation }) => {
 
       // Remove spaces and other non-digit characters from the phone number
       function removeSpaces(numberWithSpaces) {
-        console.log(numberWithSpaces);
         if (!numberWithSpaces) {
           return ""; // or any default value you prefer
         }
@@ -245,7 +243,7 @@ const SignUp = ({ navigation }) => {
         }));
         emptyFields.push("Phone Number");
       } else if (removeSpaces(data.phone)) {
-        const phoneRegex = /^(70|71|76|78|79|81|03)[0-9]{6}$/;
+        const phoneRegex = /^\+961(70|71|76|78|79|81|03)[0-9]{6}$/;
         if (!phoneRegex.test(data.phone)) {
           setError((prevErrors) => ({
             ...prevErrors,
@@ -254,7 +252,7 @@ const SignUp = ({ navigation }) => {
           emptyFields.push("Phone Number");
         }
       }
-
+      console.log(emptyFields);
       if (emptyFields.length > 0) {
         Toast.show({
           type: "error",

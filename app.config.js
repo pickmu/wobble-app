@@ -2,7 +2,7 @@ export default {
   expo: {
     name: "Wobble",
     slug: "Wobble-Taxi",
-    version: "1.0.9",
+    version: "1.0.92",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -43,12 +43,18 @@ export default {
           apiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
         },
       },
-      versionCode: 9,
+      versionCode: 10,
     },
     web: {
       favicon: "./assets/favicon.png",
     },
     plugins: [
+      [
+        "onesignal-expo-plugin",
+        {
+          mode: "development",
+        },
+      ],
       [
         "expo-build-properties",
         {
@@ -57,6 +63,7 @@ export default {
           },
         },
       ],
+      ["expo-location"],
       "expo-font",
     ],
     extra: {
