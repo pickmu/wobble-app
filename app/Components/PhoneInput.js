@@ -9,7 +9,7 @@ const PhoneInputComponent = ({ phoneInput, value, setValue, error }) => {
         <View className="pr-2 mr-2" style={styles.square}>
           <View
             className="w-[10px] h-[10px] mt-[7px] rotate-45"
-            style={{ backgroundColor: colors.primary }}
+            style={{ backgroundColor: "white" }}
           />
         </View>
 
@@ -22,7 +22,7 @@ const PhoneInputComponent = ({ phoneInput, value, setValue, error }) => {
             setValue(text);
           }}
           textContainerStyle={{
-            backgroundColor: "white",
+            backgroundColor: "transparent",
             width: "100%",
             fontFamily: fonts.regular,
           }}

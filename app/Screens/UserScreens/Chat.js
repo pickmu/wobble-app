@@ -38,7 +38,7 @@ const Chat = ({ route }) => {
             user: {
               _id: msg.sender._id,
               name: `${msg.sender.first_name} ${msg.sender.last_name}`,
-              avatar: `http://back.wobble-ah.com/${msg.sender.image}`,
+              avatar: `${process.env.EXPO_PUBLIC_API_URL}${msg.sender.image}`,
             },
           }));
 
@@ -80,6 +80,7 @@ const Chat = ({ route }) => {
           senderModel: user_id.role,
           receiverModel: driver_id.role,
         };
+
         Socket.emit("send_message", messageData);
       })
       .catch((erorr) => {

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from "react-native";
 import { i18nStore } from "../MobX/I18nStore";
 
 const Option = ({ onPress, title, icon }) => {

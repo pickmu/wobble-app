@@ -80,6 +80,11 @@ const Map = observer(() => {
 
   const [heightComponent, setHeightComponent] = useState(250);
 
+  const [driverLocation, setDriverLocation] = useState({
+    lat: "",
+    long: "",
+  });
+
   const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
   );
@@ -197,6 +202,11 @@ const Map = observer(() => {
             setHeightComponent(380);
 
             setOrderAccepted(true);
+
+            setDriverLocation({
+              lat: nearbyDriver[0].lat,
+              long: nearbyDriver[0].long,
+            });
           } else if (nearbyDriver?.length >= currentDriverIndex) {
             // Order not accepted by the current driver, try sending to the next one
             const nextDriverIndex = currentDriverIndex + 1;

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { colors } from "./css";
+import { colors, fonts } from "./css";
 import { i18nStore } from "../MobX/I18nStore";
 
 export const ReusableInput = React.forwardRef(
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     fontSize: 19,
+    fontFamily: fonts.regular
   },
   error: {
     color: "red",

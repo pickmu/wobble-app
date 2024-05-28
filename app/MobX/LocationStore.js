@@ -42,10 +42,12 @@ class LocationStore {
 
     let currentLocation;
     if (Platform.OS === "android") {
-      currentLocation = await Location.getCurrentPositionAsync({
+      currentLocation = await Location.getLastKnownPositionAsync({
         enableHighAccuracy: true,
         accuracy: Location.Accuracy.BestForNavigation,
       });
+
+      console.log(currentLocation);
     } else {
       currentLocation = await Location.getLastKnownPositionAsync({
         enableHighAccuracy: true,

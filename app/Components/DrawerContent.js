@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons, AntDesign, Feather } from "@expo/vector-icons";
 import { colors } from "../ReusableTools/css";
-import { useNavigation, DrawerActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { i18nStore } from "../MobX/I18nStore";
 import { authStore } from "../MobX/AuthStore";
 import profile from "../Images/Icons/profilee.png";
@@ -118,7 +118,9 @@ const DrawerContent = () => {
 
             <Text className="font-bold mr-1">5.00</Text>
 
-            <Text className="text-gray-600">{i18n.t("drawerContent.rating")}</Text>
+            <Text className="text-gray-600">
+              {i18n.t("drawerContent.rating")}
+            </Text>
           </View>
         </View>
 

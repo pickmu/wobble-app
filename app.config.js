@@ -30,7 +30,7 @@ export default {
       config: {
         googleMapsApiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
       },
-      buildNumber: "8",
+      buildNumber: "10",
     },
     android: {
       package: "com.pickmeup01.Wobble",
@@ -43,7 +43,7 @@ export default {
           apiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
         },
       },
-      versionCode: 8,
+      versionCode: 9,
     },
     web: {
       favicon: "./assets/favicon.png",
@@ -57,6 +57,7 @@ export default {
           },
         },
       ],
+      "expo-font",
     ],
     extra: {
       eas: {

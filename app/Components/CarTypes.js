@@ -168,7 +168,7 @@ const CarTypes = ({
         `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
         requestData
       );
-
+      
       fetchOrderStatus(resp.data?._id);
     } catch (error) {
       console.log("handleSendOrder error", error.message);

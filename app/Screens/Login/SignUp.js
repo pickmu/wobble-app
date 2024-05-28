@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Fragment } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { Button } from "../../ReusableTools/Button";
 import Toast from "react-native-toast-message";
@@ -356,10 +356,9 @@ const SignUp = ({ navigation }) => {
 
         {inputFields.map((input, index) => {
           return (
-            <>
+            <Fragment key={index}>
               {input.key === "phone" ? (
                 <PhoneInputComponent
-                  key={index}
                   value={data.phone}
                   setValue={setPhone}
                   phoneInput={phoneRef}
@@ -367,7 +366,6 @@ const SignUp = ({ navigation }) => {
                 />
               ) : (
                 <ReusableInput
-                  key={index}
                   label={input.label}
                   placeholder={input.placeholder}
                   ref={input.ref}
@@ -381,7 +379,7 @@ const SignUp = ({ navigation }) => {
                   autoCapitalize={input.autoCapitalize}
                 />
               )}
-            </>
+            </Fragment>
           );
         })}
 
