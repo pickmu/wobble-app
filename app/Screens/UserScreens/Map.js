@@ -180,7 +180,11 @@ const Map = observer(() => {
   }, []);
 
   useEffect(() => {
-    if (orderNotEnded.message !== "All orders are ended") {
+    if (
+      (orderNotEnded.message !== "All orders are ended" ||
+        orderNotEnded.message !== "No active orders found") &&
+      orderNotEnded.length > 0
+    ) {
       setShowComponent(false);
 
       setHeightComponent(380);
@@ -451,7 +455,9 @@ const Map = observer(() => {
               { height: animatedHeightComponent },
             ]}
           >
-            {orderNotEnded.message !== "All orders are ended" && orderData ? (
+            {(orderNotEnded.message !== "All orders are ended" ||
+              orderNotEnded.message !== "No active orders found") &&
+            orderData ? (
               <DriverData
                 driver_id={orderNotEnded.driver_id}
                 user_id={orderNotEnded.user_id}

@@ -12,6 +12,6 @@ export const initializeOneSignal = (phone) => {
 
   // Optionally, log in the user
   if (phone) {
-    OneSignal.User.addTag("phone_number", phone);
+    OneSignal.User.addTag("phone_number", String(phone));
   }
 };

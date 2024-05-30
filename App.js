@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Loading from "./app/ReusableTools/Loading.js";
+import { AppState } from "react-native";
 
 export default App = observer(() => {
   const { token, globalLoading } = authStore;
@@ -29,8 +30,8 @@ export default App = observer(() => {
     <SafeAreaProvider>
       <NavigationContainer>
         <StatusBar style={`${token ? "dark" : "light"}`} />
-          {token ? <UserNav /> : <SignNav />}
-          <Toast />
+        {token ? <UserNav /> : <SignNav />}
+        <Toast />
       </NavigationContainer>
     </SafeAreaProvider>
   );

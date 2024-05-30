@@ -2,7 +2,7 @@ export default {
   expo: {
     name: "Wobble",
     slug: "Wobble-Taxi",
-    version: "1.0.92",
+    version: "1.0.10",
     orientation: "portrait",
     icon: "./assets/icon.png",
     userInterfaceStyle: "light",
@@ -26,11 +26,14 @@ export default {
           "Your location is used to find closest drivers to you.",
         NSPhotoLibraryUsageDescription:
           "Allow app to use the photo library to update your profile image.",
+        NSAppTransportSecurity: {
+          NSAllowsArbitraryLoads: true,
+        },
       },
       config: {
         googleMapsApiKey: process.env.EXPO_PUBLIC_MAP_API_KEY,
       },
-      buildNumber: "10",
+      buildNumber: "11",
     },
     android: {
       package: "com.pickmeup01.Wobble",
@@ -59,7 +62,7 @@ export default {
         "expo-build-properties",
         {
           android: {
-            usesCleartextTraffic: true,
+            usesCleartextTraffic: true
           },
         },
       ],
