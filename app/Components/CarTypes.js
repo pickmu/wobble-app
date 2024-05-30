@@ -80,26 +80,26 @@ const CarTypes = ({
     },
   ];
 
-  const deliveryTypes = [
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/bike.png"),
-      type: "Bike",
-      duration: "7",
-    },
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/moto.png"),
-      type: "Moto",
-      duration: "7",
-    },
-    {
-      price: "7",
-      imagePath: require("../Images/Icons/335071.png"),
-      type: "TukTuk",
-      duration: "7",
-    },
-  ];
+  // const deliveryTypes = [
+  //   {
+  //     price: "7",
+  //     imagePath: require("../Images/Icons/bike.png"),
+  //     type: "Bike",
+  //     duration: "7",
+  //   },
+  //   {
+  //     price: "7",
+  //     imagePath: require("../Images/Icons/moto.png"),
+  //     type: "Moto",
+  //     duration: "7",
+  //   },
+  //   {
+  //     price: "7",
+  //     imagePath: require("../Images/Icons/335071.png"),
+  //     type: "TukTuk",
+  //     duration: "7",
+  //   },
+  // ];
 
   const handleCardPress = (index, type) => {
     setSelectedCard(index === selectedCard ? null : index);
@@ -128,10 +128,6 @@ const CarTypes = ({
         `Sorry`,
         `All the drivers are busy at the moment, try again later`,
         [
-          {
-            text: `${i18n?.t("cancel")}`,
-            style: "cancel",
-          },
           {
             text: `${i18n.t("ok")}`,
             onPress: async () => {
@@ -168,14 +164,14 @@ const CarTypes = ({
         `${process.env.EXPO_PUBLIC_API_URL}order/addOrder`,
         requestData
       );
-      
+
       fetchOrderStatus(resp.data?._id);
     } catch (error) {
       console.log("handleSendOrder error", error.message);
     }
   };
 
-  const carTypes = selectedType === "taxi" ? taxiTypes : deliveryTypes;
+  const carTypes = taxiTypes;
 
   return (
     <>
@@ -194,42 +190,46 @@ const CarTypes = ({
       </View>
 
       <View style={styles.container}>
-        {carTypes.map((car, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.card,
-              selectedCard === index && {
-                shadowColor: colors.yellow,
-                elevation: 10,
-              },
-            ]}
-            onPress={() => handleCardPress(index, car.type)}
-          >
-            <View
+        {selectedType === "taxi" &&
+          carTypes.map((car, index) => (
+            <TouchableOpacity
+              key={index}
               style={[
-                styles.checkContainer,
-                selectedCard === index && { backgroundColor: colors.yellow },
+                styles.card,
+                selectedCard === index && {
+                  shadowColor: colors.yellow,
+                  elevation: 10,
+                },
               ]}
+              onPress={() => handleCardPress(index, car.type)}
             >
-              {selectedCard === index && (
-                <Entypo name="check" size={10} color="black" />
-              )}
-            </View>
+              <View
+                style={[
+                  styles.checkContainer,
+                  selectedCard === index && { backgroundColor: colors.yellow },
+                ]}
+              >
+                {selectedCard === index && (
+                  <Entypo name="check" size={10} color="black" />
+                )}
+              </View>
 
-            {/* <Text style={styles.price}>${car.price}</Text> */}
+              <Image source={car.imagePath} style={styles.image} />
 
-            <Image source={car.imagePath} style={styles.image} />
+              <Text
+                style={styles.title}
+                className="text-[10px] my-2 font-regular"
+              >
+                Wobble {car.type}
+              </Text>
+            </TouchableOpacity>
+          ))}
 
-            <Text
-              style={styles.title}
-              className="text-[10px] my-2 font-regular"
-            >
-              Wobble {car.type}
-            </Text>
-            {/* <Text>{car.duration} min</Text> */}
-          </TouchableOpacity>
-        ))}
+        {selectedType !== "taxi" && (
+          <Text className="font-regular p-2 text-[18px] leading-7">
+            {i18n.t("carTypes.deliveryText")}
+          </Text>
+        )}
 
         <Button
           text={i18n.t("map.letsGo")}

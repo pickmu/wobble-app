@@ -29,7 +29,7 @@ import axios from "axios";
 import DriverData from "../../Components/DriverData";
 import { authStore } from "../../MobX/AuthStore";
 import { i18nStore } from "../../MobX/I18nStore";
-import { orderAcceptedStore } from "../../MobX/OrderAccepted";
+import { orderAcceptedStore } from "../../MobX/OrderAcceptedStore";
 import { initializeOneSignal } from "../../../InitializeOneSignal";
 
 const { width, height } = Dimensions.get("window");
@@ -90,11 +90,8 @@ const Map = observer(() => {
     `location/getLocationDriverByTypeCar/${typeCar}`
   );
 
-  // useEffect(() => {
-  // }, [userInfo]);
-
   const { data: orderNotEnded } = useFetch(
-    `order/getIsNotEndedOrder/${userInfo?._id}`
+    `order/getUserIsNotEndedOrder/${userInfo?._id}`
   );
 
   useEffect(() => {
@@ -180,11 +177,17 @@ const Map = observer(() => {
     requestLocationPermissions().then(() => {
       userInfo && initializeOneSignal(userInfo?.phone_number);
     });
-
-    if (!orderNotEnded.message === "All orders are ended") {
-      setHeightComponent(380);
-    }
   }, []);
+
+  useEffect(() => {
+    if (orderNotEnded.message !== "All orders are ended") {
+      setShowComponent(false);
+
+      setHeightComponent(380);
+
+      setOrderData(orderNotEnded);
+    }
+  }, [orderAccepted]);
 
   const fetchOrderStatus = async (orderId, currentDriverIndex = 0) => {
     const intervalId = setInterval(async () => {
@@ -302,7 +305,7 @@ const Map = observer(() => {
     }
   };
 
-  const traceDriverRouteOnReady = (args) => {
+  const traceRouteOnReadyForDriver = (args) => {
     if (args) {
       setDriverDistance(args.distance);
 
@@ -400,11 +403,9 @@ const Map = observer(() => {
             {showDirections && currentLocation && destination && orderData && (
               <MapViewDirections
                 origin={DRIVER_POSITION}
-                destination={destination}
+                destination={INITIAL_POSITION}
                 apikey={process.env.EXPO_PUBLIC_MAP_API_KEY}
-                strokeColor={colors.primary}
-                strokeWidth={8}
-                onReady={traceDriverRouteOnReady}
+                onReady={traceRouteOnReadyForDriver}
               />
             )}
 
@@ -450,13 +451,16 @@ const Map = observer(() => {
               { height: animatedHeightComponent },
             ]}
           >
-            {!orderNotEnded.message === "All orders are ended" ? (
+            {orderNotEnded.message !== "All orders are ended" && orderData ? (
               <DriverData
                 driver_id={orderNotEnded.driver_id}
                 user_id={orderNotEnded.user_id}
                 _id={orderNotEnded._id}
                 handleShowAutoComplete={handleShowAutoComplete}
                 destination={{ name: orderNotEnded?.to }}
+                setDestination={setDestination}
+                distance={driverDistance}
+                duration={driverDuration}
               />
             ) : (
               showComponent && (

@@ -110,6 +110,7 @@ const Chat = ({ route }) => {
           user={{
             _id: driver_id?._id,
           }}
+          isKeyboardInternallyHandled={true}
         />
       </View>
     </KeyboardAwareScrollView>

@@ -22,6 +22,9 @@ const DriverData = ({
   handleShowAutoComplete,
   destination,
   _id,
+  setDestination,
+  duration,
+  distance,
 }) => {
   const navigation = useNavigation();
 
@@ -150,6 +153,18 @@ const DriverData = ({
 
             <Text className="font-regular">
               {driver_id?.first_name} {driver_id?.last_name}
+            </Text>
+          </View>
+
+          <View>
+            <Text className="text-[13px] font-regular">
+              {i18n.t("driverData.distance")} {distance}{" "}
+              {i18n.t("driverData.km")}
+            </Text>
+
+            <Text className="text-[13px] font-regular">
+              {i18n.t("driverData.duration")} {duration}{" "}
+              {i18n.t("driverData.min")}
             </Text>
           </View>
         </View>

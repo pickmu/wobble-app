@@ -181,6 +181,8 @@ export const translations = {
     carTypes: {
       taxi: "Taxi",
       delivery: "Delivery",
+      deliveryText:
+        "Order with Wobble and enjoy fast, hassle-free delivery of your favorite items right to your doorstep.",
     },
     destinationContainer: {
       currentLocation: "Current Location",
@@ -189,6 +191,10 @@ export const translations = {
     driverData: {
       riderDetails: "Rider Details",
       name: "Name",
+      duration: "Distance from you:",
+      distance: "Estimated travel time:",
+      min: "min",
+      km: "km",
     },
     lookingADriver: "Looking for a driver...",
     changePassword: "Change Password",
@@ -377,6 +383,8 @@ export const translations = {
     carTypes: {
       taxi: "تاكسي",
       delivery: "خدمة توصيل",
+      deliveryText:
+        "اطلب عبر تطبيق Wobble واستمتع بتوصيل سريع وسهل لأغراضك المفضلة إلى باب منزلك.",
     },
     destinationContainer: {
       currentLocation: "الموقع الحالي",
@@ -385,6 +393,10 @@ export const translations = {
     driverData: {
       riderDetails: "تفاصيل الراكب",
       name: "الاسم",
+      distance: "المسافة منك:",
+      duration: "الوقت المتوقع للوصول",
+      min: "دقائق",
+      km: "كم",
     },
     lookingADriver: "جاري البحث عن سائق...",
   },

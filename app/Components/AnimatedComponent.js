@@ -9,7 +9,7 @@ import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import InputAutoComplete from "./InputAutoComplete";
 import { observer } from "mobx-react";
-import { orderAcceptedStore } from "../MobX/OrderAccepted";
+import { orderAcceptedStore } from "../MobX/OrderAcceptedStore";
 
 const AnimatedComponent = ({
   showAnimatedComponent,
