@@ -19,7 +19,8 @@ import { orderStore } from "../../MobX/OrderStore";
 const CancelRide = ({ route, navigation }) => {
   const { order_id } = route.params;
 
-  const { setOrderAccepted, setShowComponent } = orderAcceptedStore;
+  const { setOrderAccepted, setShowComponent, setOrderCanceled } =
+    orderAcceptedStore;
 
   const cancelTexts = [
     {
@@ -80,6 +81,8 @@ const CancelRide = ({ route, navigation }) => {
       setShowComponent(true);
 
       // setDestination("");
+
+      setOrderCanceled(true);
 
       showToast("success", "Your ride has been canceled");
     } catch (error) {

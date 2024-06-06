@@ -30,7 +30,7 @@ const DestinationContainer = ({
         />
 
         <Text
-          className={`text-[#4048A2] flex-1`}
+          className={`text-[#4048A2] flex-1 font-regular`}
           style={{ fontSize: driverData ? 15 : 19 }}
         >
           {i18n.t("destinationContainer.currentLocation")}
@@ -58,10 +58,12 @@ const DestinationContainer = ({
           disabled={isOrder}
         >
           <Text
-            className={`text-white`}
+            className={`text-white font-regular`}
             style={{ fontSize: driverData ? 15 : 19 }}
           >
-            {destination ? `${destination?.name}` : `${i18n.t("destinationContainer.destination")}`}
+            {destination
+              ? `${destination?.name}`
+              : `${i18n.t("destinationContainer.destination")}`}
           </Text>
         </TouchableOpacity>
       </View>

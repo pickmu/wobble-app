@@ -15,3 +15,4 @@ export const initializeOneSignal = (phone) => {
     OneSignal.User.addTag("phone_number", String(phone));
   }
 };
+

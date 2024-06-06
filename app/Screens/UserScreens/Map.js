@@ -46,8 +46,13 @@ const Map = observer(() => {
 
   const { i18n } = i18nStore;
 
-  const { orderAccepted, setOrderAccepted, setShowComponent, showComponent } =
-    orderAcceptedStore;
+  const {
+    orderAccepted,
+    setOrderAccepted,
+    setShowComponent,
+    showComponent,
+    orderCanceled,
+  } = orderAcceptedStore;
 
   const insets = useSafeAreaInsets();
 
@@ -81,13 +86,22 @@ const Map = observer(() => {
 
   const [heightComponent, setHeightComponent] = useState(250);
 
+  const [itsNotEnted, setIsNotEnded] = useState(false);
+
   const [driverLocation, setDriverLocation] = useState({
     lat: "",
     long: "",
   });
 
+  let liveLoactionInterval = useRef(null);
+
   const { data, reFetch } = useFetch(
-    `location/getLocationDriverByTypeCar/${typeCar}`
+    `location/DriverLiveLocation = () =>{
+      try {
+        
+      } catch (error) {
+        console.log(");
+      }/${typeCar}`
   );
 
   const { data: orderNotEnded } = useFetch(
@@ -180,18 +194,65 @@ const Map = observer(() => {
   }, []);
 
   useEffect(() => {
-    if (
-      (orderNotEnded.message !== "All orders are ended" ||
-        orderNotEnded.message !== "No active orders found") &&
-      orderNotEnded.length > 0
-    ) {
-      setShowComponent(false);
+    const checkOrder = async () => {
+      if (orderNotEnded?.is_ended == false) {
+        setIsNotEnded(true);
 
-      setHeightComponent(380);
+        setShowComponent(false);
 
-      setOrderData(orderNotEnded);
+        setHeightComponent(380);
+
+        setDestination({
+          latitude: orderNotEnded?.toCoordinates.lat || 0,
+          longitude: orderNotEnded?.toCoordinates.long || 0,
+          name: orderNotEnded?.to,
+        });
+
+        setShowDirections(true);
+
+        setOrderData(orderNotEnded);
+
+        // Set up interval to fetch location every 2 seconds
+        liveLoactionInterval.current = setInterval(() => {
+          DriverLiveLocation(orderNotEnded?.driver_id?._id);
+        }, 2000);
+
+        // Clear interval on component unmount
+        return () => {
+          if (liveLoactionInterval.current) {
+            clearInterval(liveLoactionInterval.current);
+          }
+        };
+      } else if (orderCanceled === true) {
+        setShowDirections(false);
+
+        setDestination("");
+
+        setOrderData("");
+
+        setShowComponent(true);
+
+        setDriverLocation("");
+      }
+    };
+
+    checkOrder();
+  }, [orderAccepted, orderNotEnded, orderCanceled]);
+
+  const DriverLiveLocation = async (id) => {
+    try {
+      const resp = await axios.get(
+        `${process.env.EXPO_PUBLIC_API_URL}location/getLocationDriver/${id}`
+      );
+
+      setDriverLocation({
+        lat: resp.data?.lat,
+        long: resp.data?.long,
+      });
+    } catch (error) {
+      console.log("DriverLiveLocation error", error.message);
     }
-  }, [orderAccepted]);
+  };
 
   const fetchOrderStatus = async (orderId, currentDriverIndex = 0) => {
     const intervalId = setInterval(async () => {
@@ -216,6 +277,18 @@ const Map = observer(() => {
               lat: nearbyDriver[0].lat,
               long: nearbyDriver[0].long,
             });
+
+            // Set up interval to fetch location every 2 seconds
+            liveLoactionInterval.current = setInterval(() => {
+              DriverLiveLocation(resp.data?.driver_id?._id);
+            }, 2000);
+
+            // Clear interval on component unmount
+            return () => {
+              if (liveLoactionInterval.current) {
+                clearInterval(liveLoactionInterval.current);
+              }
+            };
           } else if (nearbyDriver?.length >= currentDriverIndex) {
             // Order not accepted by the current driver, try sending to the next one
             const nextDriverIndex = currentDriverIndex + 1;
@@ -275,8 +348,11 @@ const Map = observer(() => {
   }
 
   const ASPECT_RATIO = width / height;
+
   const LATITUDE_DELTA = 0.02;
+
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
   const INITIAL_POSITION = {
     latitude: currentLocation?.latitude,
     longitude: currentLocation?.longitude,
@@ -455,9 +531,7 @@ const Map = observer(() => {
               { height: animatedHeightComponent },
             ]}
           >
-            {(orderNotEnded.message !== "All orders are ended" ||
-              orderNotEnded.message !== "No active orders found") &&
-            orderData ? (
+            {itsNotEnted ? (
               <DriverData
                 driver_id={orderNotEnded.driver_id}
                 user_id={orderNotEnded.user_id}

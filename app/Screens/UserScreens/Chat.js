@@ -42,7 +42,8 @@ const Chat = ({ route }) => {
             },
           }));
 
-          setDataChat(formattedMessages);
+          setDataChat(formattedMessages.reverse());
+
           setLoadingChat(false);
         })
         .catch(() => {
@@ -53,7 +54,20 @@ const Chat = ({ route }) => {
 
   useEffect(() => {
     Socket.on("receive_message", (data) => {
-      setDataChat((list) => [...list, data]);
+      console.log("socket", data);
+
+      const formattedMessages = data.map((msg) => ({
+        _id: msg._id,
+        text: msg.content,
+        createdAt: new Date(msg.createdAt),
+        user: {
+          _id: msg.sender._id,
+          name: `${msg.sender.first_name} ${msg.sender.last_name}`,
+          avatar: `http://back.wobble-ah.com/${msg.sender.image}`,
+        },
+      }));
+
+      setDataChat((list) => [...list, formattedMessages]);
     });
   }, [Socket]);
 
@@ -71,15 +85,25 @@ const Chat = ({ route }) => {
         receiverModel: driver_id.role,
       })
       .then((res) => {
-        const messageData = {
-          room,
-          name: user_id.first_name,
-          sender: user_id._id,
-          receiver: driver_id._id,
-          content: newMessages[0].text,
-          senderModel: user_id.role,
-          receiverModel: driver_id.role,
-        };
+        const messageData = [
+          {
+            _id: res.data._id,
+            room,
+            name: user_id?.first_name,
+            sender_id: user_id?._id,
+            receiver: driver_id?._id,
+            content: newMessages[0].text,
+            senderModel: user_id?.role,
+            receiverModel: driver_id?.role,
+            createdAt: new Date.now(),
+            sender: {
+              _id: user_id?._id,
+              first_name: user_id?.first_name,
+              last_name: user_id?.last_name,
+              image: user_id?.image,
+            },
+          },
+        ];
 
         Socket.emit("send_message", messageData);
       })
@@ -108,7 +132,7 @@ const Chat = ({ route }) => {
           messages={dataChat}
           onSend={(messages) => onSend(messages)}
           user={{
-            _id: driver_id?._id,
+            _id: user_id?._id,
           }}
           isKeyboardInternallyHandled={true}
         />
