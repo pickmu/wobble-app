@@ -96,12 +96,7 @@ const Map = observer(() => {
   let liveLoactionInterval = useRef(null);
 
   const { data, reFetch } = useFetch(
-    `location/DriverLiveLocation = () =>{
-      try {
-        
-      } catch (error) {
-        console.log(");
-      }/${typeCar}`
+    `location/getLocationDriverByTypeCar/${typeCar}`
   );
 
   const { data: orderNotEnded } = useFetch(
@@ -121,6 +116,7 @@ const Map = observer(() => {
     if (currentLocation) {
       // Filter nearby stadiums based on maximum distance (in kilometers)
       const maxDistance = 15;
+
       const nearbyDrivers = data.filter((driver) => {
         const lat = driver?.lat;
         const lon = driver?.long;
@@ -226,13 +222,17 @@ const Map = observer(() => {
       } else if (orderCanceled === true) {
         setShowDirections(false);
 
-        setDestination("");
-
         setOrderData("");
+
+        setOrderAccepted(false);
+
+        setDestination("");
 
         setShowComponent(true);
 
         setDriverLocation("");
+
+        clearInterval(liveLoactionInterval.current);
       }
     };
 

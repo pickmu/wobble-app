@@ -85,30 +85,29 @@ const Chat = ({ route }) => {
         receiverModel: driver_id.role,
       })
       .then((res) => {
-        const messageData = [
-          {
-            _id: res.data._id,
-            room,
-            name: user_id?.first_name,
-            sender_id: user_id?._id,
-            receiver: driver_id?._id,
-            content: newMessages[0].text,
-            senderModel: user_id?.role,
-            receiverModel: driver_id?.role,
-            createdAt: new Date.now(),
-            sender: {
-              _id: user_id?._id,
-              first_name: user_id?.first_name,
-              last_name: user_id?.last_name,
-              image: user_id?.image,
-            },
+        console.log(res.data);
+        const messageData = {
+          _id: res.data._id,
+          room,
+          name: user_id?.first_name,
+          sender_id: user_id?._id,
+          receiver: driver_id?._id,
+          content: newMessages[0].text,
+          senderModel: user_id?.role,
+          receiverModel: driver_id?.role,
+          createdAt: Date.now(),
+          sender: {
+            _id: user_id?._id,
+            first_name: user_id?.first_name,
+            last_name: user_id?.last_name,
+            image: user_id?.image,
           },
-        ];
-
+        };
+console.log("lezem t3mel socket ye3ne 3eb");
         Socket.emit("send_message", messageData);
       })
       .catch((erorr) => {
-        console.log(erorr);
+        console.log("onSend error", erorr);
       });
   }
 

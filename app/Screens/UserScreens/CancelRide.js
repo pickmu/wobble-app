@@ -63,6 +63,8 @@ const CancelRide = ({ route, navigation }) => {
         return;
       }
 
+      setOrderCanceled(true);
+
       const requestData = {
         ride_status: "Canceled",
         cancel_reason: cancelReason ? cancelReason : otherText,
@@ -75,14 +77,6 @@ const CancelRide = ({ route, navigation }) => {
       );
 
       navigation.navigate("Map");
-
-      setOrderAccepted(false);
-
-      setShowComponent(true);
-
-      // setDestination("");
-
-      setOrderCanceled(true);
 
       showToast("success", "Your ride has been canceled");
     } catch (error) {
