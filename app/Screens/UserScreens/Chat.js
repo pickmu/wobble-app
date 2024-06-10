@@ -17,6 +17,7 @@ const Chat = ({ route }) => {
 
   useEffect(() => {
     if (room) {
+      console.log(room);
       Socket.emit("join_room", room);
     }
     getDataChat();
@@ -53,10 +54,10 @@ const Chat = ({ route }) => {
   }
 
   useEffect(() => {
-    Socket.on("receive_message", (data) => {
-      console.log("socket", data);
+    Socket.on("receive_message", (msg) => {
+      console.log("socket", msg);
 
-      const formattedMessages = data.map((msg) => ({
+      const formattedMessages = {
         _id: msg._id,
         text: msg.content,
         createdAt: new Date(msg.createdAt),
@@ -65,9 +66,11 @@ const Chat = ({ route }) => {
           name: `${msg.sender.first_name} ${msg.sender.last_name}`,
           avatar: `http://back.wobble-ah.com/${msg.sender.image}`,
         },
-      }));
+      };
 
-      setDataChat((list) => [...list, formattedMessages]);
+      setDataChat((previousMessages) =>
+        GiftedChat.append(previousMessages, formattedMessages)
+      );
     });
   }, [Socket]);
 
@@ -86,6 +89,7 @@ const Chat = ({ route }) => {
       })
       .then((res) => {
         console.log(res.data);
+        console.log(room);
         const messageData = {
           _id: res.data._id,
           room,
@@ -103,7 +107,7 @@ const Chat = ({ route }) => {
             image: user_id?.image,
           },
         };
-console.log("lezem t3mel socket ye3ne 3eb");
+
         Socket.emit("send_message", messageData);
       })
       .catch((erorr) => {

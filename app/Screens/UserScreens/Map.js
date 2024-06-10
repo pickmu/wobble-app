@@ -56,7 +56,7 @@ const Map = observer(() => {
 
   const insets = useSafeAreaInsets();
 
-  const animatedHeightComponent = useRef(new Animated.Value(height)).current;
+  const animatedHeightComponent = useRef(new Animated.Value(0)).current;
 
   const navigation = useNavigation();
 
@@ -104,6 +104,8 @@ const Map = observer(() => {
   );
 
   useEffect(() => {
+    animatedHeightComponent.setValue(0);
+
     Animated.timing(animatedHeightComponent, {
       toValue: heightComponent,
       duration: 500,
@@ -191,7 +193,23 @@ const Map = observer(() => {
 
   useEffect(() => {
     const checkOrder = async () => {
-      if (orderNotEnded?.is_ended == false) {
+      if (orderCanceled === true) {
+        setShowDirections(false);
+
+        setOrderData("");
+
+        setOrderAccepted(false);
+
+        setDestination("");
+
+        setShowComponent(true);
+
+        setDriverLocation("");
+
+        clearInterval(liveLoactionInterval.current);
+
+        console.log("order ended");
+      } else if (orderNotEnded?.is_ended == false) {
         setIsNotEnded(true);
 
         setShowComponent(false);
@@ -208,6 +226,8 @@ const Map = observer(() => {
 
         setOrderData(orderNotEnded);
 
+        clearInterval(intervalId.current);
+
         // Set up interval to fetch location every 2 seconds
         liveLoactionInterval.current = setInterval(() => {
           DriverLiveLocation(orderNotEnded?.driver_id?._id);
@@ -219,25 +239,11 @@ const Map = observer(() => {
             clearInterval(liveLoactionInterval.current);
           }
         };
-      } else if (orderCanceled === true) {
-        setShowDirections(false);
-
-        setOrderData("");
-
-        setOrderAccepted(false);
-
-        setDestination("");
-
-        setShowComponent(true);
-
-        setDriverLocation("");
-
-        clearInterval(liveLoactionInterval.current);
       }
     };
 
     checkOrder();
-  }, [orderAccepted, orderNotEnded, orderCanceled]);
+  }, [orderNotEnded, orderCanceled]);
 
   const DriverLiveLocation = async (id) => {
     try {
