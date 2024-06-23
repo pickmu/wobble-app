@@ -48,7 +48,8 @@
     "react-native-toast-message": "^2.1.7",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^3.5.2",
+    "react-native-svg": "15.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

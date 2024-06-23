@@ -17,6 +17,7 @@ import { authStore } from "../../MobX/AuthStore";
 import Toast from "react-native-toast-message";
 import { observer } from "mobx-react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import WaveBackground from "../../Components/WaveBackground";
 
 const SignIn = ({ navigation, route }) => {
   const { login, loginResponse, loading } = authStore;
@@ -102,6 +103,8 @@ const SignIn = ({ navigation, route }) => {
       keyboardShouldPersistTaps="handled"
       contentContainerStyle={styles.contentView}
     >
+      <WaveBackground />
+
       <View style={styles.roundedLogo}>
         <Image
           source={require("../../Images/Icons/Untitled-5.png")}
@@ -192,11 +195,7 @@ const SignIn = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.primary,
-  },
-  backgroundView: {
-    backgroundColor: "transparent",
-    flex: 1,
+    backgroundColor: "black",
   },
   contentView: {
     flex: 1,

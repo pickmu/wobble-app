@@ -31,7 +31,12 @@ const SignNav = () => {
       <Stack.Screen
         name={`${i18n.t("signNav.signIn")}`}
         component={SignIn}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          cardStyle: {
+            backgroundColor: "#000000",
+          },
+        }}
       />
 
       <Stack.Screen
