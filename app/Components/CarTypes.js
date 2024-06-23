@@ -21,7 +21,7 @@ const CarTypes = ({
   nearbyDriver,
   destination,
   currentLocation,
-  setHeightComponent,
+  changeComponentHeight,
   setIsOrderSending,
   setShowCarTypes,
   fetchOrderStatus,
@@ -113,7 +113,7 @@ const CarTypes = ({
       return;
     }
 
-    setHeightComponent(180);
+    changeComponentHeight(180);
 
     setShowCarTypes(false);
 
@@ -135,7 +135,7 @@ const CarTypes = ({
 
               setShowCarTypes(true);
 
-              setHeightComponent(240);
+              changeComponentHeight(230);
             },
           },
         ]

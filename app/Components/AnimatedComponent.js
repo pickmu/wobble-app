@@ -18,7 +18,7 @@ const AnimatedComponent = ({
   destination,
   setShowCarTypes,
   setShowAnimatedComponent,
-  setHeightComponent,
+  changeComponentHeight,
 }) => {
   const translateY = new Animated.Value(0);
 
@@ -51,7 +51,7 @@ const AnimatedComponent = ({
   const handlePlaceSelected = async (details) => {
     await onPlaceSelected(details, "destination");
 
-    setHeightComponent(270);
+    changeComponentHeight(230);
 
     setShowAnimatedComponent(false);
 

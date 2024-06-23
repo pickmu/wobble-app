@@ -17,7 +17,6 @@ const Chat = ({ route }) => {
 
   useEffect(() => {
     if (room) {
-      console.log(room);
       Socket.emit("join_room", room);
     }
     getDataChat();
@@ -55,8 +54,6 @@ const Chat = ({ route }) => {
 
   useEffect(() => {
     Socket.on("receive_message", (msg) => {
-      console.log("socket", msg);
-
       const formattedMessages = {
         _id: msg._id,
         text: msg.content,
@@ -88,8 +85,6 @@ const Chat = ({ route }) => {
         receiverModel: driver_id.role,
       })
       .then((res) => {
-        console.log(res.data);
-        console.log(room);
         const messageData = {
           _id: res.data._id,
           room,

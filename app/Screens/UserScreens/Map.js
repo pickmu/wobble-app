@@ -1,36 +1,38 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Dimensions,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  Animated,
-  Easing,
-  Platform,
-} from "react-native";
-import { useEffect, useState, useRef } from "react";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
-import { observer } from "mobx-react";
-import { colors } from "../../ReusableTools/css";
 import { Entypo } from "@expo/vector-icons";
-import LocationStore from "../../MobX/LocationStore";
-import MapViewDirections from "react-native-maps-directions";
-import useFetch from "../../ReusableTools/UseFetch";
-import AnimatedComponent from "../../Components/AnimatedComponent";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
-import DestinationContainer from "../../Components/DestinationContainer";
-import CarTypes from "../../Components/CarTypes";
-import SearchingForDriver from "../../Components/SearchingForDriver";
 import axios from "axios";
+import { observer } from "mobx-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Animated,
+  Dimensions,
+  Easing,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { initializeOneSignal } from "../../../InitializeOneSignal";
+import AnimatedComponent from "../../Components/AnimatedComponent";
+import CarTypes from "../../Components/CarTypes";
+import DestinationContainer from "../../Components/DestinationContainer";
 import DriverData from "../../Components/DriverData";
+import SearchingForDriver from "../../Components/SearchingForDriver";
 import { authStore } from "../../MobX/AuthStore";
 import { i18nStore } from "../../MobX/I18nStore";
+import LocationStore from "../../MobX/LocationStore";
 import { orderAcceptedStore } from "../../MobX/OrderAcceptedStore";
-import { initializeOneSignal } from "../../../InitializeOneSignal";
+import { hasArrived } from "../../ReusableTools/Functions/Haversine";
+import { sendNotification } from "../../ReusableTools/Functions/SendNotification";
+import useFetch from "../../ReusableTools/UseFetch";
+import { colors } from "../../ReusableTools/css";
 
 const { width, height } = Dimensions.get("window");
 
@@ -52,6 +54,9 @@ const Map = observer(() => {
     setShowComponent,
     showComponent,
     orderCanceled,
+    setDriverDistance,
+    setDriverDuration,
+    setOrderCanceled,
   } = orderAcceptedStore;
 
   const insets = useSafeAreaInsets();
@@ -64,13 +69,11 @@ const Map = observer(() => {
 
   const [showDirections, setShowDirections] = useState(false);
 
+  const [notificationSent, setNotificationSent] = useState(false);
+
   const [distance, setDistance] = useState(0);
 
   const [duration, setDuration] = useState(0);
-
-  const [driverDistance, setDriverDistance] = useState(0);
-
-  const [driverDuration, setDriverDuration] = useState(0);
 
   const [showAnimatedComponent, setShowAnimatedComponent] = useState(false);
 
@@ -84,8 +87,6 @@ const Map = observer(() => {
 
   const [orderData, setOrderData] = useState();
 
-  const [heightComponent, setHeightComponent] = useState(250);
-
   const [itsNotEnted, setIsNotEnded] = useState(false);
 
   const [driverLocation, setDriverLocation] = useState({
@@ -95,6 +96,8 @@ const Map = observer(() => {
 
   let liveLoactionInterval = useRef(null);
 
+  let intervalId = useRef(null);
+
   const { data, reFetch } = useFetch(
     `location/getLocationDriverByTypeCar/${typeCar}`
   );
@@ -103,16 +106,14 @@ const Map = observer(() => {
     `order/getUserIsNotEndedOrder/${userInfo?._id}`
   );
 
-  useEffect(() => {
-    animatedHeightComponent.setValue(0);
-
+  const changeComponentHeight = (height) => {
     Animated.timing(animatedHeightComponent, {
-      toValue: heightComponent,
+      toValue: height,
       duration: 500,
       easing: Easing.linear,
       useNativeDriver: false,
     }).start();
-  }, [heightComponent]);
+  };
 
   useEffect(() => {
     if (currentLocation) {
@@ -189,7 +190,29 @@ const Map = observer(() => {
     requestLocationPermissions().then(() => {
       userInfo && initializeOneSignal(userInfo?.phone_number);
     });
+
+    if (showComponent) {
+      changeComponentHeight(250);
+    }
   }, []);
+
+  useEffect(() => {
+    if (
+      hasArrived(
+        driverLocation?.lat,
+        driverLocation?.long,
+        currentLocation?.lat,
+        currentLocation?.long,
+        0.1
+      )
+    ) {
+      if (notificationSent) return;
+
+      sendNotification();
+
+      setNotificationSent(true);
+    }
+  }, [driverLocation, currentLocation]);
 
   useEffect(() => {
     const checkOrder = async () => {
@@ -197,6 +220,8 @@ const Map = observer(() => {
         setShowDirections(false);
 
         setOrderData("");
+
+        setIsNotEnded(false);
 
         setOrderAccepted(false);
 
@@ -206,15 +231,15 @@ const Map = observer(() => {
 
         setDriverLocation("");
 
-        clearInterval(liveLoactionInterval.current);
+        changeComponentHeight(250);
 
-        console.log("order ended");
+        clearInterval(liveLoactionInterval.current);
       } else if (orderNotEnded?.is_ended == false) {
         setIsNotEnded(true);
 
         setShowComponent(false);
 
-        setHeightComponent(380);
+        changeComponentHeight(360);
 
         setDestination({
           latitude: orderNotEnded?.toCoordinates.lat || 0,
@@ -226,19 +251,12 @@ const Map = observer(() => {
 
         setOrderData(orderNotEnded);
 
-        clearInterval(intervalId.current);
+        clearInterval(intervalId?.current);
 
         // Set up interval to fetch location every 2 seconds
         liveLoactionInterval.current = setInterval(() => {
           DriverLiveLocation(orderNotEnded?.driver_id?._id);
         }, 2000);
-
-        // Clear interval on component unmount
-        return () => {
-          if (liveLoactionInterval.current) {
-            clearInterval(liveLoactionInterval.current);
-          }
-        };
       }
     };
 
@@ -261,7 +279,7 @@ const Map = observer(() => {
   };
 
   const fetchOrderStatus = async (orderId, currentDriverIndex = 0) => {
-    const intervalId = setInterval(async () => {
+    intervalId.current = setInterval(async () => {
       try {
         if (orderId) {
           const resp = await axios.get(
@@ -269,13 +287,13 @@ const Map = observer(() => {
           );
 
           if (resp.data?.status === "Accepted") {
-            clearInterval(intervalId);
+            clearInterval(intervalId.current);
 
             setOrderData(resp.data);
 
             setIsOrderSending(false);
 
-            setHeightComponent(380);
+            changeComponentHeight(360);
 
             setOrderAccepted(true);
 
@@ -309,19 +327,33 @@ const Map = observer(() => {
               );
             }
           } else {
-            clearInterval(intervalId);
+            clearInterval(intervalId.current);
 
             setIsOrderSending(false);
 
             setShowCarTypes(true);
 
-            setHeightComponent(340);
+            changeComponentHeight(340);
           }
         }
       } catch (error) {
         console.log("fetchOrderStatus error", error.message);
       }
     }, 2000); // Check the status every 5 seconds (adjust the interval as needed)
+  };
+
+  const driverCancelRide = async () => {
+    try {
+      const resp = await axios.get(
+        `${process.env.EXPO_PUBLIC_API_URL}order/getOrderById/${orderData?._id}`
+      );
+
+      if (resp.data.is_ended === true) {
+        setOrderCanceled(true);
+      }
+    } catch (error) {
+      console.log("driverCancelRide error", error.message);
+    }
   };
 
   // Loading state while waiting for location data
@@ -528,7 +560,7 @@ const Map = observer(() => {
             setShowComponent={setShowComponent}
             showAnimatedComponent={showAnimatedComponent}
             setShowAnimatedComponent={setShowAnimatedComponent}
-            setHeightComponent={setHeightComponent}
+            changeComponentHeight={changeComponentHeight}
           />
 
           <Animated.View
@@ -545,16 +577,22 @@ const Map = observer(() => {
                 handleShowAutoComplete={handleShowAutoComplete}
                 destination={{ name: orderNotEnded?.to }}
                 setDestination={setDestination}
-                distance={driverDistance}
-                duration={driverDuration}
               />
             ) : (
-              showComponent && (
-                <DestinationContainer
+              orderAccepted && (
+                <DriverData
+                  {...orderData}
                   handleShowAutoComplete={handleShowAutoComplete}
                   destination={destination}
                 />
               )
+            )}
+
+            {showComponent && (
+              <DestinationContainer
+                handleShowAutoComplete={handleShowAutoComplete}
+                destination={destination}
+              />
             )}
 
             {showCarTypes && (
@@ -565,7 +603,7 @@ const Map = observer(() => {
                 destination={destination}
                 currentLocation={currentLocation}
                 setIsOrderSending={setIsOrderSending}
-                setHeightComponent={setHeightComponent}
+                changeComponentHeight={changeComponentHeight}
                 setShowCarTypes={setShowCarTypes}
                 fetchOrderStatus={fetchOrderStatus}
                 reFetch={reFetch}
@@ -573,14 +611,6 @@ const Map = observer(() => {
             )}
 
             {isOrderSending && <SearchingForDriver />}
-
-            {orderAccepted && (
-              <DriverData
-                {...orderData}
-                handleShowAutoComplete={handleShowAutoComplete}
-                destination={destination}
-              />
-            )}
           </Animated.View>
         </View>
       </KeyboardAvoidingView>

@@ -16,6 +16,8 @@ import { Button } from "../ReusableTools/Button";
 import { useState } from "react";
 import axios from "axios";
 import { Socket } from "../socket/socket";
+import { orderAcceptedStore } from "../MobX/OrderAcceptedStore";
+import { observer } from "mobx-react";
 
 const DriverData = ({
   driver_id,
@@ -23,8 +25,6 @@ const DriverData = ({
   destination,
   _id,
   setDestination,
-  duration,
-  distance,
 }) => {
   const navigation = useNavigation();
 
@@ -34,6 +34,8 @@ const DriverData = ({
 
   const [room, setRoom] = useState(null);
 
+  const { driverDistance, driverDuration } = orderAcceptedStore;
+  console.log(driverDistance);
   const handlePhoneCall = () => {
     if (user_id.phone_number) {
       const phoneNumber = driver_id.phone_number;
@@ -158,12 +160,12 @@ const DriverData = ({
 
           <View>
             <Text className="text-[13px] font-regular">
-              {i18n.t("driverData.distance")} {distance}{" "}
+              {i18n.t("driverData.distance")} {driverDistance}{" "}
               {i18n.t("driverData.km")}
             </Text>
 
             <Text className="text-[13px] font-regular">
-              {i18n.t("driverData.duration")} {duration}{" "}
+              {i18n.t("driverData.duration")} {driverDuration}{" "}
               {i18n.t("driverData.min")}
             </Text>
           </View>
@@ -186,7 +188,7 @@ const DriverData = ({
   );
 };
 
-export default DriverData;
+export default observer(DriverData);
 
 const styles = StyleSheet.create({
   imageBorder: {
