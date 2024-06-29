@@ -211,7 +211,7 @@ const OTP = ({ route }) => {
 
 export default observer(OTP);
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({ 
   field: {
     borderWidth: 1,
     borderRadius: 10,
